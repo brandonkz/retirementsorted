@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Free two-pot retirement calculator for South Africans. Calculate your withdrawal amount, tax impact, and get independent advice on whether you should withdraw.">
+  <meta name="keywords" content="two pot calculator, two pot retirement, retirement calculator south africa, savings pot withdrawal, two pot tax calculator, should I withdraw retirement">
+  <title>Two-Pot Retirement Calculator - Free Tool for South Africans | RetirementSorted</title>
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Two-Pot Retirement Calculator - RetirementSorted">
+  <meta property="og:description" content="Calculate your two-pot withdrawal, see tax impact, and get independent advice. Free tool for South Africans.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://retirementsorted.co.za">
+  
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%232d6a4f' width='100' height='100' rx='20'/><text x='50' y='70' font-size='60' text-anchor='middle' fill='white'>💰</text></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="/" class="logo">
+          <span class="logo-icon">💰</span>
+          <span class="logo-text">RetirementSorted</span>
+        </a>
+        <nav class="nav">
+          <a href="#calculator">Calculator</a>
+          <a href="#guide">Guide</a>
+          <a href="#faq">FAQ</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <span class="badge">🇿🇦 Built for South Africans</span>
+        <h1>Two-Pot Retirement Calculator</h1>
+        <p class="hero-subtitle">Calculate your withdrawal amount, see the tax impact, and get independent advice. No jargon. No upselling. Just sorted.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Calculator Section -->
+  <section id="calculator" class="section">
+    <div class="container">
+      <div class="calculator-wrapper">
+        <div class="calculator-card">
+          <h2>Calculate Your Withdrawal</h2>
+          <p class="calculator-intro">Enter your details below to see how much you can withdraw and what tax you'll pay.</p>
+          
+          <form id="calc-form" class="calc-form">
+            <div class="form-group">
+              <label for="annual-salary">
+                Annual Salary (Before Tax)
+                <span class="tooltip">ℹ️
+                  <span class="tooltip-text">Your gross annual income before deductions</span>
+                </span>
+              </label>
+              <div class="input-wrapper">
+                <span class="input-prefix">R</span>
+                <input type="number" id="annual-salary" placeholder="600000" min="0" step="1000" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="fund-value">
+                Total Retirement Fund Value
+                <span class="tooltip">ℹ️
+                  <span class="tooltip-text">Total value of your retirement/pension fund</span>
+                </span>
+              </label>
+              <div class="input-wrapper">
+                <span class="input-prefix">R</span>
+                <input type="number" id="fund-value" placeholder="500000" min="0" step="1000" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="withdrawal-amount">
+                Amount You Want to Withdraw
+                <span class="tooltip">ℹ️
+                  <span class="tooltip-text">Max 10% of savings pot (1/3 of total fund)</span>
+                </span>
+              </label>
+              <div class="input-wrapper">
+                <span class="input-prefix">R</span>
+                <input type="number" id="withdrawal-amount" placeholder="16650" min="0" step="100" required>
+              </div>
+              <div class="form-helper" id="max-withdrawal-helper"></div>
+            </div>
+
+            <button type="submit" class="btn-primary">Calculate</button>
+          </form>
+
+          <!-- Results -->
+          <div id="results" class="results hidden">
+            <h3>Your Withdrawal Breakdown</h3>
+            
+            <div class="result-grid">
+              <div class="result-card">
+                <div class="result-label">Withdrawal Amount</div>
+                <div class="result-value" id="result-withdrawal">R 0</div>
+              </div>
+              
+              <div class="result-card">
+                <div class="result-label">Tax (SARS)</div>
+                <div class="result-value negative" id="result-tax">R 0</div>
+              </div>
+              
+              <div class="result-card highlight">
+                <div class="result-label">You'll Receive</div>
+                <div class="result-value large" id="result-net">R 0</div>
+              </div>
+            </div>
+
+            <div class="result-details">
+              <h4>Important Info:</h4>
+              <ul id="result-info-list">
+                <!-- Populated by JS -->
+              </ul>
+            </div>
+
+            <button class="btn-secondary" onclick="location.href='#decision-tool'">Should I Withdraw? →</button>
+          </div>
+        </div>
+
+        <!-- Quick Info Sidebar -->
+        <div class="info-sidebar">
+          <div class="info-card">
+            <h3>🎯 Quick Facts</h3>
+            <ul>
+              <li><strong>Savings Pot:</strong> 1/3 of your fund, accessible once a year</li>
+              <li><strong>Retirement Pot:</strong> 2/3 of your fund, locked until retirement</li>
+              <li><strong>Max Withdrawal:</strong> 10% of savings pot per year</li>
+              <li><strong>Tax:</strong> Treated as part of your income, taxed accordingly</li>
+            </ul>
+          </div>
+
+          <div class="info-card">
+            <h3>⚠️ Before You Withdraw</h3>
+            <ul>
+              <li>You can't reverse a withdrawal</li>
+              <li>Reduces your retirement savings</li>
+              <li>Tax can be up to 30% or more</li>
+              <li>Consider alternatives first</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Decision Tool Section -->
+  <section id="decision-tool" class="section section-alt">
+    <div class="container">
+      <div class="section-header">
+        <h2>Should You Withdraw?</h2>
+        <p>Answer these questions to get independent advice</p>
+      </div>
+
+      <div class="decision-tool">
+        <form id="decision-form">
+          <div class="question-card">
+            <h4>1. Why do you need the money?</h4>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="reason" value="emergency" required>
+                <span>Emergency (medical, job loss, etc.)</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="reason" value="debt">
+                <span>Pay off debt</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="reason" value="expense">
+                <span>Large expense (car, holiday, etc.)</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="reason" value="investment">
+                <span>Other investment opportunity</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="question-card">
+            <h4>2. Do you have an emergency fund?</h4>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="emergency-fund" value="yes" required>
+                <span>Yes, 3+ months expenses saved</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="emergency-fund" value="some">
+                <span>Some savings, but less than 3 months</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="emergency-fund" value="no">
+                <span>No emergency fund</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="question-card">
+            <h4>3. If paying debt, what's the interest rate?</h4>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="debt-rate" value="high" required>
+                <span>High (20%+ credit cards, loans)</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="debt-rate" value="medium">
+                <span>Medium (10-20% personal loan)</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="debt-rate" value="low">
+                <span>Low (&lt;10% home loan, car)</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="debt-rate" value="none">
+                <span>Not applicable / no debt</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="question-card">
+            <h4>4. How many years until retirement?</h4>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="years-to-retirement" value="far" required>
+                <span>20+ years</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="years-to-retirement" value="medium">
+                <span>10-20 years</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="years-to-retirement" value="close">
+                <span>Less than 10 years</span>
+              </label>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary">Get Advice</button>
+        </form>
+
+        <!-- Decision Result -->
+        <div id="decision-result" class="decision-result hidden">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Guide Section -->
+  <section id="guide" class="section">
+    <div class="container">
+      <div class="guide-content">
+        <h2>How the Two-Pot System Works</h2>
+        
+        <div class="guide-grid">
+          <div class="guide-card">
+            <div class="guide-icon">💼</div>
+            <h3>Savings Pot (1/3)</h3>
+            <p>One-third of your retirement fund goes into the "Savings Pot". You can withdraw from this pot once per tax year, but only up to 10% of the pot's value.</p>
+            <ul>
+              <li>Accessible once a year</li>
+              <li>10% maximum withdrawal</li>
+              <li>Taxed as income</li>
+            </ul>
+          </div>
+
+          <div class="guide-card">
+            <div class="guide-icon">🔒</div>
+            <h3>Retirement Pot (2/3)</h3>
+            <p>Two-thirds goes into the "Retirement Pot". This money is locked until you retire (age 55+) or leave your job. It's designed to protect your retirement income.</p>
+            <ul>
+              <li>Locked until retirement</li>
+              <li>Cannot be withdrawn early</li>
+              <li>Protects long-term savings</li>
+            </ul>
+          </div>
+
+          <div class="guide-card">
+            <div class="guide-icon">📊</div>
+            <h3>Tax Treatment</h3>
+            <p>Withdrawals from the Savings Pot are added to your annual income and taxed at your marginal rate. This can be 18% to 45% depending on your income bracket.</p>
+            <ul>
+              <li>Added to income</li>
+              <li>Standard SARS rates apply</li>
+              <li>Can push you into higher bracket</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="guide-example">
+          <h3>Example Scenario</h3>
+          <p><strong>Fund value:</strong> R500,000</p>
+          <ul>
+            <li>Savings Pot: R166,667 (1/3)</li>
+            <li>Max withdrawal: R16,667 (10% of savings pot)</li>
+            <li>Tax (if earning R600k/year): ~R4,500</li>
+            <li>Net in your pocket: ~R12,167</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faq" class="section section-alt">
+    <div class="container">
+      <h2>Frequently Asked Questions</h2>
+      <div class="faq-grid">
+        <div class="faq-item">
+          <h4>When can I withdraw from my savings pot?</h4>
+          <p>Once per tax year (March 1 - Feb 28). Your first withdrawal can be made starting September 1, 2024.</p>
+        </div>
+
+        <div class="faq-item">
+          <h4>How much can I withdraw?</h4>
+          <p>Maximum 10% of your savings pot value per year. The savings pot is approximately 1/3 of your total fund value.</p>
+        </div>
+
+        <div class="faq-item">
+          <h4>What if I have multiple funds?</h4>
+          <p>You can withdraw from each fund separately, once per tax year per fund, up to the 10% limit for each.</p>
+        </div>
+
+        <div class="faq-item">
+          <h4>How long does the withdrawal take?</h4>
+          <p>Typically 5-10 business days after approval. Some funds may take longer. Tax is deducted before payout.</p>
+        </div>
+
+        <div class="faq-item">
+          <h4>Can I cancel a withdrawal?</h4>
+          <p>No. Once submitted and processed, withdrawals cannot be reversed. Think carefully before withdrawing.</p>
+        </div>
+
+        <div class="faq-item">
+          <h4>Does this affect my pension when I retire?</h4>
+          <p>Yes. Every withdrawal reduces your retirement savings and future pension income. Consider long-term impact.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="logo">
+            <span class="logo-icon">💰</span>
+            <span class="logo-text">RetirementSorted</span>
+          </div>
+          <p>Independent retirement planning tools for South Africans. No jargon. No upselling.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Tools</h4>
+          <a href="#calculator">Two-Pot Calculator</a>
+          <a href="#decision-tool">Should I Withdraw?</a>
+        </div>
+        <div class="footer-links">
+          <h4>Resources</h4>
+          <a href="#guide">How It Works</a>
+          <a href="#faq">FAQ</a>
+        </div>
+        <div class="footer-links">
+          <h4>Family</h4>
+          <a href="https://paidproperly.co.za" target="_blank">PaidProperly</a>
+          <a href="https://betsorted.co.za" target="_blank">BetSorted</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 RetirementSorted • Independent financial education</p>
+        <p class="disclaimer">Disclaimer: This calculator provides estimates only. Consult a financial advisor for personalized advice.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

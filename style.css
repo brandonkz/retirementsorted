@@ -295,6 +295,17 @@ body {
   color: white;
 }
 
+/* Calculator Credit (visible in screenshots) */
+.calculator-credit {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  font-weight: 500;
+}
+
 /* Results */
 .results {
   margin-top: 2rem;

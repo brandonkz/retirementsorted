@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Calculate your take-home salary in South Africa. Free net salary calculator with 2026 tax brackets, UIF, medical aid credits, and pension contributions.">
+  <title>SA Net Salary Calculator - What Do You Actually Take Home? | RetirementSorted</title>
+  
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%232d6a4f' width='100' height='100' rx='20'/><text x='50' y='72' font-size='60' text-anchor='middle' fill='white' font-weight='bold'>✓</text><circle cx='75' cy='25' r='15' fill='%23ffd700'/><text x='75' y='31' font-size='18' text-anchor='middle' fill='%232d6a4f' font-weight='bold'>R</text></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z9ENF0SQS9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z9ENF0SQS9');
+  </script>
+  
+  <style>
+    .calculator-page {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+    }
+    
+    .calculator-card {
+      background: white;
+      border-radius: 16px;
+      padding: 2.5rem;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      margin-bottom: 2rem;
+    }
+    
+    .input-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .input-label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--color-text);
+    }
+    
+    .input-field {
+      width: 100%;
+      padding: 0.875rem;
+      border: 2px solid var(--color-border);
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: all 0.2s;
+    }
+    
+    .input-field:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px rgba(45, 106, 79, 0.1);
+    }
+    
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    
+    .checkbox-group input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+    
+    .btn-calculate {
+      width: 100%;
+      padding: 1rem;
+      background: var(--color-primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .btn-calculate:hover {
+      background: var(--color-primary-dark);
+      transform: translateY(-1px);
+    }
+    
+    .results {
+      display: none;
+      background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-top: 2rem;
+    }
+    
+    .results.show {
+      display: block;
+    }
+    
+    .result-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid rgba(45, 106, 79, 0.2);
+    }
+    
+    .result-item:last-child {
+      border-bottom: none;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      padding-top: 1.5rem;
+      margin-top: 0.5rem;
+      border-top: 2px solid var(--color-primary);
+    }
+    
+    .result-label {
+      color: var(--color-text-light);
+    }
+    
+    .result-value {
+      font-weight: 600;
+      color: var(--color-text);
+    }
+    
+    .breakdown {
+      background: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    
+    .breakdown h4 {
+      margin-bottom: 1rem;
+      color: var(--color-text);
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="brand">
+        <span class="brand-icon">📊</span>
+        <span class="brand-name">RetirementSorted</span>
+      </a>
+      <nav class="header-nav">
+        <a href="index.html" class="nav-link">Calculator</a>
+        <a href="net-salary-calculator.html" class="nav-link active">Take-Home</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Calculator -->
+  <div class="calculator-page">
+    <div class="calculator-card">
+      <h1 style="font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--color-text);">💰 Net Salary Calculator</h1>
+      <p style="color: var(--color-text-light); margin-bottom: 2rem; line-height: 1.6;">Calculate your actual take-home salary in South Africa. Includes 2026 tax brackets, UIF, medical aid credits, and pension contributions.</p>
+      
+      <div class="input-group">
+        <label class="input-label">Gross Monthly Salary (before tax)</label>
+        <input type="number" id="grossSalary" class="input-field" placeholder="e.g., 50000" value="50000">
+      </div>
+      
+      <div class="checkbox-group">
+        <input type="checkbox" id="hasUif" checked>
+        <label for="hasUif">UIF contribution (1%, max R177.12)</label>
+      </div>
+      
+      <div class="checkbox-group">
+        <input type="checkbox" id="hasMedicalAid">
+        <label for="hasMedicalAid">Medical aid (tax credit)</label>
+      </div>
+      
+      <div id="medicalAidInputs" style="display: none; margin-left: 2rem; margin-bottom: 1rem;">
+        <div class="input-group">
+          <label class="input-label" style="font-size: 0.9rem;">Number of dependants (including yourself)</label>
+          <input type="number" id="medicalDependants" class="input-field" placeholder="e.g., 2" value="1" min="1">
+        </div>
+      </div>
+      
+      <div class="checkbox-group">
+        <input type="checkbox" id="hasPension">
+        <label for="hasPension">Pension/RA contribution</label>
+      </div>
+      
+      <div id="pensionInputs" style="display: none; margin-left: 2rem; margin-bottom: 1rem;">
+        <div class="input-group">
+          <label class="input-label" style="font-size: 0.9rem;">Monthly contribution (Rand)</label>
+          <input type="number" id="pensionAmount" class="input-field" placeholder="e.g., 5000" value="0">
+        </div>
+      </div>
+      
+      <button class="btn-calculate" onclick="calculate()">Calculate Take-Home</button>
+      
+      <div id="results" class="results">
+        <h3 style="margin-bottom: 1.5rem; color: var(--color-text);">Your Take-Home Salary</h3>
+        
+        <div class="result-item">
+          <span class="result-label">Gross Monthly Salary</span>
+          <span class="result-value" id="resultGross">R0</span>
+        </div>
+        
+        <div class="result-item">
+          <span class="result-label">PAYE (Income Tax)</span>
+          <span class="result-value" id="resultPaye">-R0</span>
+        </div>
+        
+        <div id="resultUifRow" class="result-item">
+          <span class="result-label">UIF Contribution</span>
+          <span class="result-value" id="resultUif">-R0</span>
+        </div>
+        
+        <div id="resultMedicalRow" class="result-item" style="display: none;">
+          <span class="result-label">Medical Aid Tax Credit</span>
+          <span class="result-value" id="resultMedical">+R0</span>
+        </div>
+        
+        <div id="resultPensionRow" class="result-item" style="display: none;">
+          <span class="result-label">Pension Contribution</span>
+          <span class="result-value" id="resultPension">-R0</span>
+        </div>
+        
+        <div class="result-item">
+          <span style="color: var(--color-primary); font-size: 1.1rem;">Net Monthly Take-Home</span>
+          <span id="resultNet" style="color: var(--color-primary); font-size: 1.35rem;">R0</span>
+        </div>
+        
+        <div class="breakdown">
+          <h4>Annual Breakdown</h4>
+          <div class="result-item" style="border: none; padding: 0.5rem 0;">
+            <span class="result-label">Gross Annual Salary</span>
+            <span class="result-value" id="annualGross">R0</span>
+          </div>
+          <div class="result-item" style="border: none; padding: 0.5rem 0;">
+            <span class="result-label">Total Tax Paid</span>
+            <span class="result-value" id="annualTax">R0</span>
+          </div>
+          <div class="result-item" style="border: none; padding: 0.5rem 0;">
+            <span class="result-label">Net Annual Take-Home</span>
+            <span class="result-value" id="annualNet">R0</span>
+          </div>
+          <div class="result-item" style="border: none; padding: 0.5rem 0;">
+            <span class="result-label">Effective Tax Rate</span>
+            <span class="result-value" id="effectiveRate">0%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- FAQ -->
+    <div class="calculator-card">
+      <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem;">How SA Salary Tax Works (2026)</h2>
+      
+      <div style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem;">Tax Brackets</h3>
+        <table style="width: 100%; border-collapse: collapse;">
+          <tr style="background: var(--color-background);">
+            <td style="padding: 0.75rem; border: 1px solid var(--color-border);"><strong>Taxable Income</strong></td>
+            <td style="padding: 0.75rem; border: 1px solid var(--color-border);"><strong>Rate</strong></td>
+          </tr>
+          <tr>
+            <td style="padding: 0.75rem; border: 1px solid var(--color-border);">R0 – R237,100</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--color-border);">18%</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.75rem; border: 1px solid var(--color-border);">R237,101 – R370,500</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--color-border);">26%</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.75rem; border: 1px solid var(--color-border);">R370,501 – R512,800</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--color-border);">31%</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.75rem; border: 1px solid var(--color-border);">R512,801 – R673,000</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--color-border);">36%</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.75rem; border: 1px solid var(--color-border);">R673,001 – R857,900</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--color-border);">39%</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.75rem; border: 1px solid var(--color-border);">R857,901 – R1,817,000</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--color-border);">41%</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.75rem; border: 1px solid var(--color-border);">R1,817,001+</td>
+            <td style="padding: 0.75rem; border: 1px solid var(--color-border);">45%</td>
+          </tr>
+        </table>
+      </div>
+      
+      <div style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem;">Deductions & Credits</h3>
+        <ul style="line-height: 1.8; color: var(--color-text-light);">
+          <li><strong>UIF:</strong> 1% of gross salary (capped at R177.12/month)</li>
+          <li><strong>Medical Aid Tax Credit:</strong> R364/month for main member, R364 for first dependant, R246 each additional dependant</li>
+          <li><strong>Pension/RA:</strong> Contributions reduce taxable income (max 27.5% of income, capped at R350,000/year)</li>
+          <li><strong>Annual Tax Rebate:</strong> R17,235 (already factored into PAYE calculations)</li>
+        </ul>
+      </div>
+      
+      <div style="background: var(--color-background); padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--color-primary);">
+        <p style="margin: 0; line-height: 1.7;"><strong>💡 Tip for Retirement Planning:</strong> Know your current take-home salary before planning your retirement. Your two-pot withdrawal will be taxed, so calculate the net impact on your monthly income. <a href="index.html" style="color: var(--color-primary); font-weight: 600;">Use our retirement calculator →</a></p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p>Made with ❤️ in Mzansi • <a href="https://github.com/brandonkz/paidproperly" target="_blank">GitHub</a></p>
+  </footer>
+
+  <script>
+    // Toggle medical aid inputs
+    document.getElementById('hasMedicalAid').addEventListener('change', function(e) {
+      document.getElementById('medicalAidInputs').style.display = e.target.checked ? 'block' : 'none';
+    });
+    
+    // Toggle pension inputs
+    document.getElementById('hasPension').addEventListener('change', function(e) {
+      document.getElementById('pensionInputs').style.display = e.target.checked ? 'block' : 'none';
+    });
+    
+    function calculate() {
+      const grossMonthly = parseFloat(document.getElementById('grossSalary').value) || 0;
+      const hasUif = document.getElementById('hasUif').checked;
+      const hasMedicalAid = document.getElementById('hasMedicalAid').checked;
+      const medicalDependants = parseInt(document.getElementById('medicalDependants').value) || 1;
+      const hasPension = document.getElementById('hasPension').checked;
+      const pensionMonthly = parseFloat(document.getElementById('pensionAmount').value) || 0;
+      
+      if (grossMonthly <= 0) {
+        alert('Please enter a valid gross salary');
+        return;
+      }
+      
+      // Calculate annual figures
+      const grossAnnual = grossMonthly * 12;
+      
+      // Pension reduces taxable income
+      const pensionAnnual = pensionMonthly * 12;
+      const maxPensionDeduction = Math.min(pensionAnnual, grossAnnual * 0.275, 350000);
+      const taxableIncome = grossAnnual - maxPensionDeduction;
+      
+      // Calculate PAYE (2026 tax brackets)
+      let paye = 0;
+      const annualRebate = 17235; // Primary rebate
+      
+      if (taxableIncome > 1817000) {
+        paye = 458003 + (taxableIncome - 1817000) * 0.45;
+      } else if (taxableIncome > 857900) {
+        paye = 161972 + (taxableIncome - 857900) * 0.41;
+      } else if (taxableIncome > 673000) {
+        paye = 112062 + (taxableIncome - 673000) * 0.39;
+      } else if (taxableIncome > 512800) {
+        paye = 54393 + (taxableIncome - 512800) * 0.36;
+      } else if (taxableIncome > 370500) {
+        paye = 42678 + (taxableIncome - 370500) * 0.31;
+      } else if (taxableIncome > 237100) {
+        paye = 7026 + (taxableIncome - 237100) * 0.26;
+      } else if (taxableIncome > 0) {
+        paye = taxableIncome * 0.18;
+      }
+      
+      paye = Math.max(0, paye - annualRebate);
+      const payeMonthly = paye / 12;
+      
+      // UIF
+      const uifMonthly = hasUif ? Math.min(grossMonthly * 0.01, 177.12) : 0;
+      
+      // Medical aid tax credit
+      let medicalCredit = 0;
+      if (hasMedicalAid) {
+        medicalCredit = 364; // Main member
+        if (medicalDependants > 1) {
+          medicalCredit += 364; // First dependant
+          if (medicalDependants > 2) {
+            medicalCredit += (medicalDependants - 2) * 246; // Additional dependants
+          }
+        }
+      }
+      
+      // Net calculation
+      const netMonthly = grossMonthly - payeMonthly - uifMonthly - pensionMonthly + medicalCredit;
+      const netAnnual = netMonthly * 12;
+      const effectiveRate = ((paye / taxableIncome) * 100).toFixed(1);
+      
+      // Display results
+      document.getElementById('resultGross').textContent = 'R' + grossMonthly.toLocaleString('en-ZA', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+      document.getElementById('resultPaye').textContent = '-R' + payeMonthly.toLocaleString('en-ZA', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+      document.getElementById('resultUif').textContent = '-R' + uifMonthly.toLocaleString('en-ZA', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+      
+      document.getElementById('resultUifRow').style.display = hasUif ? 'flex' : 'none';
+      
+      if (hasMedicalAid) {
+        document.getElementById('resultMedical').textContent = '+R' + medicalCredit.toLocaleString('en-ZA', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        document.getElementById('resultMedicalRow').style.display = 'flex';
+      } else {
+        document.getElementById('resultMedicalRow').style.display = 'none';
+      }
+      
+      if (hasPension && pensionMonthly > 0) {
+        document.getElementById('resultPension').textContent = '-R' + pensionMonthly.toLocaleString('en-ZA', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        document.getElementById('resultPensionRow').style.display = 'flex';
+      } else {
+        document.getElementById('resultPensionRow').style.display = 'none';
+      }
+      
+      document.getElementById('resultNet').textContent = 'R' + netMonthly.toLocaleString('en-ZA', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+      
+      document.getElementById('annualGross').textContent = 'R' + grossAnnual.toLocaleString('en-ZA');
+      document.getElementById('annualTax').textContent = 'R' + paye.toLocaleString('en-ZA');
+      document.getElementById('annualNet').textContent = 'R' + netAnnual.toLocaleString('en-ZA');
+      document.getElementById('effectiveRate').textContent = effectiveRate + '%';
+      
+      document.getElementById('results').classList.add('show');
+      document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  </script>
+</body>
+</html>

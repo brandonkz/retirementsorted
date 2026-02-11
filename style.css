@@ -37,7 +37,7 @@ body {
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 2rem;
 }
 
 /* Header */
@@ -674,6 +674,10 @@ body {
 
 /* Responsive */
 @media (max-width: 768px) {
+  .container {
+    padding: 0 1.25rem;
+  }
+
   .hero h1 {
     font-size: 2rem;
   }

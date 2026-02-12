@@ -400,12 +400,21 @@
   </footer>
 
   <script>
-    // Auto-calculate 10% annual yield as monthly income
+    let incomeManuallyEdited = false;
+    
+    // Track if user manually edits income
+    document.getElementById('monthly-income').addEventListener('input', function() {
+      incomeManuallyEdited = true;
+    });
+    
+    // Auto-calculate 10% annual yield as monthly income (only if not manually edited)
     document.getElementById('property-value').addEventListener('input', function() {
-      const propertyValue = parseFloat(this.value) || 0;
-      const annualYield = propertyValue * 0.10; // 10% annual yield
-      const monthlyIncome = annualYield / 12;
-      document.getElementById('monthly-income').value = Math.round(monthlyIncome);
+      if (!incomeManuallyEdited) {
+        const propertyValue = parseFloat(this.value) || 0;
+        const annualYield = propertyValue * 0.10; // 10% annual yield
+        const monthlyIncome = annualYield / 12;
+        document.getElementById('monthly-income').value = Math.round(monthlyIncome);
+      }
     });
     
     document.getElementById('airbnb-form').addEventListener('submit', function(e) {
@@ -458,7 +467,11 @@
       
       // Show result
       document.getElementById('result').style.display = 'block';
-      document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      
+      // Scroll to results after a brief delay to ensure render
+      setTimeout(() => {
+        document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
     });
   </script>
 </body>

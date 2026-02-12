@@ -59,17 +59,15 @@ body {
 }
 
 .logo {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
   text-decoration: none;
-  color: var(--color-text);
+  color: var(--color-primary);
   font-weight: 700;
-  font-size: 1.25rem;
+  font-size: 1.35rem;
+  transition: opacity 0.2s;
 }
 
-.logo-icon {
-  font-size: 1.75rem;
+.logo:hover {
+  opacity: 0.8;
 }
 
 .nav {

@@ -258,7 +258,7 @@
       <form id="airbnb-form">
         <div class="form-group">
           <label class="form-label" for="property-value">Municipal Property Value (R)</label>
-          <input type="number" id="property-value" class="form-input" placeholder="3000000" value="3000000" min="0" step="100000" required>
+          <input type="number" id="property-value" class="form-input" placeholder="2000000" value="2000000" min="0" step="100000" required>
           <div style="font-size: 14px; color: #6b7280; margin-top: 4px;">
             Your property's official municipal valuation (not market value)
           </div>
@@ -281,16 +281,16 @@
         <div class="rate-box current">
           <div class="rate-label" style="color: #10b981;">CURRENT (Residential)</div>
           <div class="rate-amount" style="color: #10b981;" id="current-annual">R0</div>
-          <div class="rate-detail">Rate: 0.007159% of value</div>
-          <div class="rate-detail">First R435,000 exempt</div>
+          <div class="rate-detail">Rate: 0.86 cents per rand</div>
+          <div class="rate-detail">First R300,000 rebate</div>
           <div class="rate-detail" id="current-monthly">R0/month</div>
         </div>
         
         <div class="rate-box proposed">
           <div class="rate-label" style="color: #ef4444;">PROPOSED (Commercial)</div>
           <div class="rate-amount" style="color: #ef4444;" id="proposed-annual">R0</div>
-          <div class="rate-detail">Rate: 0.01682% of value</div>
-          <div class="rate-detail">No exemption (full value)</div>
+          <div class="rate-detail">Rate: ~2.0 cents per rand (135% more)</div>
+          <div class="rate-detail">No rebate (full value)</div>
           <div class="rate-detail" id="proposed-monthly">R0/month</div>
         </div>
       </div>
@@ -338,16 +338,16 @@
       
       <p><strong>Key numbers:</strong></p>
       <ul>
-        <li><strong>Current residential rate:</strong> 0.007159% of municipal value (first R435k exempt)</li>
-        <li><strong>Proposed commercial rate:</strong> 0.01682% of full municipal value (no exemption)</li>
-        <li><strong>Increase:</strong> Approximately 135% higher</li>
+        <li><strong>Current residential rate:</strong> 0.86 cents per rand (first R300k rebate)</li>
+        <li><strong>Proposed commercial rate:</strong> ~2.0 cents per rand (no rebate)</li>
+        <li><strong>Increase:</strong> Approximately 135% higher annual rates</li>
       </ul>
       
-      <p><strong>Example impact:</strong></p>
+      <p><strong>Example impact (R2M property):</strong></p>
       <ul>
-        <li>R3M property currently pays <strong>R18,387/year</strong></li>
-        <li>Under new rules would pay <strong>R50,460/year</strong></li>
-        <li>Increase of <strong>R32,073/year</strong> (R2,673/month)</li>
+        <li>Currently pays <strong>R14,572/year</strong> (R1,214/month)</li>
+        <li>Under new rules would pay <strong>R40,280/year</strong> (R3,357/month)</li>
+        <li>Increase of <strong>R25,708/year</strong> (R2,142/month)</li>
       </ul>
       
       <p><strong>City's reasoning:</strong></p>
@@ -397,15 +397,15 @@
       const propertyValue = parseFloat(document.getElementById('property-value').value) || 0;
       const monthlyIncome = parseFloat(document.getElementById('monthly-income').value) || 0;
       
-      // Current residential rate (with R435k exemption)
-      const residentialRate = 0.00007159; // 0.007159% as decimal
-      const exemption = 435000;
-      const taxableValueCurrent = Math.max(0, propertyValue - exemption);
+      // Current residential rate (with R300k rebate)
+      const residentialRate = 0.008572; // 0.8572 cents per rand
+      const rebate = 300000;
+      const taxableValueCurrent = Math.max(0, propertyValue - rebate);
       const currentAnnual = taxableValueCurrent * residentialRate;
       const currentMonthly = currentAnnual / 12;
       
-      // Proposed commercial rate (135% increase, no exemption)
-      const commercialRate = 0.00016824; // 0.01682% as decimal (2.35x residential)
+      // Proposed commercial rate (135% increase = 2.35x, no rebate)
+      const commercialRate = residentialRate * 2.35; // ~0.02014 (2.01 cents per rand)
       const proposedAnnual = propertyValue * commercialRate;
       const proposedMonthly = proposedAnnual / 12;
       

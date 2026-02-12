@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Calculate how Cape Town's proposed Airbnb tax changes will affect your short-term rental property. See the real impact of reclassifying your property from residential to commercial rates.">
+  <meta name="keywords" content="cape town airbnb tax, short-term rental tax, cape town commercial rates, municipal rates calculator, airbnb tax calculator">
+  <meta name="author" content="RetirementSorted">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#2d6a4f">
+  
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z9ENF0SQS9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z9ENF0SQS9');
+  </script>
+  
+  <title>Cape Town Airbnb Tax Calculator - Short-Term Rental Rate Impact | RetirementSorted</title>
+  
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%232d6a4f' width='100' height='100' rx='20'/><text x='50' y='70' font-size='60' text-anchor='middle' fill='white'>💰</text></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    .calculator-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+    
+    .alert-box {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 20px;
+      margin-bottom: 32px;
+      border-radius: 8px;
+    }
+    
+    .alert-box h3 {
+      margin: 0 0 8px 0;
+      color: #856404;
+      font-size: 18px;
+      font-weight: 700;
+    }
+    
+    .alert-box p {
+      margin: 0;
+      color: #856404;
+      line-height: 1.6;
+    }
+    
+    .calculator-card {
+      background: white;
+      border-radius: 12px;
+      padding: 32px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      margin-bottom: 24px;
+    }
+    
+    .form-group {
+      margin-bottom: 24px;
+    }
+    
+    .form-label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #1f2937;
+    }
+    
+    .form-input {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    
+    .form-input:focus {
+      outline: none;
+      border-color: #2d6a4f;
+    }
+    
+    .btn-calculate {
+      width: 100%;
+      background: #2d6a4f;
+      color: white;
+      padding: 16px;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    
+    .result-card {
+      display: none;
+      margin-bottom: 24px;
+    }
+    
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    
+    @media (max-width: 768px) {
+      .comparison-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .rate-box {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+    
+    .rate-box.current {
+      border-left: 4px solid #10b981;
+    }
+    
+    .rate-box.proposed {
+      border-left: 4px solid #ef4444;
+    }
+    
+    .rate-label {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      opacity: 0.8;
+    }
+    
+    .rate-amount {
+      font-size: 36px;
+      font-weight: 900;
+      margin-bottom: 16px;
+    }
+    
+    .rate-detail {
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 4px;
+    }
+    
+    .impact-box {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      color: white;
+      border-radius: 12px;
+      padding: 32px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    
+    .impact-label {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      opacity: 0.9;
+    }
+    
+    .impact-amount {
+      font-size: 48px;
+      font-weight: 900;
+      margin-bottom: 16px;
+    }
+    
+    .impact-subtitle {
+      font-size: 16px;
+      opacity: 0.9;
+    }
+    
+    .profitability-section {
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    
+    .profitability-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    
+    .profitability-row:last-child {
+      border-bottom: none;
+      font-weight: 700;
+      font-size: 18px;
+      margin-top: 8px;
+    }
+    
+    .info-section {
+      background: #f0fdf4;
+      border-radius: 12px;
+      padding: 24px;
+      margin-top: 24px;
+      border-left: 4px solid #10b981;
+    }
+    
+    .info-section h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #065f46;
+    }
+    
+    .info-section p {
+      color: #065f46;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+    
+    .info-section ul {
+      margin-left: 20px;
+      color: #065f46;
+    }
+    
+    .info-section li {
+      margin-bottom: 8px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-content">
+        <a href="/" style="text-decoration: none;">
+          <h1 class="brand">RetirementSorted</h1>
+        </a>
+        <nav class="header-nav">
+          <a href="/calculator.html" class="nav-link">Calculator</a>
+          <a href="/net-salary-calculator.html" class="nav-link">Salary</a>
+          <a href="/airbnb-tax-calculator.html" class="nav-link">Airbnb Tax</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Calculator -->
+  <section class="calculator-container">
+    <h1 style="font-size: 36px; font-weight: 900; margin-bottom: 16px; text-align: center;">Cape Town Airbnb Tax Impact Calculator</h1>
+    <p style="text-align: center; color: #6b7280; margin-bottom: 40px; font-size: 18px;">See how the proposed 135% rate increase will affect your short-term rental property</p>
+    
+    <div class="alert-box">
+      <h3>⚠️ Proposed Policy Change</h3>
+      <p>Cape Town plans to reclassify short-term rental properties (Airbnb, Booking.com) from residential to commercial rates. This means a <strong>135% increase in municipal rates</strong> for properties operating as full-time rentals.</p>
+    </div>
+    
+    <div class="calculator-card">
+      <form id="airbnb-form">
+        <div class="form-group">
+          <label class="form-label" for="property-value">Municipal Property Value (R)</label>
+          <input type="number" id="property-value" class="form-input" placeholder="3000000" value="3000000" min="0" step="100000" required>
+          <div style="font-size: 14px; color: #6b7280; margin-top: 4px;">
+            Your property's official municipal valuation (not market value)
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="monthly-income">Average Monthly Rental Income (R)</label>
+          <input type="number" id="monthly-income" class="form-input" placeholder="25000" value="25000" min="0" step="1000">
+          <div style="font-size: 14px; color: #6b7280; margin-top: 4px;">
+            Optional: To see impact on profitability
+          </div>
+        </div>
+        
+        <button type="submit" class="btn-calculate">Calculate Tax Impact</button>
+      </form>
+    </div>
+    
+    <div id="result" class="result-card">
+      <div class="comparison-grid">
+        <div class="rate-box current">
+          <div class="rate-label" style="color: #10b981;">CURRENT (Residential)</div>
+          <div class="rate-amount" style="color: #10b981;" id="current-annual">R0</div>
+          <div class="rate-detail">Rate: 0.007159% of value</div>
+          <div class="rate-detail">First R435,000 exempt</div>
+          <div class="rate-detail" id="current-monthly">R0/month</div>
+        </div>
+        
+        <div class="rate-box proposed">
+          <div class="rate-label" style="color: #ef4444;">PROPOSED (Commercial)</div>
+          <div class="rate-amount" style="color: #ef4444;" id="proposed-annual">R0</div>
+          <div class="rate-detail">Rate: 0.01682% of value</div>
+          <div class="rate-detail">No exemption (full value)</div>
+          <div class="rate-detail" id="proposed-monthly">R0/month</div>
+        </div>
+      </div>
+      
+      <div class="impact-box">
+        <div class="impact-label">Your Annual Rate Increase:</div>
+        <div class="impact-amount" id="increase-amount">R0</div>
+        <div class="impact-subtitle" id="increase-percent">+0% increase</div>
+      </div>
+      
+      <div id="profitability" class="profitability-section" style="display: none;">
+        <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">Impact on Profitability</h3>
+        <div class="profitability-row">
+          <span>Gross Monthly Income:</span>
+          <span id="gross-income">R0</span>
+        </div>
+        <div class="profitability-row">
+          <span>Current Monthly Rates:</span>
+          <span id="profit-current-rates">R0</span>
+        </div>
+        <div class="profitability-row">
+          <span>Proposed Monthly Rates:</span>
+          <span id="profit-proposed-rates">R0</span>
+        </div>
+        <div class="profitability-row">
+          <span>Extra Monthly Cost:</span>
+          <span id="profit-extra" style="color: #ef4444;">R0</span>
+        </div>
+        <div class="profitability-row">
+          <span>Impact on Net Income:</span>
+          <span id="profit-percent" style="color: #ef4444;">-0%</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Info Section -->
+    <div class="info-section">
+      <h3>What This Means for Airbnb Owners</h3>
+      <p><strong>Who's affected:</strong></p>
+      <ul>
+        <li>Properties used <strong>primarily</strong> for short-term letting (Airbnb, Booking.com)</li>
+        <li>Over 25,000 listings in Cape Town</li>
+        <li>Areas like Sea Point, City Bowl, Woodstock, Atlantic Seaboard</li>
+      </ul>
+      
+      <p><strong>Key numbers:</strong></p>
+      <ul>
+        <li><strong>Current residential rate:</strong> 0.007159% of municipal value (first R435k exempt)</li>
+        <li><strong>Proposed commercial rate:</strong> 0.01682% of full municipal value (no exemption)</li>
+        <li><strong>Increase:</strong> Approximately 135% higher</li>
+      </ul>
+      
+      <p><strong>Example impact:</strong></p>
+      <ul>
+        <li>R3M property currently pays <strong>R18,387/year</strong></li>
+        <li>Under new rules would pay <strong>R50,460/year</strong></li>
+        <li>Increase of <strong>R32,073/year</strong> (R2,673/month)</li>
+      </ul>
+      
+      <p><strong>City's reasoning:</strong></p>
+      <ul>
+        <li>"Airbnbs operate like decentralized hotels" - should pay same rates</li>
+        <li>Encourage properties back into long-term rental market</li>
+        <li>Address Cape Town's housing shortage</li>
+        <li>Level playing field with hotels/guesthouses</li>
+      </ul>
+      
+      <p><strong>Your options:</strong></p>
+      <ul>
+        <li><strong>Continue as short-term rental:</strong> Accept higher rates if income justifies it</li>
+        <li><strong>Switch to long-term rental:</strong> Keep residential rates but lose Airbnb income</li>
+        <li><strong>Hybrid approach:</strong> Rent long-term with occasional short-term (check legal classification)</li>
+        <li><strong>Sell the property:</strong> Exit the market entirely</li>
+      </ul>
+      
+      <p><strong>Timeline:</strong></p>
+      <ul>
+        <li>Policy still under consultation (as of Feb 2026)</li>
+        <li>Not yet law - implementation date TBC</li>
+        <li>Likely to face legal challenges from property owners</li>
+        <li>Stay updated via City of Cape Town announcements</li>
+      </ul>
+    </div>
+    
+    <div style="text-align: center; margin-top: 40px;">
+      <a href="/" style="display: inline-block; padding: 14px 28px; background: #2d6a4f; color: white; text-decoration: none; border-radius: 8px; font-weight: 600;">Back to RetirementSorted</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p style="margin-bottom: 8px;">
+        <strong>Disclaimer:</strong> This calculator uses proposed rates as of February 2026. Final policy may differ. Consult a tax professional for personalized advice.
+      </p>
+      <p>© 2026 RetirementSorted. Rates sourced from City of Cape Town 2025/26 budget and Bloomberg reporting.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('airbnb-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const propertyValue = parseFloat(document.getElementById('property-value').value) || 0;
+      const monthlyIncome = parseFloat(document.getElementById('monthly-income').value) || 0;
+      
+      // Current residential rate (with R435k exemption)
+      const residentialRate = 0.00007159; // 0.007159% as decimal
+      const exemption = 435000;
+      const taxableValueCurrent = Math.max(0, propertyValue - exemption);
+      const currentAnnual = taxableValueCurrent * residentialRate;
+      const currentMonthly = currentAnnual / 12;
+      
+      // Proposed commercial rate (135% increase, no exemption)
+      const commercialRate = 0.00016824; // 0.01682% as decimal (2.35x residential)
+      const proposedAnnual = propertyValue * commercialRate;
+      const proposedMonthly = proposedAnnual / 12;
+      
+      // Calculate increase
+      const increaseAnnual = proposedAnnual - currentAnnual;
+      const increasePercent = currentAnnual > 0 ? ((increaseAnnual / currentAnnual) * 100) : 0;
+      
+      // Update display
+      document.getElementById('current-annual').textContent = 'R' + currentAnnual.toLocaleString('en-ZA', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+      document.getElementById('current-monthly').textContent = 'R' + currentMonthly.toLocaleString('en-ZA', {minimumFractionDigits: 0, maximumFractionDigits: 0}) + '/month';
+      
+      document.getElementById('proposed-annual').textContent = 'R' + proposedAnnual.toLocaleString('en-ZA', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+      document.getElementById('proposed-monthly').textContent = 'R' + proposedMonthly.toLocaleString('en-ZA', {minimumFractionDigits: 0, maximumFractionDigits: 0}) + '/month';
+      
+      document.getElementById('increase-amount').textContent = 'R' + increaseAnnual.toLocaleString('en-ZA', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+      document.getElementById('increase-percent').textContent = '+' + increasePercent.toFixed(1) + '% increase';
+      
+      // Profitability impact (if income provided)
+      if (monthlyIncome > 0) {
+        const increaseMonthly = increaseAnnual / 12;
+        const impactPercent = (increaseMonthly / monthlyIncome) * 100;
+        
+        document.getElementById('gross-income').textContent = 'R' + monthlyIncome.toLocaleString('en-ZA', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+        document.getElementById('profit-current-rates').textContent = 'R' + currentMonthly.toLocaleString('en-ZA', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+        document.getElementById('profit-proposed-rates').textContent = 'R' + proposedMonthly.toLocaleString('en-ZA', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+        document.getElementById('profit-extra').textContent = 'R' + increaseMonthly.toLocaleString('en-ZA', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+        document.getElementById('profit-percent').textContent = '-' + impactPercent.toFixed(1) + '% of gross income';
+        
+        document.getElementById('profitability').style.display = 'block';
+      } else {
+        document.getElementById('profitability').style.display = 'none';
+      }
+      
+      // Show result
+      document.getElementById('result').style.display = 'block';
+      document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  </script>
+</body>
+</html>

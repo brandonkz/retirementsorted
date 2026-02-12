@@ -266,7 +266,7 @@
         
         <div class="form-group">
           <label class="form-label" for="monthly-income">Average Monthly Rental Income (R)</label>
-          <input type="number" id="monthly-income" class="form-input" placeholder="16667" value="16667" min="0" step="1000">
+          <input type="number" id="monthly-income" class="form-input" placeholder="16667" value="16667" min="0" step="1">
           <div style="font-size: 14px; color: #6b7280; margin-top: 4px;">
             Auto-calculated at 10% annual yield (adjust if needed)
           </div>
@@ -419,6 +419,10 @@
     
     document.getElementById('airbnb-form').addEventListener('submit', function(e) {
       e.preventDefault();
+      
+      // Blur all inputs to dismiss keyboard
+      document.getElementById('property-value').blur();
+      document.getElementById('monthly-income').blur();
       
       const propertyValue = parseFloat(document.getElementById('property-value').value) || 0;
       const monthlyIncome = parseFloat(document.getElementById('monthly-income').value) || 0;

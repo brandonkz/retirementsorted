@@ -266,9 +266,9 @@
         
         <div class="form-group">
           <label class="form-label" for="monthly-income">Average Monthly Rental Income (R)</label>
-          <input type="number" id="monthly-income" class="form-input" placeholder="25000" value="25000" min="0" step="1000">
+          <input type="number" id="monthly-income" class="form-input" placeholder="16667" value="16667" min="0" step="1000">
           <div style="font-size: 14px; color: #6b7280; margin-top: 4px;">
-            Optional: To see impact on profitability
+            Auto-calculated at 10% annual yield (adjust if needed)
           </div>
         </div>
         
@@ -277,6 +277,11 @@
     </div>
     
     <div id="result" class="result-card">
+      <div style="text-align: center; padding: 16px 0; border-bottom: 2px solid #e5e7eb; margin-bottom: 24px;">
+        <div style="font-size: 14px; color: #6b7280; font-weight: 600;">CAPE TOWN AIRBNB TAX CALCULATOR</div>
+        <div style="font-size: 20px; color: #2d6a4f; font-weight: 900; margin-top: 4px;">RetirementSorted.co.za</div>
+      </div>
+      
       <div class="comparison-grid">
         <div class="rate-box current">
           <div class="rate-label" style="color: #10b981;">CURRENT (Residential)</div>
@@ -299,10 +304,14 @@
         <div class="impact-label">Your Annual Rate Increase:</div>
         <div class="impact-amount" id="increase-amount">R0</div>
         <div class="impact-subtitle" id="increase-percent">+0% increase</div>
+        <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.3); font-size: 14px; opacity: 0.9;">
+          Calculate your impact: <strong>RetirementSorted.co.za</strong>
+        </div>
       </div>
       
       <div id="profitability" class="profitability-section" style="display: none;">
         <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">Impact on Profitability</h3>
+        <div style="font-size: 12px; color: #6b7280; margin-bottom: 16px;">RetirementSorted.co.za • Cape Town Airbnb Tax Calculator</div>
         <div class="profitability-row">
           <span>Gross Monthly Income:</span>
           <span id="gross-income">R0</span>
@@ -391,6 +400,14 @@
   </footer>
 
   <script>
+    // Auto-calculate 10% annual yield as monthly income
+    document.getElementById('property-value').addEventListener('input', function() {
+      const propertyValue = parseFloat(this.value) || 0;
+      const annualYield = propertyValue * 0.10; // 10% annual yield
+      const monthlyIncome = annualYield / 12;
+      document.getElementById('monthly-income').value = Math.round(monthlyIncome);
+    });
+    
     document.getElementById('airbnb-form').addEventListener('submit', function(e) {
       e.preventDefault();
       

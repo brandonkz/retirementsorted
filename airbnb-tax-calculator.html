@@ -204,6 +204,80 @@
       margin-bottom: 8px;
       line-height: 1.6;
     }
+    
+    .next-steps-section {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 32px 24px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    .next-step-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.2s;
+    }
+    
+    .next-step-card:hover {
+      border-color: #2d6a4f;
+      box-shadow: 0 4px 6px rgba(45, 106, 79, 0.1);
+      transform: translateY(-2px);
+    }
+    
+    .next-step-icon {
+      font-size: 32px;
+      flex-shrink: 0;
+    }
+    
+    .next-step-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 4px;
+    }
+    
+    .next-step-desc {
+      font-size: 14px;
+      color: #6b7280;
+    }
+    
+    .next-step-arrow {
+      margin-left: auto;
+      font-size: 24px;
+      color: #2d6a4f;
+      flex-shrink: 0;
+    }
+    
+    @media (max-width: 768px) {
+      .next-steps-section {
+        padding: 24px 16px;
+      }
+      
+      .next-step-card {
+        padding: 16px;
+      }
+      
+      .next-step-icon {
+        font-size: 24px;
+      }
+      
+      .next-step-title {
+        font-size: 15px;
+      }
+      
+      .next-step-desc {
+        font-size: 13px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -281,6 +355,59 @@
         </div>
       </div>
       
+    </div>
+    
+    <!-- Next Steps Section -->
+    <div id="next-steps" class="next-steps-section" style="display: none;">
+      <h3 style="font-size: 24px; font-weight: 700; margin-bottom: 20px; color: #1f2937;">
+        💡 What to Do Next
+      </h3>
+      
+      <div style="display: grid; gap: 16px; margin-bottom: 32px;">
+        <a href="/index.html" class="next-step-card">
+          <div class="next-step-icon">🏠</div>
+          <div>
+            <div class="next-step-title">Calculate Two-Pot Retirement Impact</div>
+            <div class="next-step-desc">Should you withdraw to cover this tax increase?</div>
+          </div>
+          <div class="next-step-arrow">→</div>
+        </a>
+        
+        <a href="/net-salary-calculator.html" class="next-step-card">
+          <div class="next-step-icon">💵</div>
+          <div>
+            <div class="next-step-title">Calculate Your Net Salary</div>
+            <div class="next-step-desc">See how much you actually take home after tax</div>
+          </div>
+          <div class="next-step-arrow">→</div>
+        </a>
+        
+        <a href="/blog/i-withdrew-two-pot-retirement-what-happened.html" class="next-step-card">
+          <div class="next-step-icon">📖</div>
+          <div>
+            <div class="next-step-title">Read: I Withdrew From My Two-Pot Retirement</div>
+            <div class="next-step-desc">Real story of withdrawal, tax implications, and lessons learned</div>
+          </div>
+          <div class="next-step-arrow">→</div>
+        </a>
+      </div>
+      
+      <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 24px; text-align: center;">
+        <div style="font-size: 18px; font-weight: 700; margin-bottom: 12px;">
+          📬 Get Property Tax Updates
+        </div>
+        <div style="font-size: 14px; color: #6b7280; margin-bottom: 16px;">
+          We'll alert you when Cape Town's Airbnb tax proposal changes
+        </div>
+        <div style="max-width: 400px; margin: 0 auto;">
+          <form action="https://news.beehiiv.com/api/v1/subscriptions/form" method="post" style="display: flex; gap: 8px;">
+            <input type="email" name="email" placeholder="your@email.com" required style="flex: 1; padding: 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px;">
+            <button type="submit" style="background: #2d6a4f; color: white; border: none; padding: 12px 24px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 14px;">
+              Subscribe
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
     
     <!-- Info Section -->
@@ -382,8 +509,9 @@
       document.getElementById('increase-amount').textContent = 'R' + increaseAnnual.toLocaleString('en-ZA', {minimumFractionDigits: 0, maximumFractionDigits: 0});
       document.getElementById('increase-percent').textContent = '+' + increasePercent.toFixed(1) + '% increase';
       
-      // Show result
+      // Show result and next steps
       document.getElementById('result').style.display = 'block';
+      document.getElementById('next-steps').style.display = 'block';
       
       // Scroll to results after a brief delay to ensure render
       setTimeout(() => {

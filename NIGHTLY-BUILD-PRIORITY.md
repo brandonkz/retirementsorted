@@ -120,3 +120,11 @@ Partner 2: R42,500
 - Lead gen for high-commission affiliates (medical aid R2k, financial advisors)
 - Cross-link to other Sorted sites
 - Build trust through accurate, SA-specific calculations
+
+**Virality Checklist (ALWAYS include in new builds):**
+- ✅ Prominent RetirementSorted.co.za branding visible in screenshots
+- ✅ Screenshot-worthy results card with large numbers + percentiles
+- ✅ Share buttons (Twitter, WhatsApp, Copy results)
+- ✅ Quote-worthy stats ("Top 2% of SA earners")
+- ✅ Clean visual hierarchy for social media sharing
+- ✅ Track share events in Google Analytics

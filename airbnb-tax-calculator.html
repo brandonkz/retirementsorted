@@ -356,6 +356,32 @@
         </div>
       </div>
       
+      <!-- Viral Quote Card -->
+      <div style="background: white; border: 3px solid #2d6a4f; border-radius: 16px; padding: 32px; margin-bottom: 24px; text-align: center; position: relative;">
+        <div style="position: absolute; top: 12px; right: 12px; background: #2d6a4f; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;">RetirementSorted.co.za</div>
+        <div style="font-size: 16px; color: #666; margin-bottom: 8px;" id="viral-label">🏠 Cape Town Airbnb Tax Impact</div>
+        <div style="font-size: 32px; font-weight: 700; color: #2d6a4f; margin-bottom: 16px;" id="viral-title">Proposed Rate Increase</div>
+        <div style="font-size: 48px; font-weight: 800; color: #1b4332; margin-bottom: 8px;" id="viral-main">+R0/year</div>
+        <div style="font-size: 18px; color: #666;" id="viral-subtitle">R0 → R0 rates bill</div>
+      </div>
+
+      <!-- Share Button Section -->
+      <div style="background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: white; border-radius: 16px; padding: 24px; margin-bottom: 24px; text-align: center;">
+        <div style="font-size: 18px; font-weight: 600; margin-bottom: 16px;">📱 Share Your Results</div>
+        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+          <button onclick="shareTwitter()" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 500;">
+            🐦 Share on X
+          </button>
+          <button onclick="shareWhatsApp()" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 500;">
+            💬 Share on WhatsApp
+          </button>
+          <button onclick="copyResults()" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 500;">
+            📋 Copy Results
+          </button>
+        </div>
+        <div style="font-size: 13px; opacity: 0.9; margin-top: 12px;">Screenshot this page to share your calculation!</div>
+      </div>
+      
     </div>
     
     <!-- Next Steps Section -->
@@ -475,6 +501,47 @@
     </div>
   </footer>
 
+  <!-- Viral Share Functions -->
+  <script>
+    function getShareText() {
+      const label = document.getElementById('viral-label').textContent;
+      const title = document.getElementById('viral-title').textContent;
+      const main = document.getElementById('viral-main').textContent;
+      const subtitle = document.getElementById('viral-subtitle').textContent;
+      
+      return `${label}\n${title}: ${main}\n${subtitle}\n\nCalculate yours: ${window.location.href}`;
+    }
+
+    function shareTwitter() {
+      const text = encodeURIComponent(getShareText());
+      window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'share', { 'method': 'Twitter' });
+      }
+    }
+
+    function shareWhatsApp() {
+      const text = encodeURIComponent(getShareText());
+      window.open(`https://wa.me/?text=${text}`, '_blank');
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'share', { 'method': 'WhatsApp' });
+      }
+    }
+
+    function copyResults() {
+      const text = getShareText();
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = event.target;
+        const originalText = btn.textContent;
+        btn.textContent = '✅ Copied!';
+        setTimeout(() => { btn.textContent = originalText; }, 2000);
+        if (typeof gtag !== 'undefined') {
+          gtag('event', 'share', { 'method': 'Copy' });
+        }
+      });
+    }
+  </script>
+
   <script>
     document.getElementById('airbnb-form').addEventListener('submit', function(e) {
       e.preventDefault();
@@ -509,6 +576,10 @@
       
       document.getElementById('increase-amount').textContent = 'R' + increaseAnnual.toLocaleString('en-ZA', {minimumFractionDigits: 0, maximumFractionDigits: 0});
       document.getElementById('increase-percent').textContent = '+' + increasePercent.toFixed(1) + '% increase';
+      
+      // Update viral card
+      document.getElementById('viral-main').textContent = '+R' + increaseAnnual.toLocaleString('en-ZA', {minimumFractionDigits: 0, maximumFractionDigits: 0}) + '/year';
+      document.getElementById('viral-subtitle').textContent = 'R' + currentAnnual.toLocaleString('en-ZA', {minimumFractionDigits: 0, maximumFractionDigits: 0}) + ' → R' + proposedAnnual.toLocaleString('en-ZA', {minimumFractionDigits: 0, maximumFractionDigits: 0}) + ' rates bill';
       
       // Show result and next steps
       document.getElementById('result').style.display = 'block';

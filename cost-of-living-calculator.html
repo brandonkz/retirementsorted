@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="How much does it really cost to raise a family in South Africa? Calculate monthly expenses for Cape Town, Johannesburg, Durban, and Pretoria. Includes rent, schools, medical aid, and more.">
+  <meta name="keywords" content="cost of living south africa, family expenses calculator, cape town living costs, johannesburg expenses, durban cost of living, pretoria family budget, private school costs, medical aid costs">
+  <title>Family Cost of Living Calculator - South Africa 2026 | RetirementSorted</title>
+  
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z9ENF0SQS9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z9ENF0SQS9');
+  </script>
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Family Cost of Living Calculator - South Africa 2026">
+  <meta property="og:description" content="How much does it really cost to raise a family in Cape Town, Johannesburg, Durban, or Pretoria? Calculate your monthly expenses.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://retirementsorted.co.za/cost-of-living-calculator.html">
+  
+  <!-- Schema.org structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Family Cost of Living Calculator - South Africa",
+    "url": "https://retirementsorted.co.za/cost-of-living-calculator.html",
+    "description": "Calculate realistic monthly expenses for raising a family in South Africa's major cities. Includes rent, private school, medical aid, and more.",
+    "applicationCategory": "FinanceApplication",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "ZAR"
+    },
+    "operatingSystem": "Any",
+    "browserRequirements": "Requires JavaScript"
+  }
+  </script>
+  
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%232d6a4f' width='100' height='100' rx='20'/><text x='50' y='70' font-size='60' text-anchor='middle' fill='white'>💰</text></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    .city-selector {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+    
+    .city-btn {
+      padding: 16px 20px;
+      border: 2px solid #e0e0e0;
+      border-radius: 12px;
+      background: white;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+    
+    .city-btn:hover {
+      border-color: #2d6a4f;
+      background: #f8fdf9;
+    }
+    
+    .city-btn.active {
+      border-color: #2d6a4f;
+      background: #2d6a4f;
+      color: white;
+    }
+    
+    .breakdown-section {
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    
+    .expense-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    
+    .expense-item:last-child {
+      border-bottom: none;
+    }
+    
+    .expense-label {
+      font-size: 16px;
+      color: #333;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .expense-amount {
+      font-size: 18px;
+      font-weight: 600;
+      color: #2d6a4f;
+    }
+    
+    .total-section {
+      background: linear-gradient(135deg, #2d6a4f 0%, #1b4332 100%);
+      color: white;
+      border-radius: 16px;
+      padding: 32px;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    
+    .total-label {
+      font-size: 18px;
+      opacity: 0.9;
+      margin-bottom: 8px;
+    }
+    
+    .total-amount {
+      font-size: 48px;
+      font-weight: 700;
+      margin-bottom: 24px;
+    }
+    
+    .gross-salary {
+      background: rgba(255,255,255,0.15);
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+    
+    .gross-salary-label {
+      font-size: 16px;
+      opacity: 0.9;
+      margin-bottom: 8px;
+    }
+    
+    .gross-salary-amount {
+      font-size: 32px;
+      font-weight: 700;
+    }
+    
+    .percentile-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      margin-top: 12px;
+    }
+    
+    .comparison-section {
+      background: #fff9e6;
+      border-left: 4px solid #fbbf24;
+      padding: 24px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+    }
+    
+    .comparison-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #92400e;
+    }
+    
+    .comparison-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      font-size: 15px;
+      color: #78350f;
+    }
+    
+    .savings-highlight {
+      font-weight: 700;
+      color: #15803d;
+    }
+    
+    .next-steps {
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    
+    .next-steps h2 {
+      margin-bottom: 24px;
+    }
+    
+    .cta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+    }
+    
+    .cta-card {
+      border: 2px solid #e0e0e0;
+      border-radius: 12px;
+      padding: 20px;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    
+    .cta-card:hover {
+      border-color: #2d6a4f;
+      background: #f8fdf9;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    .cta-icon {
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+    
+    .cta-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #2d6a4f;
+    }
+    
+    .cta-desc {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.5;
+    }
+    
+    .newsletter-section {
+      background: linear-gradient(135deg, #2d6a4f 0%, #1b4332 100%);
+      color: white;
+      border-radius: 16px;
+      padding: 40px;
+      text-align: center;
+      margin-top: 48px;
+    }
+    
+    .newsletter-section h3 {
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+    
+    .newsletter-section p {
+      font-size: 16px;
+      opacity: 0.9;
+      margin-bottom: 24px;
+    }
+    
+    .newsletter-form {
+      display: flex;
+      gap: 12px;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    
+    .newsletter-input {
+      flex: 1;
+      padding: 14px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    
+    .newsletter-btn {
+      padding: 14px 32px;
+      background: white;
+      color: #2d6a4f;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .newsletter-btn:hover {
+      background: #f0f0f0;
+    }
+    
+    .branding-watermark {
+      text-align: center;
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 2px solid rgba(255,255,255,0.2);
+    }
+    
+    .branding-logo {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    
+    .branding-tagline {
+      font-size: 14px;
+      opacity: 0.8;
+    }
+    
+    @media (max-width: 768px) {
+      .city-selector {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .total-amount {
+        font-size: 36px;
+      }
+      
+      .gross-salary-amount {
+        font-size: 24px;
+      }
+      
+      .newsletter-form {
+        flex-direction: column;
+      }
+      
+      .breakdown-section,
+      .next-steps {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="/" class="logo">RetirementSorted</a>
+        <nav class="nav">
+          <a href="/">Two-Pot</a>
+          <a href="net-salary-calculator.html">Salary</a>
+          <a href="airbnb-tax-calculator.html">Airbnb Tax</a>
+          <a href="cost-of-living-calculator.html" class="active">Cost of Living</a>
+          <a href="/blog/">Articles</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <span class="badge">🇿🇦 Updated February 2026 • Real Market Data</span>
+        <h1>Family Cost of Living Calculator</h1>
+        <p class="hero-subtitle">How much does it <em>really</em> cost to raise a family in South Africa's best areas? Calculate monthly expenses for a family of 4 with private schools, medical aid, and a comfortable lifestyle.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Calculator Section -->
+  <section id="calculator" class="section">
+    <div class="container">
+      <div class="calculator-wrapper">
+        <h2 style="text-align: center; margin-bottom: 32px;">Select Your City</h2>
+        
+        <div class="city-selector">
+          <button class="city-btn active" data-city="capetown">
+            🌊 Cape Town
+          </button>
+          <button class="city-btn" data-city="johannesburg">
+            🏙️ Johannesburg
+          </button>
+          <button class="city-btn" data-city="durban">
+            🏖️ Durban
+          </button>
+          <button class="city-btn" data-city="pretoria">
+            🌳 Pretoria
+          </button>
+        </div>
+        
+        <!-- Results Section -->
+        <div id="results">
+          <!-- Total Section -->
+          <div class="total-section">
+            <div class="total-label">Monthly Living Costs in <span id="city-name">Cape Town</span></div>
+            <div class="total-amount" id="total-amount">R101,000</div>
+            <div style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">Area: <span id="area-name">Sea Point</span></div>
+            
+            <div class="gross-salary">
+              <div class="gross-salary-label">Required Gross Monthly Salary</div>
+              <div class="gross-salary-amount" id="gross-salary">R143,000</div>
+              <div style="font-size: 14px; opacity: 0.9; margin-top: 8px;">(~R1.7M per year)</div>
+            </div>
+            
+            <div class="percentile-badge" id="percentile">
+              📊 This puts you in the <strong>top 3%</strong> of SA earners
+            </div>
+          </div>
+          
+          <!-- Comparison Section -->
+          <div class="comparison-section" id="comparison-section">
+            <div class="comparison-title">💡 City Comparison</div>
+            <div id="comparison-list">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+          
+          <!-- Breakdown Section -->
+          <div class="breakdown-section">
+            <h3 style="margin-bottom: 24px;">Monthly Expense Breakdown</h3>
+            
+            <div class="expense-item">
+              <div class="expense-label">
+                🏠 Rent (3-bedroom in <span id="rent-area">Sea Point</span>)
+              </div>
+              <div class="expense-amount" id="rent-amount">R45,000</div>
+            </div>
+            
+            <div class="expense-item">
+              <div class="expense-label">
+                🏥 Medical Aid (Family of 4)
+              </div>
+              <div class="expense-amount">R10,000</div>
+            </div>
+            
+            <div class="expense-item">
+              <div class="expense-label">
+                🎓 Private School (2 children)
+              </div>
+              <div class="expense-amount">R12,000</div>
+            </div>
+            
+            <div class="expense-item">
+              <div class="expense-label">
+                👩‍🍳 Domestic Worker (Full-time)
+              </div>
+              <div class="expense-amount">R11,000</div>
+            </div>
+            
+            <div class="expense-item">
+              <div class="expense-label">
+                🛒 Groceries (Family of 4)
+              </div>
+              <div class="expense-amount">R8,000</div>
+            </div>
+            
+            <div class="expense-item">
+              <div class="expense-label">
+                🚗 Transport (Car, Fuel, Insurance)
+              </div>
+              <div class="expense-amount">R7,500</div>
+            </div>
+            
+            <div class="expense-item">
+              <div class="expense-label">
+                💡 Utilities (Water, Electricity, Gas)
+              </div>
+              <div class="expense-amount">R2,500</div>
+            </div>
+            
+            <div class="expense-item">
+              <div class="expense-label">
+                🎬 Lifestyle & Entertainment
+              </div>
+              <div class="expense-amount">R3,000</div>
+            </div>
+            
+            <div class="expense-item">
+              <div class="expense-label">
+                📡 Internet (Fibre)
+              </div>
+              <div class="expense-amount">R1,200</div>
+            </div>
+            
+            <div class="expense-item">
+              <div class="expense-label">
+                🚨 Security / Armed Response
+              </div>
+              <div class="expense-amount">R800</div>
+            </div>
+          </div>
+          
+          <!-- Next Steps -->
+          <div class="next-steps">
+            <h2>📊 Plan Your Financial Future</h2>
+            <p style="margin-bottom: 32px; color: #666;">Now that you know what you need, use our other tools to optimize your finances:</p>
+            
+            <div class="cta-grid">
+              <a href="net-salary-calculator.html" class="cta-card">
+                <div class="cta-icon">💰</div>
+                <div class="cta-title">Net Salary Calculator</div>
+                <div class="cta-desc">Calculate your take-home pay after tax, UIF, and deductions. See what you actually earn.</div>
+              </a>
+              
+              <a href="/" class="cta-card">
+                <div class="cta-icon">🏦</div>
+                <div class="cta-title">Two-Pot Retirement Calculator</div>
+                <div class="cta-desc">Should you withdraw from your retirement savings? Calculate tax and long-term impact.</div>
+              </a>
+              
+              <a href="airbnb-tax-calculator.html" class="cta-card">
+                <div class="cta-icon">🏡</div>
+                <div class="cta-title">Airbnb Tax Calculator</div>
+                <div class="cta-desc">Calculate tax on rental income, including the new Cape Town tourism levy.</div>
+              </a>
+              
+              <div class="cta-card" style="opacity: 0.7; cursor: not-allowed; border-style: dashed;">
+                <div class="cta-icon">🏥</div>
+                <div class="cta-title">Medical Aid Comparison</div>
+                <div class="cta-desc">Coming Soon: Compare medical aid plans and find the best value for your family.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Newsletter Section -->
+      <div class="newsletter-section">
+        <h3>💌 Get Financial Tips in Your Inbox</h3>
+        <p>Join 5,000+ South Africans getting weekly tips on retirement, tax, and money management.</p>
+        <form class="newsletter-form" id="newsletter-form">
+          <input type="email" class="newsletter-input" placeholder="your@email.com" required>
+          <button type="submit" class="newsletter-btn">Subscribe</button>
+        </form>
+        <div style="font-size: 13px; margin-top: 16px; opacity: 0.8;">
+          No spam. Unsubscribe anytime. Built by South Africans, for South Africans.
+        </div>
+        
+        <div class="branding-watermark">
+          <div class="branding-logo">RetirementSorted.co.za</div>
+          <div class="branding-tagline">Independent financial tools. No jargon. Just sorted.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>RetirementSorted</h3>
+          <p>Independent financial tools for South Africans. No jargon, no upselling, just sorted.</p>
+        </div>
+        <div class="footer-section">
+          <h4>Tools</h4>
+          <a href="/">Two-Pot Calculator</a>
+          <a href="net-salary-calculator.html">Salary Calculator</a>
+          <a href="airbnb-tax-calculator.html">Airbnb Tax</a>
+          <a href="cost-of-living-calculator.html">Cost of Living</a>
+        </div>
+        <div class="footer-section">
+          <h4>Resources</h4>
+          <a href="/blog/">Articles</a>
+          <a href="/blog/should-you-withdraw-two-pot-retirement.html">Should I Withdraw?</a>
+          <a href="/blog/two-pot-tax-calculator-how-much-sars-takes.html">Tax Guide</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 RetirementSorted.co.za • Built in 🇿🇦 for South Africans</p>
+        <p style="font-size: 13px; margin-top: 8px; opacity: 0.8;">Not financial advice. For informational purposes only. Consult a certified financial advisor for personalized guidance.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // City data
+    const cityData = {
+      capetown: {
+        name: 'Cape Town',
+        area: 'Sea Point',
+        rent: 45000,
+        total: 101000,
+        gross: 143000,
+        annual: 1716000,
+        percentile: 'top 3%'
+      },
+      johannesburg: {
+        name: 'Johannesburg',
+        area: 'Rosebank',
+        rent: 40000,
+        total: 96000,
+        gross: 136000,
+        annual: 1632000,
+        percentile: 'top 3%'
+      },
+      durban: {
+        name: 'Durban',
+        area: 'Umhlanga',
+        rent: 32000,
+        total: 88000,
+        gross: 125000,
+        annual: 1500000,
+        percentile: 'top 4%'
+      },
+      pretoria: {
+        name: 'Pretoria',
+        area: 'Brooklyn',
+        rent: 27000,
+        total: 83000,
+        gross: 118000,
+        annual: 1416000,
+        percentile: 'top 5%'
+      }
+    };
+    
+    // Format currency
+    function formatCurrency(amount) {
+      return 'R' + amount.toLocaleString('en-ZA');
+    }
+    
+    // Update calculator
+    function updateCalculator(cityKey) {
+      const city = cityData[cityKey];
+      
+      // Update main values
+      document.getElementById('city-name').textContent = city.name;
+      document.getElementById('area-name').textContent = city.area;
+      document.getElementById('total-amount').textContent = formatCurrency(city.total);
+      document.getElementById('gross-salary').textContent = formatCurrency(city.gross);
+      document.getElementById('rent-amount').textContent = formatCurrency(city.rent);
+      document.getElementById('rent-area').textContent = city.area;
+      document.getElementById('percentile').innerHTML = `📊 This puts you in the <strong>${city.percentile}</strong> of SA earners`;
+      
+      // Update annual salary display
+      const annualDisplay = document.querySelector('.gross-salary-amount').nextElementSibling;
+      annualDisplay.textContent = `(~${formatCurrency(city.annual / 1000)}k per year)`;
+      
+      // Generate comparison
+      generateComparison(cityKey);
+    }
+    
+    // Generate city comparison
+    function generateComparison(currentCity) {
+      const comparisonList = document.getElementById('comparison-list');
+      const current = cityData[currentCity];
+      
+      let html = '';
+      
+      // Compare to other cities
+      Object.keys(cityData).forEach(key => {
+        if (key !== currentCity) {
+          const other = cityData[key];
+          const diff = current.total - other.total;
+          
+          if (diff > 0) {
+            html += `
+              <div class="comparison-item">
+                <span>vs ${other.name}:</span>
+                <span class="savings-highlight">Save ${formatCurrency(diff)}/month (${formatCurrency(diff * 12)}/year)</span>
+              </div>
+            `;
+          } else if (diff < 0) {
+            html += `
+              <div class="comparison-item">
+                <span>vs ${other.name}:</span>
+                <span style="color: #dc2626;">+${formatCurrency(Math.abs(diff))}/month (${formatCurrency(Math.abs(diff) * 12)}/year)</span>
+              </div>
+            `;
+          }
+        }
+      });
+      
+      comparisonList.innerHTML = html;
+    }
+    
+    // City button handlers
+    document.querySelectorAll('.city-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        // Remove active class from all buttons
+        document.querySelectorAll('.city-btn').forEach(b => b.classList.remove('active'));
+        
+        // Add active class to clicked button
+        this.classList.add('active');
+        
+        // Update calculator
+        const city = this.getAttribute('data-city');
+        updateCalculator(city);
+        
+        // Track event
+        if (typeof gtag !== 'undefined') {
+          gtag('event', 'city_select', {
+            'event_category': 'calculator',
+            'event_label': city
+          });
+        }
+      });
+    });
+    
+    // Newsletter form handler
+    document.getElementById('newsletter-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = this.querySelector('input[type="email"]').value;
+      
+      // Track event
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'newsletter_signup', {
+          'event_category': 'engagement',
+          'event_label': 'cost_of_living'
+        });
+      }
+      
+      // Show success message
+      const form = this;
+      form.innerHTML = '<div style="color: white; padding: 20px; font-size: 18px;">✅ Thanks! Check your email to confirm.</div>';
+      
+      // In production, you'd send this to your email service
+      console.log('Newsletter signup:', email);
+    });
+    
+    // Initialize with Cape Town
+    updateCalculator('capetown');
+    
+    // Track page view
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'page_view', {
+        'page_title': 'Cost of Living Calculator',
+        'page_location': window.location.href
+      });
+    }
+  </script>
+</body>
+</html>

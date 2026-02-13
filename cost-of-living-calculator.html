@@ -451,59 +451,59 @@
             </div>
             
             <div class="expense-item">
-              <div class="expense-label">
+              <div class="expense-label" id="medical-label">
                 🏥 Medical Aid (Family of 4)
               </div>
-              <div class="expense-amount">R10,000</div>
+              <div class="expense-amount" id="medical-amount">R10,000</div>
             </div>
             
-            <div class="expense-item">
-              <div class="expense-label">
+            <div class="expense-item" id="school-item">
+              <div class="expense-label" id="school-label">
                 🎓 Private School (2 children)
               </div>
-              <div class="expense-amount">R12,000</div>
+              <div class="expense-amount" id="school-amount">R12,000</div>
             </div>
             
-            <div class="expense-item">
-              <div class="expense-label">
+            <div class="expense-item" id="domestic-item">
+              <div class="expense-label" id="domestic-label">
                 👩‍🍳 Domestic Worker (Full-time)
               </div>
-              <div class="expense-amount">R11,000</div>
+              <div class="expense-amount" id="domestic-amount">R11,000</div>
             </div>
             
             <div class="expense-item">
-              <div class="expense-label">
+              <div class="expense-label" id="groceries-label">
                 🛒 Groceries (Family of 4)
               </div>
-              <div class="expense-amount">R8,000</div>
+              <div class="expense-amount" id="groceries-amount">R8,000</div>
             </div>
             
             <div class="expense-item">
-              <div class="expense-label">
+              <div class="expense-label" id="transport-label">
                 🚗 Transport (Car, Fuel, Insurance)
               </div>
-              <div class="expense-amount">R7,500</div>
+              <div class="expense-amount" id="transport-amount">R7,500</div>
             </div>
             
             <div class="expense-item">
-              <div class="expense-label">
+              <div class="expense-label" id="utilities-label">
                 💡 Utilities (Water, Electricity, Gas)
               </div>
-              <div class="expense-amount">R2,500</div>
+              <div class="expense-amount" id="utilities-amount">R2,500</div>
             </div>
             
             <div class="expense-item">
-              <div class="expense-label">
+              <div class="expense-label" id="lifestyle-label">
                 🎬 Lifestyle & Entertainment
               </div>
-              <div class="expense-amount">R3,000</div>
+              <div class="expense-amount" id="lifestyle-amount">R3,000</div>
             </div>
             
             <div class="expense-item">
-              <div class="expense-label">
+              <div class="expense-label" id="internet-label">
                 📡 Internet (Fibre)
               </div>
-              <div class="expense-amount">R1,200</div>
+              <div class="expense-amount" id="internet-amount">R1,200</div>
             </div>
           </div>
           
@@ -632,11 +632,21 @@
       benoni: {
         name: 'Benoni',
         area: 'Benoni (Budget-Friendly 😄)',
-        rent: 12000,
-        total: 64500,
-        gross: 92000,
-        annual: 1104000,
-        percentile: 'top 10%'
+        rent: 9000,
+        total: 25000,
+        gross: 36000,
+        annual: 432000,
+        percentile: 'top 25%',
+        expenses: {
+          medical: { amount: 3500, label: '🏥 Medical Aid (Basic, no frills)' },
+          school: { amount: 0, label: '🎓 Government School (Free!)' },
+          domestic: { amount: 0, label: '🧹 Domestic Worker (Clean yourself!)' },
+          groceries: { amount: 5000, label: '🛒 Groceries (Checkers, not Woolies)' },
+          transport: { amount: 4000, label: '🚗 Transport (Used Toyota, not BMW)' },
+          utilities: { amount: 1500, label: '💡 Utilities (Load shedding = savings)' },
+          lifestyle: { amount: 1500, label: '🎬 Lifestyle (Netflix, not DStv Premium)' },
+          internet: { amount: 500, label: '📡 Internet (Rain, not Fibre)' }
+        }
       }
     };
     
@@ -667,6 +677,63 @@
       document.getElementById('viral-total').textContent = formatCurrency(city.total) + '/month';
       document.getElementById('viral-gross').textContent = formatCurrency(city.gross);
       document.getElementById('viral-percentile').textContent = `Top ${city.percentile.replace('top ', '').replace('%', '')}% of SA earners`;
+      
+      // Update expenses (Benoni has custom funny labels)
+      if (city.expenses) {
+        // Benoni budget mode
+        document.getElementById('medical-label').textContent = city.expenses.medical.label;
+        document.getElementById('medical-amount').textContent = formatCurrency(city.expenses.medical.amount);
+        
+        document.getElementById('school-label').textContent = city.expenses.school.label;
+        document.getElementById('school-amount').textContent = city.expenses.school.amount === 0 ? 'FREE' : formatCurrency(city.expenses.school.amount);
+        document.getElementById('school-item').style.display = 'flex';
+        
+        document.getElementById('domestic-label').textContent = city.expenses.domestic.label;
+        document.getElementById('domestic-amount').textContent = city.expenses.domestic.amount === 0 ? 'FREE' : formatCurrency(city.expenses.domestic.amount);
+        document.getElementById('domestic-item').style.display = 'flex';
+        
+        document.getElementById('groceries-label').textContent = city.expenses.groceries.label;
+        document.getElementById('groceries-amount').textContent = formatCurrency(city.expenses.groceries.amount);
+        
+        document.getElementById('transport-label').textContent = city.expenses.transport.label;
+        document.getElementById('transport-amount').textContent = formatCurrency(city.expenses.transport.amount);
+        
+        document.getElementById('utilities-label').textContent = city.expenses.utilities.label;
+        document.getElementById('utilities-amount').textContent = formatCurrency(city.expenses.utilities.amount);
+        
+        document.getElementById('lifestyle-label').textContent = city.expenses.lifestyle.label;
+        document.getElementById('lifestyle-amount').textContent = formatCurrency(city.expenses.lifestyle.amount);
+        
+        document.getElementById('internet-label').textContent = city.expenses.internet.label;
+        document.getElementById('internet-amount').textContent = formatCurrency(city.expenses.internet.amount);
+      } else {
+        // Normal cities - standard upper-class expenses
+        document.getElementById('medical-label').textContent = '🏥 Medical Aid (Family of 4)';
+        document.getElementById('medical-amount').textContent = 'R10,000';
+        
+        document.getElementById('school-label').textContent = '🎓 Private School (2 children)';
+        document.getElementById('school-amount').textContent = 'R12,000';
+        document.getElementById('school-item').style.display = 'flex';
+        
+        document.getElementById('domestic-label').textContent = '👩‍🍳 Domestic Worker (Full-time)';
+        document.getElementById('domestic-amount').textContent = 'R11,000';
+        document.getElementById('domestic-item').style.display = 'flex';
+        
+        document.getElementById('groceries-label').textContent = '🛒 Groceries (Family of 4)';
+        document.getElementById('groceries-amount').textContent = 'R8,000';
+        
+        document.getElementById('transport-label').textContent = '🚗 Transport (Car, Fuel, Insurance)';
+        document.getElementById('transport-amount').textContent = 'R7,500';
+        
+        document.getElementById('utilities-label').textContent = '💡 Utilities (Water, Electricity, Gas)';
+        document.getElementById('utilities-amount').textContent = 'R2,500';
+        
+        document.getElementById('lifestyle-label').textContent = '🎬 Lifestyle & Entertainment';
+        document.getElementById('lifestyle-amount').textContent = 'R3,000';
+        
+        document.getElementById('internet-label').textContent = '📡 Internet (Fibre)';
+        document.getElementById('internet-amount').textContent = 'R1,200';
+      }
       
       // Generate comparison
       generateComparison(cityKey);

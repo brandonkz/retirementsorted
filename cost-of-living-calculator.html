@@ -400,6 +400,33 @@
             </div>
           </div>
           
+          <!-- Share Section -->
+          <div style="background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: white; border-radius: 16px; padding: 24px; margin-bottom: 24px; text-align: center;">
+            <div style="font-size: 18px; font-weight: 600; margin-bottom: 16px;">📱 Share Your Results</div>
+            <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+              <button onclick="shareTwitter()" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 500; transition: all 0.2s;">
+                🐦 Share on X
+              </button>
+              <button onclick="shareWhatsApp()" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 500; transition: all 0.2s;">
+                💬 Share on WhatsApp
+              </button>
+              <button onclick="copyResults()" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 500; transition: all 0.2s;">
+                📋 Copy Results
+              </button>
+            </div>
+            <div style="font-size: 13px; opacity: 0.9; margin-top: 12px;">Screenshot this page to share your calculation!</div>
+          </div>
+          
+          <!-- Viral Quote Card -->
+          <div style="background: white; border: 3px solid #2d6a4f; border-radius: 16px; padding: 32px; margin-bottom: 24px; text-align: center; position: relative;">
+            <div style="position: absolute; top: 12px; right: 12px; background: #2d6a4f; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;">RetirementSorted.co.za</div>
+            <div style="font-size: 16px; color: #666; margin-bottom: 8px;">💰 Upper-Middle Class Life in</div>
+            <div style="font-size: 32px; font-weight: 700; color: #2d6a4f; margin-bottom: 16px;" id="viral-city">Cape Town</div>
+            <div style="font-size: 48px; font-weight: 800; color: #1b4332; margin-bottom: 8px;" id="viral-total">R106k/month</div>
+            <div style="font-size: 18px; color: #666; margin-bottom: 16px;">Needs <span style="color: #dc2626; font-weight: 700;" id="viral-gross">R150k</span> gross salary</div>
+            <div style="font-size: 14px; color: #92400e; background: #fff9e6; padding: 8px 16px; border-radius: 8px; display: inline-block;" id="viral-percentile">Top 2% of SA earners</div>
+          </div>
+          
           <!-- Comparison Section -->
           <div class="comparison-section" id="comparison-section">
             <div class="comparison-title">💡 City Comparison</div>
@@ -629,6 +656,12 @@
       const annualDisplay = document.querySelector('.gross-salary-amount').nextElementSibling;
       annualDisplay.textContent = `(~${formatCurrency(city.annual / 1000)}k per year)`;
       
+      // Update viral card
+      document.getElementById('viral-city').textContent = city.name;
+      document.getElementById('viral-total').textContent = formatCurrency(city.total) + '/month';
+      document.getElementById('viral-gross').textContent = formatCurrency(city.gross);
+      document.getElementById('viral-percentile').textContent = `Top ${city.percentile.replace('top ', '').replace('%', '')}% of SA earners`;
+      
       // Generate comparison
       generateComparison(cityKey);
     }
@@ -710,6 +743,50 @@
       // In production, you'd send this to your email service
       console.log('Newsletter signup:', email);
     });
+    
+    // Share functions
+    function getShareText() {
+      const cityName = document.getElementById('viral-city').textContent;
+      const total = document.getElementById('viral-total').textContent;
+      const gross = document.getElementById('viral-gross').textContent;
+      const percentile = document.getElementById('viral-percentile').textContent;
+      
+      return `💰 Upper-middle class life in ${cityName}: ${total}\n\nNeeds ${gross} gross salary (${percentile})\n\nCalculate yours: https://retirementsorted.co.za/cost-of-living-calculator.html`;
+    }
+    
+    function shareTwitter() {
+      const text = encodeURIComponent(getShareText());
+      window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
+      
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'share', { 'method': 'Twitter' });
+      }
+    }
+    
+    function shareWhatsApp() {
+      const text = encodeURIComponent(getShareText());
+      window.open(`https://wa.me/?text=${text}`, '_blank');
+      
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'share', { 'method': 'WhatsApp' });
+      }
+    }
+    
+    function copyResults() {
+      const text = getShareText();
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = event.target;
+        const originalText = btn.textContent;
+        btn.textContent = '✅ Copied!';
+        setTimeout(() => {
+          btn.textContent = originalText;
+        }, 2000);
+        
+        if (typeof gtag !== 'undefined') {
+          gtag('event', 'share', { 'method': 'Copy' });
+        }
+      });
+    }
     
     // Initialize with Cape Town
     updateCalculator('capetown');

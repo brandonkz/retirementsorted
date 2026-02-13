@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Calculate fair budget contributions for couples. Compare proportional, 50/50, and custom splits based on income. Free calculator for SA couples.">
+  <meta name="keywords" content="joint budget calculator, couples budget split, fair expenses split, household budget couples south africa">
+  <title>Joint Budget Calculator for Couples - Fair Split | RetirementSorted</title>
+  
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%232d6a4f' width='100' height='100' rx='20'/><text x='50' y='72' font-size='60' text-anchor='middle' fill='white' font-weight='bold'>✓</text><circle cx='75' cy='25' r='15' fill='%23ffd700'/><text x='75' y='31' font-size='18' text-anchor='middle' fill='%232d6a4f' font-weight='bold'>R</text></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z9ENF0SQS9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z9ENF0SQS9');
+  </script>
+  
+  <style>
+    .calculator-page {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+    }
+    
+    .calculator-card {
+      background: white;
+      border-radius: 16px;
+      padding: 2.5rem;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      margin-bottom: 2rem;
+    }
+    
+    .input-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .input-label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--color-text);
+    }
+    
+    .input-field {
+      width: 100%;
+      padding: 0.875rem;
+      border: 2px solid var(--color-border);
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: all 0.2s;
+    }
+    
+    .input-field:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px rgba(45, 106, 79, 0.1);
+    }
+
+    .expense-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .btn-calculate {
+      width: 100%;
+      padding: 1rem;
+      background: var(--color-primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .btn-calculate:hover {
+      background: var(--color-primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: #6c757d;
+      margin-top: 1rem;
+    }
+
+    .btn-secondary:hover {
+      background: #5a6268;
+    }
+    
+    .results {
+      display: none;
+      margin-top: 2rem;
+    }
+
+    .results.show {
+      display: block;
+    }
+
+    .method-tabs {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      border-bottom: 2px solid var(--color-border);
+    }
+
+    .method-tab {
+      padding: 1rem 1.5rem;
+      background: none;
+      border: none;
+      border-bottom: 3px solid transparent;
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--color-text-light);
+      transition: all 0.2s;
+    }
+
+    .method-tab:hover {
+      color: var(--color-text);
+    }
+
+    .method-tab.active {
+      color: var(--color-primary);
+      border-bottom-color: var(--color-primary);
+    }
+
+    .method-content {
+      display: none;
+    }
+
+    .method-content.active {
+      display: block;
+    }
+
+    .result-card {
+      background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .result-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .result-total {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      margin: 0.5rem 0;
+    }
+
+    .partner-results {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .partner-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .partner-name {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--color-text);
+      margin-bottom: 0.5rem;
+    }
+
+    .partner-income {
+      color: var(--color-text-light);
+      margin-bottom: 1rem;
+    }
+
+    .partner-contribution {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      margin: 0.5rem 0;
+    }
+
+    .partner-percentage {
+      color: var(--color-text-light);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .partner-leftover {
+      background: #f8f9fa;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+    }
+
+    .leftover-label {
+      font-size: 0.9rem;
+      color: var(--color-text-light);
+    }
+
+    .leftover-amount {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--color-success);
+    }
+
+    .expense-breakdown {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .expense-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .expense-item:last-child {
+      border-bottom: none;
+    }
+
+    .expense-name {
+      font-weight: 600;
+    }
+
+    .expense-amount {
+      color: var(--color-text-light);
+    }
+
+    .expense-bar {
+      display: flex;
+      height: 8px;
+      background: #e5e5e5;
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 0.5rem 0;
+    }
+
+    .expense-bar-p1 {
+      background: #3b82f6;
+    }
+
+    .expense-bar-p2 {
+      background: #8b5cf6;
+    }
+
+    .viral-card {
+      background: white;
+      border: 3px solid #2d6a4f;
+      border-radius: 16px;
+      padding: 32px;
+      margin-bottom: 24px;
+      text-align: center;
+      position: relative;
+    }
+
+    .viral-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: #2d6a4f;
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .viral-title {
+      font-size: 16px;
+      color: #666;
+      margin-bottom: 8px;
+    }
+
+    .viral-total {
+      font-size: 32px;
+      font-weight: 700;
+      color: #2d6a4f;
+      margin-bottom: 16px;
+    }
+
+    .viral-split {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1b4332;
+      margin-bottom: 8px;
+    }
+
+    .viral-method {
+      font-size: 14px;
+      color: #666;
+    }
+
+    .share-section {
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+      color: white;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .share-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .share-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .share-button {
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .share-button:hover {
+      background: rgba(255,255,255,0.3);
+      transform: translateY(-2px);
+    }
+
+    .share-hint {
+      font-size: 13px;
+      opacity: 0.9;
+      margin-top: 12px;
+    }
+
+    .custom-slider {
+      width: 100%;
+      margin: 1rem 0;
+    }
+
+    .slider-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: var(--color-text-light);
+      margin-top: 0.5rem;
+    }
+
+    .what-if-section {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .next-steps {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      margin-top: 2rem;
+    }
+
+    .next-steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .next-step-card {
+      padding: 1.5rem;
+      border: 2px solid var(--color-border);
+      border-radius: 12px;
+      text-decoration: none;
+      color: var(--color-text);
+      transition: all 0.2s;
+    }
+
+    .next-step-card:hover {
+      border-color: var(--color-primary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .next-step-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .next-step-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .next-step-desc {
+      font-size: 0.9rem;
+      color: var(--color-text-light);
+    }
+
+    @media (max-width: 768px) {
+      .method-tabs {
+        flex-direction: column;
+        gap: 0;
+      }
+
+      .method-tab {
+        border-bottom: 1px solid var(--color-border);
+        border-left: 3px solid transparent;
+      }
+
+      .method-tab.active {
+        border-left-color: var(--color-primary);
+        border-bottom-color: var(--color-border);
+      }
+
+      .partner-results {
+        grid-template-columns: 1fr;
+      }
+
+      .viral-total {
+        font-size: 24px;
+      }
+
+      .viral-split {
+        font-size: 18px;
+      }
+    }
+
+    .recommended-badge {
+      display: inline-block;
+      background: var(--color-success);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-left: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="/" class="logo">RetirementSorted</a>
+        <nav class="nav">
+          <a href="/">Two-Pot</a>
+          <a href="net-salary-calculator.html">Salary</a>
+          <a href="joint-budget-calculator.html" class="active">Joint Budget</a>
+          <a href="airbnb-tax-calculator.html">Airbnb Tax</a>
+          <a href="cost-of-living-calculator.html">Cost of Living</a>
+          <a href="/blog/">Articles</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content" style="text-align: center;">
+        <span class="badge">💑 Built for Couples • Updated Feb 2026</span>
+        <h1>Joint Budget Calculator for Couples</h1>
+        <p class="hero-subtitle">Figure out fair contributions to shared expenses. Compare proportional (income-based), 50/50, and custom splits. No more money arguments.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Calculator Section -->
+  <div class="calculator-page">
+    <div class="calculator-card">
+      <h2>💰 Enter Your Details</h2>
+      <p style="color: var(--color-text-light); margin-bottom: 2rem;">Input both partners' incomes and your shared monthly expenses.</p>
+
+      <form id="budget-form">
+        <!-- Income Section -->
+        <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem;">
+          <h3 style="margin-bottom: 1rem;">Monthly Net Income</h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+            <div class="input-group">
+              <label class="input-label">Partner 1 Net Income</label>
+              <input type="number" id="income-p1" class="input-field" placeholder="R 50,000" value="100000" required>
+            </div>
+            <div class="input-group">
+              <label class="input-label">Partner 2 Net Income</label>
+              <input type="number" id="income-p2" class="input-field" placeholder="R 40,000" value="65000" required>
+            </div>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--color-text-light); margin-top: 0.5rem;">
+            💡 Don't know your net income? Use our <a href="net-salary-calculator.html" style="color: var(--color-primary);">Net Salary Calculator</a>
+          </p>
+        </div>
+
+        <!-- Expenses Section -->
+        <h3 style="margin-bottom: 1rem;">Shared Monthly Expenses</h3>
+        <div class="expense-grid">
+          <div class="input-group">
+            <label class="input-label">🏠 Rent / Bond</label>
+            <input type="number" id="expense-rent" class="input-field expense-input" placeholder="R 30,000" value="30000">
+          </div>
+          <div class="input-group">
+            <label class="input-label">💡 Utilities</label>
+            <input type="number" id="expense-utilities" class="input-field expense-input" placeholder="R 2,000" value="2000">
+          </div>
+          <div class="input-group">
+            <label class="input-label">🛒 Groceries</label>
+            <input type="number" id="expense-groceries" class="input-field expense-input" placeholder="R 6,000" value="6000">
+          </div>
+          <div class="input-group">
+            <label class="input-label">🧹 Domestic Worker</label>
+            <input type="number" id="expense-domestic" class="input-field expense-input" placeholder="R 5,000" value="5000">
+          </div>
+          <div class="input-group">
+            <label class="input-label">🏥 Medical Aid</label>
+            <input type="number" id="expense-medical" class="input-field expense-input" placeholder="R 5,000" value="5000">
+          </div>
+          <div class="input-group">
+            <label class="input-label">🎓 School Fees</label>
+            <input type="number" id="expense-school" class="input-field expense-input" placeholder="R 0" value="0">
+          </div>
+          <div class="input-group">
+            <label class="input-label">🚗 Car Payments</label>
+            <input type="number" id="expense-car" class="input-field expense-input" placeholder="R 5,000" value="5000">
+          </div>
+          <div class="input-group">
+            <label class="input-label">🛡️ Insurance</label>
+            <input type="number" id="expense-insurance" class="input-field expense-input" placeholder="R 1,500" value="1500">
+          </div>
+          <div class="input-group">
+            <label class="input-label">🎬 Entertainment</label>
+            <input type="number" id="expense-entertainment" class="input-field expense-input" placeholder="R 2,000" value="2000">
+          </div>
+          <div class="input-group">
+            <label class="input-label">📦 Other</label>
+            <input type="number" id="expense-other" class="input-field expense-input" placeholder="R 0" value="0">
+          </div>
+        </div>
+
+        <button type="submit" class="btn-calculate">Calculate Fair Split 🧮</button>
+      </form>
+    </div>
+
+    <!-- Results Section -->
+    <div id="results" class="results">
+      <!-- Viral Share Card -->
+      <div class="viral-card" id="viral-card">
+        <div class="viral-badge">RetirementSorted.co.za</div>
+        <div class="viral-title">💑 Joint Budget Split</div>
+        <div class="viral-total" id="viral-total">Total: R56,500/month</div>
+        <div class="viral-split">
+          <span id="viral-p1">Partner 1: R34,000</span> | <span id="viral-p2">Partner 2: R22,500</span>
+        </div>
+        <div class="viral-method" id="viral-split">60% / 40% split (Proportional)</div>
+      </div>
+
+      <!-- Share Buttons -->
+      <div class="share-section">
+        <div class="share-title">📱 Share Your Budget Split</div>
+        <div class="share-buttons">
+          <button class="share-button" onclick="shareTwitter()">🐦 Share on X</button>
+          <button class="share-button" onclick="shareWhatsApp()">💬 Share on WhatsApp</button>
+          <button class="share-button" onclick="copyResults()">📋 Copy Results</button>
+        </div>
+        <div class="share-hint">Screenshot this to share with your partner!</div>
+      </div>
+
+      <!-- Method Tabs -->
+      <div class="method-tabs">
+        <button class="method-tab active" data-method="proportional">
+          Proportional <span class="recommended-badge">Recommended</span>
+        </button>
+        <button class="method-tab" data-method="fifty-fifty">50/50 Split</button>
+        <button class="method-tab" data-method="custom">Custom Split</button>
+      </div>
+
+      <!-- Proportional Method -->
+      <div id="method-proportional" class="method-content active">
+        <div class="result-card">
+          <div class="result-header">
+            <h3>⚖️ Proportional Method (Income-Based)</h3>
+            <p style="color: var(--color-text-light);">Fair contribution based on earning capacity</p>
+            <div class="result-total" id="proportional-total">R56,500/month</div>
+          </div>
+
+          <div class="partner-results">
+            <div class="partner-card">
+              <div class="partner-name">👤 Partner 1</div>
+              <div class="partner-income" id="proportional-p1-income">Net income: R100,000/month</div>
+              <div class="partner-contribution" id="proportional-p1-contribution">R34,000</div>
+              <div class="partner-percentage" id="proportional-p1-percentage">60% of expenses</div>
+              <div class="partner-leftover">
+                <div class="leftover-label">Personal spending left:</div>
+                <div class="leftover-amount" id="proportional-p1-leftover">R66,000</div>
+              </div>
+            </div>
+
+            <div class="partner-card">
+              <div class="partner-name">👤 Partner 2</div>
+              <div class="partner-income" id="proportional-p2-income">Net income: R65,000/month</div>
+              <div class="partner-contribution" id="proportional-p2-contribution">R22,500</div>
+              <div class="partner-percentage" id="proportional-p2-percentage">40% of expenses</div>
+              <div class="partner-leftover">
+                <div class="leftover-label">Personal spending left:</div>
+                <div class="leftover-amount" id="proportional-p2-leftover">R42,500</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="expense-breakdown">
+            <h4 style="margin-bottom: 1rem;">📊 Expense Breakdown</h4>
+            <div id="proportional-breakdown"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 50/50 Method -->
+      <div id="method-fifty-fifty" class="method-content">
+        <div class="result-card">
+          <div class="result-header">
+            <h3>⚖️ 50/50 Split Method</h3>
+            <p style="color: var(--color-text-light);">Equal contribution regardless of income</p>
+            <div class="result-total" id="fifty-fifty-total">R56,500/month</div>
+          </div>
+
+          <div class="partner-results">
+            <div class="partner-card">
+              <div class="partner-name">👤 Partner 1</div>
+              <div class="partner-income" id="fifty-fifty-p1-income">Net income: R100,000/month</div>
+              <div class="partner-contribution" id="fifty-fifty-p1-contribution">R28,250</div>
+              <div class="partner-percentage">50% of expenses</div>
+              <div class="partner-leftover">
+                <div class="leftover-label">Personal spending left:</div>
+                <div class="leftover-amount" id="fifty-fifty-p1-leftover">R71,750</div>
+              </div>
+            </div>
+
+            <div class="partner-card">
+              <div class="partner-name">👤 Partner 2</div>
+              <div class="partner-income" id="fifty-fifty-p2-income">Net income: R65,000/month</div>
+              <div class="partner-contribution" id="fifty-fifty-p2-contribution">R28,250</div>
+              <div class="partner-percentage">50% of expenses</div>
+              <div class="partner-leftover">
+                <div class="leftover-label">Personal spending left:</div>
+                <div class="leftover-amount" id="fifty-fifty-p2-leftover">R36,750</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Custom Method -->
+      <div id="method-custom" class="method-content">
+        <div class="result-card">
+          <div class="result-header">
+            <h3>🎚️ Custom Split Method</h3>
+            <p style="color: var(--color-text-light);">Adjust contribution percentage for each expense category</p>
+            <div class="result-total" id="custom-total">R56,500/month</div>
+          </div>
+
+          <div class="expense-breakdown">
+            <h4 style="margin-bottom: 1rem;">📊 Adjust Each Expense</h4>
+            <div id="custom-breakdown"></div>
+          </div>
+
+          <div class="partner-results" style="margin-top: 2rem;">
+            <div class="partner-card">
+              <div class="partner-name">👤 Partner 1</div>
+              <div class="partner-income" id="custom-p1-income">Net income: R100,000/month</div>
+              <div class="partner-contribution" id="custom-p1-contribution">R34,000</div>
+              <div class="partner-percentage" id="custom-p1-percentage">60% of expenses</div>
+              <div class="partner-leftover">
+                <div class="leftover-label">Personal spending left:</div>
+                <div class="leftover-amount" id="custom-p1-leftover">R66,000</div>
+              </div>
+            </div>
+
+            <div class="partner-card">
+              <div class="partner-name">👤 Partner 2</div>
+              <div class="partner-income" id="custom-p2-income">Net income: R65,000/month</div>
+              <div class="partner-contribution" id="custom-p2-contribution">R22,500</div>
+              <div class="partner-percentage" id="custom-p2-percentage">40% of expenses</div>
+              <div class="partner-leftover">
+                <div class="leftover-label">Personal spending left:</div>
+                <div class="leftover-amount" id="custom-p2-leftover">R42,500</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- What If Scenarios -->
+      <div class="what-if-section">
+        <h3>🤔 What If Scenarios</h3>
+        <p style="color: var(--color-text-light); margin-bottom: 1rem;">Test different scenarios to plan ahead</p>
+        
+        <div style="display: grid; gap: 1rem;">
+          <div>
+            <label class="input-label">What if Partner 1's salary changes to:</label>
+            <input type="number" id="whatif-p1" class="input-field" placeholder="R 120,000">
+          </div>
+          <div>
+            <label class="input-label">What if we add a new monthly expense (e.g., baby, school fees):</label>
+            <input type="number" id="whatif-expense" class="input-field" placeholder="R 10,000">
+          </div>
+        </div>
+        
+        <button class="btn-calculate btn-secondary" onclick="recalculateWhatIf()">Recalculate What-If Scenario</button>
+      </div>
+
+      <!-- Savings Section -->
+      <div class="result-card" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);">
+        <h3>💰 Couple Savings Potential</h3>
+        <div id="savings-info"></div>
+      </div>
+    </div>
+
+    <!-- Next Steps -->
+    <div class="next-steps">
+      <h3 style="margin-bottom: 1rem;">🚀 Next Steps</h3>
+      <div class="next-steps-grid">
+        <a href="net-salary-calculator.html" class="next-step-card">
+          <div class="next-step-icon">💵</div>
+          <div class="next-step-title">Calculate Your Take-Home Pay</div>
+          <div class="next-step-desc">Figure out your net salary after tax, UIF, and deductions</div>
+        </a>
+        <a href="cost-of-living-calculator.html" class="next-step-card">
+          <div class="next-step-icon">🏙️</div>
+          <div class="next-step-title">How Much Do You Really Need?</div>
+          <div class="next-step-desc">Calculate realistic living costs for your family in SA cities</div>
+        </a>
+        <a href="/" class="next-step-card">
+          <div class="next-step-icon">🏦</div>
+          <div class="next-step-title">Plan Your Retirement Together</div>
+          <div class="next-step-desc">Two-pot calculator and retirement planning for couples</div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 RetirementSorted.co.za • Built for South Africans 🇿🇦</p>
+      <p style="margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.8;">Free financial calculators, no BS</p>
+    </div>
+  </footer>
+
+  <script>
+    // Expense categories for tracking
+    const expenseCategories = [
+      { id: 'rent', label: '🏠 Rent/Bond' },
+      { id: 'utilities', label: '💡 Utilities' },
+      { id: 'groceries', label: '🛒 Groceries' },
+      { id: 'domestic', label: '🧹 Domestic Worker' },
+      { id: 'medical', label: '🏥 Medical Aid' },
+      { id: 'school', label: '🎓 School Fees' },
+      { id: 'car', label: '🚗 Car Payments' },
+      { id: 'insurance', label: '🛡️ Insurance' },
+      { id: 'entertainment', label: '🎬 Entertainment' },
+      { id: 'other', label: '📦 Other' }
+    ];
+
+    let currentExpenses = {};
+    let currentIncomes = {};
+    let customSplits = {}; // Store custom splits for each expense
+
+    // Format currency
+    function formatCurrency(amount) {
+      return 'R' + Math.round(amount).toLocaleString('en-ZA');
+    }
+
+    // Calculate proportional split
+    function calculateProportional(income1, income2, totalExpenses) {
+      const totalIncome = income1 + income2;
+      const p1Percentage = (income1 / totalIncome) * 100;
+      const p2Percentage = (income2 / totalIncome) * 100;
+      
+      const p1Contribution = (income1 / totalIncome) * totalExpenses;
+      const p2Contribution = (income2 / totalIncome) * totalExpenses;
+      
+      return {
+        p1Percentage: p1Percentage,
+        p2Percentage: p2Percentage,
+        p1Contribution: p1Contribution,
+        p2Contribution: p2Contribution,
+        p1Leftover: income1 - p1Contribution,
+        p2Leftover: income2 - p2Contribution
+      };
+    }
+
+    // Calculate 50/50 split
+    function calculateFiftyFifty(income1, income2, totalExpenses) {
+      const contribution = totalExpenses / 2;
+      return {
+        p1Contribution: contribution,
+        p2Contribution: contribution,
+        p1Leftover: income1 - contribution,
+        p2Leftover: income2 - contribution
+      };
+    }
+
+    // Calculate custom split
+    function calculateCustom(income1, income2) {
+      let p1Total = 0;
+      let p2Total = 0;
+      
+      expenseCategories.forEach(cat => {
+        const expense = currentExpenses[cat.id] || 0;
+        const split = customSplits[cat.id] || 50; // Default to 50/50
+        p1Total += (expense * split / 100);
+        p2Total += (expense * (100 - split) / 100);
+      });
+      
+      const totalExpenses = Object.values(currentExpenses).reduce((a, b) => a + b, 0);
+      
+      return {
+        p1Contribution: p1Total,
+        p2Contribution: p2Total,
+        p1Leftover: income1 - p1Total,
+        p2Leftover: income2 - p2Total,
+        p1Percentage: (p1Total / totalExpenses) * 100,
+        p2Percentage: (p2Total / totalExpenses) * 100
+      };
+    }
+
+    // Update results display
+    function updateResults() {
+      const income1 = currentIncomes.p1;
+      const income2 = currentIncomes.p2;
+      const totalExpenses = Object.values(currentExpenses).reduce((a, b) => a + b, 0);
+      
+      // Update viral card
+      const proportional = calculateProportional(income1, income2, totalExpenses);
+      document.getElementById('viral-total').textContent = `Total: ${formatCurrency(totalExpenses)}/month`;
+      document.getElementById('viral-p1').textContent = `Partner 1: ${formatCurrency(proportional.p1Contribution)}`;
+      document.getElementById('viral-p2').textContent = `Partner 2: ${formatCurrency(proportional.p2Contribution)}`;
+      document.getElementById('viral-split').textContent = `${Math.round(proportional.p1Percentage)}% / ${Math.round(proportional.p2Percentage)}% split (Proportional)`;
+      
+      // Update Proportional Method
+      updateProportionalMethod(income1, income2, totalExpenses, proportional);
+      
+      // Update 50/50 Method
+      updateFiftyFiftyMethod(income1, income2, totalExpenses);
+      
+      // Update Custom Method
+      updateCustomMethod(income1, income2);
+      
+      // Update savings info
+      updateSavingsInfo(income1, income2, totalExpenses);
+      
+      // Track in GA
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'calculate', {
+          'event_category': 'Joint Budget Calculator',
+          'event_label': 'Calculate Split'
+        });
+      }
+    }
+
+    function updateProportionalMethod(income1, income2, totalExpenses, data) {
+      document.getElementById('proportional-total').textContent = formatCurrency(totalExpenses) + '/month';
+      
+      document.getElementById('proportional-p1-income').textContent = `Net income: ${formatCurrency(income1)}/month`;
+      document.getElementById('proportional-p1-contribution').textContent = formatCurrency(data.p1Contribution);
+      document.getElementById('proportional-p1-percentage').textContent = `${Math.round(data.p1Percentage)}% of expenses`;
+      document.getElementById('proportional-p1-leftover').textContent = formatCurrency(data.p1Leftover);
+      
+      document.getElementById('proportional-p2-income').textContent = `Net income: ${formatCurrency(income2)}/month`;
+      document.getElementById('proportional-p2-contribution').textContent = formatCurrency(data.p2Contribution);
+      document.getElementById('proportional-p2-percentage').textContent = `${Math.round(data.p2Percentage)}% of expenses`;
+      document.getElementById('proportional-p2-leftover').textContent = formatCurrency(data.p2Leftover);
+      
+      // Expense breakdown
+      const breakdown = document.getElementById('proportional-breakdown');
+      breakdown.innerHTML = '';
+      
+      expenseCategories.forEach(cat => {
+        const expense = currentExpenses[cat.id] || 0;
+        if (expense > 0) {
+          const p1Amount = (expense * data.p1Percentage / 100);
+          const p2Amount = (expense * data.p2Percentage / 100);
+          
+          const item = document.createElement('div');
+          item.className = 'expense-item';
+          item.innerHTML = `
+            <div>
+              <div class="expense-name">${cat.label}</div>
+              <div class="expense-amount">${formatCurrency(expense)}/month</div>
+              <div class="expense-bar">
+                <div class="expense-bar-p1" style="width: ${data.p1Percentage}%"></div>
+                <div class="expense-bar-p2" style="width: ${data.p2Percentage}%"></div>
+              </div>
+              <div style="font-size: 0.85rem; color: var(--color-text-light);">
+                Partner 1: ${formatCurrency(p1Amount)} • Partner 2: ${formatCurrency(p2Amount)}
+              </div>
+            </div>
+          `;
+          breakdown.appendChild(item);
+        }
+      });
+    }
+
+    function updateFiftyFiftyMethod(income1, income2, totalExpenses) {
+      const data = calculateFiftyFifty(income1, income2, totalExpenses);
+      
+      document.getElementById('fifty-fifty-total').textContent = formatCurrency(totalExpenses) + '/month';
+      
+      document.getElementById('fifty-fifty-p1-income').textContent = `Net income: ${formatCurrency(income1)}/month`;
+      document.getElementById('fifty-fifty-p1-contribution').textContent = formatCurrency(data.p1Contribution);
+      document.getElementById('fifty-fifty-p1-leftover').textContent = formatCurrency(data.p1Leftover);
+      
+      document.getElementById('fifty-fifty-p2-income').textContent = `Net income: ${formatCurrency(income2)}/month`;
+      document.getElementById('fifty-fifty-p2-contribution').textContent = formatCurrency(data.p2Contribution);
+      document.getElementById('fifty-fifty-p2-leftover').textContent = formatCurrency(data.p2Leftover);
+    }
+
+    function updateCustomMethod(income1, income2) {
+      const totalExpenses = Object.values(currentExpenses).reduce((a, b) => a + b, 0);
+      const data = calculateCustom(income1, income2);
+      
+      document.getElementById('custom-total').textContent = formatCurrency(totalExpenses) + '/month';
+      
+      document.getElementById('custom-p1-income').textContent = `Net income: ${formatCurrency(income1)}/month`;
+      document.getElementById('custom-p1-contribution').textContent = formatCurrency(data.p1Contribution);
+      document.getElementById('custom-p1-percentage').textContent = `${Math.round(data.p1Percentage)}% of expenses`;
+      document.getElementById('custom-p1-leftover').textContent = formatCurrency(data.p1Leftover);
+      
+      document.getElementById('custom-p2-income').textContent = `Net income: ${formatCurrency(income2)}/month`;
+      document.getElementById('custom-p2-contribution').textContent = formatCurrency(data.p2Contribution);
+      document.getElementById('custom-p2-percentage').textContent = `${Math.round(data.p2Percentage)}% of expenses`;
+      document.getElementById('custom-p2-leftover').textContent = formatCurrency(data.p2Leftover);
+      
+      // Custom sliders
+      const breakdown = document.getElementById('custom-breakdown');
+      breakdown.innerHTML = '';
+      
+      expenseCategories.forEach(cat => {
+        const expense = currentExpenses[cat.id] || 0;
+        if (expense > 0) {
+          const split = customSplits[cat.id] || 50;
+          const p1Amount = (expense * split / 100);
+          const p2Amount = (expense * (100 - split) / 100);
+          
+          const item = document.createElement('div');
+          item.className = 'expense-item';
+          item.style.display = 'block';
+          item.innerHTML = `
+            <div style="margin-bottom: 0.5rem;">
+              <div class="expense-name">${cat.label}</div>
+              <div class="expense-amount">${formatCurrency(expense)}/month</div>
+            </div>
+            <input type="range" class="custom-slider" id="slider-${cat.id}" 
+                   min="0" max="100" value="${split}" 
+                   oninput="updateCustomSlider('${cat.id}', this.value)">
+            <div class="slider-labels">
+              <span>Partner 1: <strong id="split-${cat.id}-p1">${formatCurrency(p1Amount)}</strong> (${split}%)</span>
+              <span>Partner 2: <strong id="split-${cat.id}-p2">${formatCurrency(p2Amount)}</strong> (${100-split}%)</span>
+            </div>
+          `;
+          breakdown.appendChild(item);
+        }
+      });
+    }
+
+    function updateSavingsInfo(income1, income2, totalExpenses) {
+      const totalIncome = income1 + income2;
+      const leftover = totalIncome - totalExpenses;
+      const savingsPercentage = (leftover / totalIncome) * 100;
+      
+      const savingsInfo = document.getElementById('savings-info');
+      savingsInfo.innerHTML = `
+        <div style="text-align: center;">
+          <p style="font-size: 1.5rem; margin-bottom: 1rem;">
+            Combined Income: <strong>${formatCurrency(totalIncome)}</strong>/month
+          </p>
+          <p style="font-size: 1.5rem; margin-bottom: 1rem;">
+            After Expenses: <strong>${formatCurrency(leftover)}</strong>/month available
+          </p>
+          <p style="font-size: 1rem; color: var(--color-text-light);">
+            That's <strong>${Math.round(savingsPercentage)}%</strong> of your combined income available for savings, investments, or personal spending!
+          </p>
+          ${leftover > 0 ? `
+            <p style="margin-top: 1rem; padding: 1rem; background: white; border-radius: 8px;">
+              💡 If you save this for retirement, in 20 years at 8% growth, you'd have: <strong>${formatCurrency(leftover * 12 * 30)}</strong>
+            </p>
+          ` : ''}
+        </div>
+      `;
+    }
+
+    function updateCustomSlider(categoryId, value) {
+      customSplits[categoryId] = parseFloat(value);
+      
+      const expense = currentExpenses[categoryId] || 0;
+      const p1Amount = (expense * value / 100);
+      const p2Amount = (expense * (100 - value) / 100);
+      
+      document.getElementById(`split-${categoryId}-p1`).textContent = formatCurrency(p1Amount);
+      document.getElementById(`split-${categoryId}-p2`).textContent = formatCurrency(p2Amount);
+      
+      // Recalculate totals
+      const data = calculateCustom(currentIncomes.p1, currentIncomes.p2);
+      const totalExpenses = Object.values(currentExpenses).reduce((a, b) => a + b, 0);
+      
+      document.getElementById('custom-p1-contribution').textContent = formatCurrency(data.p1Contribution);
+      document.getElementById('custom-p1-percentage').textContent = `${Math.round(data.p1Percentage)}% of expenses`;
+      document.getElementById('custom-p1-leftover').textContent = formatCurrency(data.p1Leftover);
+      
+      document.getElementById('custom-p2-contribution').textContent = formatCurrency(data.p2Contribution);
+      document.getElementById('custom-p2-percentage').textContent = `${Math.round(data.p2Percentage)}% of expenses`;
+      document.getElementById('custom-p2-leftover').textContent = formatCurrency(data.p2Leftover);
+    }
+
+    // Form submission
+    document.getElementById('budget-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Get incomes
+      currentIncomes = {
+        p1: parseFloat(document.getElementById('income-p1').value) || 0,
+        p2: parseFloat(document.getElementById('income-p2').value) || 0
+      };
+      
+      // Get expenses
+      currentExpenses = {};
+      expenseCategories.forEach(cat => {
+        const value = parseFloat(document.getElementById(`expense-${cat.id}`).value) || 0;
+        currentExpenses[cat.id] = value;
+      });
+      
+      // Initialize custom splits with proportional defaults
+      const totalIncome = currentIncomes.p1 + currentIncomes.p2;
+      const p1Percentage = (currentIncomes.p1 / totalIncome) * 100;
+      customSplits = {};
+      expenseCategories.forEach(cat => {
+        customSplits[cat.id] = p1Percentage;
+      });
+      
+      // Show results and update
+      document.getElementById('results').classList.add('show');
+      updateResults();
+      
+      // Scroll to results
+      document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // Method tabs
+    document.querySelectorAll('.method-tab').forEach(tab => {
+      tab.addEventListener('click', function() {
+        const method = this.dataset.method;
+        
+        // Update tabs
+        document.querySelectorAll('.method-tab').forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+        
+        // Update content
+        document.querySelectorAll('.method-content').forEach(c => c.classList.remove('active'));
+        document.getElementById(`method-${method}`).classList.add('active');
+        
+        // Track in GA
+        if (typeof gtag !== 'undefined') {
+          gtag('event', 'tab_click', {
+            'event_category': 'Joint Budget Calculator',
+            'event_label': method
+          });
+        }
+      });
+    });
+
+    // What-if recalculation
+    function recalculateWhatIf() {
+      const newP1Income = parseFloat(document.getElementById('whatif-p1').value);
+      const newExpense = parseFloat(document.getElementById('whatif-expense').value);
+      
+      if (newP1Income && newP1Income > 0) {
+        currentIncomes.p1 = newP1Income;
+        document.getElementById('income-p1').value = newP1Income;
+      }
+      
+      if (newExpense && newExpense > 0) {
+        currentExpenses.other = (currentExpenses.other || 0) + newExpense;
+        document.getElementById('expense-other').value = currentExpenses.other;
+      }
+      
+      updateResults();
+      
+      // Track in GA
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'what_if', {
+          'event_category': 'Joint Budget Calculator'
+        });
+      }
+    }
+
+    // Share functions
+    function getShareText() {
+      const total = document.getElementById('viral-total').textContent;
+      const p1 = document.getElementById('viral-p1').textContent;
+      const p2 = document.getElementById('viral-p2').textContent;
+      const split = document.getElementById('viral-split').textContent;
+      
+      return `💑 Joint Budget Split\n${total}\n\n${p1}\n${p2}\n\n${split}\n\nCalculate yours: https://retirementsorted.co.za/joint-budget-calculator.html`;
+    }
+
+    function shareTwitter() {
+      const text = encodeURIComponent(getShareText());
+      window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'share', {
+          'event_category': 'Joint Budget Calculator',
+          'method': 'Twitter'
+        });
+      }
+    }
+
+    function shareWhatsApp() {
+      const text = encodeURIComponent(getShareText());
+      window.open(`https://wa.me/?text=${text}`, '_blank');
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'share', {
+          'event_category': 'Joint Budget Calculator',
+          'method': 'WhatsApp'
+        });
+      }
+    }
+
+    function copyResults() {
+      const text = getShareText();
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = event.target;
+        const originalText = btn.textContent;
+        btn.textContent = '✅ Copied!';
+        setTimeout(() => {
+          btn.textContent = originalText;
+        }, 2000);
+        
+        if (typeof gtag !== 'undefined') {
+          gtag('event', 'share', {
+            'event_category': 'Joint Budget Calculator',
+            'method': 'Copy'
+          });
+        }
+      });
+    }
+  </script>
+</body>
+</html>

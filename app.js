@@ -100,6 +100,11 @@ function calculateWithdrawal() {
     <li>This withdrawal reduces your retirement savings permanently</li>
   `;
   
+  // Update viral card
+  const taxRate = ((tax / withdrawalAmount) * 100).toFixed(1);
+  document.getElementById('viral-main').textContent = `R${formatNumber(netAmount)}`;
+  document.getElementById('viral-subtitle').textContent = `After ${taxRate}% tax`;
+  
   // Show results
   resultsDiv.classList.remove('hidden');
   resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });

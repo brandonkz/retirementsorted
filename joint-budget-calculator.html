@@ -578,8 +578,9 @@
           <button class="share-button" onclick="shareTwitter()">🐦 Share on X</button>
           <button class="share-button" onclick="shareWhatsApp()">💬 Share on WhatsApp</button>
           <button class="share-button" onclick="copyResults()">📋 Copy Results</button>
+          <button class="share-button" onclick="exportToSheets()" style="background: #0f9d58;">📊 Export to Sheets</button>
         </div>
-        <div class="share-hint">Screenshot this to share with your partner!</div>
+        <div class="share-hint">Screenshot this to share with your partner, or export to Google Sheets!</div>
       </div>
 
       <!-- Method Tabs -->
@@ -1159,6 +1160,97 @@
           });
         }
       });
+    }
+
+    function exportToSheets() {
+      // Get current values
+      const p1Income = parseFloat(document.getElementById('partner1-income').value) || 0;
+      const p2Income = parseFloat(document.getElementById('partner2-income').value) || 0;
+      const totalIncome = p1Income + p2Income;
+      
+      // Get all expenses
+      const expenses = [
+        ['rent', 'Rent/Bond'],
+        ['utilities', 'Utilities'],
+        ['groceries', 'Groceries'],
+        ['domestic', 'Domestic Worker'],
+        ['medical', 'Medical Aid'],
+        ['school', 'School Fees'],
+        ['car', 'Car Payments'],
+        ['insurance', 'Insurance'],
+        ['entertainment', 'Entertainment'],
+        ['other', 'Other']
+      ];
+      
+      let totalExpenses = 0;
+      expenses.forEach(([id]) => {
+        const val = parseFloat(document.getElementById(`expense-${id}`).value) || 0;
+        totalExpenses += val;
+      });
+      
+      // Calculate proportional split
+      const p1Percentage = totalIncome > 0 ? (p1Income / totalIncome) * 100 : 50;
+      const p2Percentage = totalIncome > 0 ? (p2Income / totalIncome) * 100 : 50;
+      const p1Contribution = (totalExpenses * p1Percentage / 100);
+      const p2Contribution = (totalExpenses * p2Percentage / 100);
+      const p1Left = p1Income - p1Contribution;
+      const p2Left = p2Income - p2Contribution;
+      
+      // Build CSV
+      let csv = 'Joint Budget Calculator - RetirementSorted.co.za\n\n';
+      csv += 'INCOME\n';
+      csv += 'Partner 1 Net Monthly Income,R' + p1Income.toLocaleString('en-ZA') + '\n';
+      csv += 'Partner 2 Net Monthly Income,R' + p2Income.toLocaleString('en-ZA') + '\n';
+      csv += 'Total Household Income,R' + totalIncome.toLocaleString('en-ZA') + '\n\n';
+      
+      csv += 'MONTHLY EXPENSES\n';
+      csv += 'Category,Amount\n';
+      expenses.forEach(([id, label]) => {
+        const val = parseFloat(document.getElementById(`expense-${id}`).value) || 0;
+        csv += `${label},R${val.toLocaleString('en-ZA')}\n`;
+      });
+      csv += `Total Expenses,R${totalExpenses.toLocaleString('en-ZA')}\n\n`;
+      
+      csv += 'PROPORTIONAL SPLIT (RECOMMENDED)\n';
+      csv += `Partner 1 (${p1Percentage.toFixed(0)}% of income),R${p1Contribution.toLocaleString('en-ZA')}\n`;
+      csv += `Partner 2 (${p2Percentage.toFixed(0)}% of income),R${p2Contribution.toLocaleString('en-ZA')}\n\n`;
+      
+      csv += 'PERSONAL SPENDING LEFT\n';
+      csv += `Partner 1,R${p1Left.toLocaleString('en-ZA')}\n`;
+      csv += `Partner 2,R${p2Left.toLocaleString('en-ZA')}\n\n`;
+      
+      csv += '50/50 SPLIT\n';
+      csv += `Partner 1,R${(totalExpenses / 2).toLocaleString('en-ZA')}\n`;
+      csv += `Partner 2,R${(totalExpenses / 2).toLocaleString('en-ZA')}\n\n`;
+      
+      csv += 'Generated from: https://retirementsorted.co.za/joint-budget-calculator.html';
+      
+      // Create download
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', 'joint-budget-calculator.csv');
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      // Update button feedback
+      const btn = event.target;
+      const originalText = btn.textContent;
+      btn.textContent = '✅ Downloaded!';
+      setTimeout(() => {
+        btn.textContent = originalText;
+      }, 2000);
+      
+      // Track event
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'export', {
+          'event_category': 'Joint Budget Calculator',
+          'method': 'Google Sheets'
+        });
+      }
     }
   </script>
 </body>

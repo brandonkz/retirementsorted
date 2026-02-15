@@ -234,12 +234,17 @@
     }
 
     .result-card.cheap {
-      background: #f0fdf4;
-      border-color: #86efac;
+      background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+      border: 2px solid #86efac;
     }
 
     .result-card.cheap .result-card-value {
       color: #16a34a;
+    }
+
+    .result-card.expensive {
+      background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+      border: 2px solid #fca5a5;
     }
 
     .result-card.expensive .result-card-value {
@@ -530,24 +535,26 @@
 
       <!-- Results -->
       <div class="results-section">
-        <h2>The Shocking Truth</h2>
+        <h2>Your Investment Will Be Worth:</h2>
+
+        <div class="result-grid" style="margin-bottom: 2rem;">
+          <div class="result-card cheap" style="padding: 2rem;">
+            <div class="result-card-label" style="font-size: 1rem; margin-bottom: 0.75rem;">💚 With Low-Cost ETF (0.16% fee)</div>
+            <div class="result-card-value" style="font-size: 2.5rem; margin-bottom: 0.5rem;" id="cheap-balance">R0</div>
+            <div style="font-size: 0.875rem; color: #16a34a; font-weight: 600;">What you COULD have</div>
+          </div>
+
+          <div class="result-card expensive" style="padding: 2rem;">
+            <div class="result-card-label" style="font-size: 1rem; margin-bottom: 0.75rem;">💸 Your Current Portfolio</div>
+            <div class="result-card-value" style="font-size: 2.5rem; margin-bottom: 0.5rem;" id="expensive-balance">R0</div>
+            <div style="font-size: 0.875rem; color: #dc2626; font-weight: 600;">What you WILL have</div>
+          </div>
+        </div>
 
         <div class="result-hero">
           <div class="result-label">Money Lost to Fees</div>
           <div class="result-amount" id="total-lost">R0</div>
           <div class="result-subtitle" id="percent-lost">0% of your returns gone</div>
-        </div>
-
-        <div class="result-grid">
-          <div class="result-card cheap">
-            <div class="result-card-label">Low-Cost ETF (0.16% fee)</div>
-            <div class="result-card-value" id="cheap-balance">R0</div>
-          </div>
-
-          <div class="result-card expensive">
-            <div class="result-card-label">Your Portfolio</div>
-            <div class="result-card-value" id="expensive-balance">R0</div>
-          </div>
         </div>
 
         <div class="context-box">

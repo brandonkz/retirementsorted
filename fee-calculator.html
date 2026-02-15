@@ -535,7 +535,14 @@
 
       <!-- Results -->
       <div class="results-section">
-        <h2>Your Investment Will Be Worth:</h2>
+        <div style="text-align: center; margin-bottom: 2rem; padding: 1.5rem; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-radius: var(--radius); border: 2px solid #7dd3fc;">
+          <p style="font-size: 1.25rem; font-weight: 700; color: #0c4a6e; margin: 0 0 0.5rem 0;" id="summary-text">
+            Over 25 years, your portfolio will be worth R2.8M
+          </p>
+          <p style="font-size: 1rem; color: #0369a1; margin: 0;" id="summary-subtext">
+            (With low-cost fees, it could be R3.8M)
+          </p>
+        </div>
 
         <div class="result-grid" style="margin-bottom: 2rem;">
           <div class="result-card cheap" style="padding: 2rem;">
@@ -627,6 +634,8 @@
       const advisorEarned = expensiveBalance * fee / 12;
 
       // Update results
+      document.getElementById('summary-text').textContent = `Over ${years} years, your portfolio will be worth ${formatCurrency(expensiveBalance)}`;
+      document.getElementById('summary-subtext').textContent = `(With low-cost fees, it could be ${formatCurrency(cheapBalance)})`;
       document.getElementById('total-lost').textContent = formatCurrency(totalLost);
       document.getElementById('percent-lost').textContent = percentLost.toFixed(1) + '% of your returns gone';
       document.getElementById('cheap-balance').textContent = formatCurrency(cheapBalance);

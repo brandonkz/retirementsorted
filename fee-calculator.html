@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Investment Fee Impact Calculator | RetirementSorted</title>
+  <meta name="description" content="Calculate exactly how much investment fees are costing you over time. See the shocking impact of advisor fees, TER, and platform costs on your retirement savings.">
+  <meta name="keywords" content="investment fees calculator, TER, TIC, financial advisor fees, retirement calculator South Africa">
+  
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z9ENF0SQS9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z9ENF0SQS9');
+  </script>
+
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Fee Calculator Specific Styles */
+    .fee-hero {
+      background: linear-gradient(135deg, #1b4332 0%, #2d6a4f 100%);
+      color: white;
+      padding: 3rem 2rem;
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .fee-hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      font-weight: 800;
+    }
+
+    .fee-hero p {
+      font-size: 1.25rem;
+      opacity: 0.95;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .calculator-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem 4rem;
+    }
+
+    .calculator-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+
+    .input-section {
+      background: white;
+      padding: 2rem;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+    }
+
+    .input-section h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--color-primary);
+    }
+
+    .input-group {
+      margin-bottom: 2rem;
+    }
+
+    .input-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+      font-weight: 600;
+      color: var(--color-text);
+    }
+
+    .input-value {
+      color: var(--color-primary);
+      font-weight: 700;
+      font-size: 1.125rem;
+    }
+
+    .slider {
+      width: 100%;
+      height: 8px;
+      border-radius: 4px;
+      background: #e5e5e5;
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    .slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--color-primary);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .slider::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+      background: var(--color-primary-dark);
+    }
+
+    .slider::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--color-primary);
+      cursor: pointer;
+      border: none;
+    }
+
+    .slider-range {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.875rem;
+      color: var(--color-text-light);
+      margin-top: 0.5rem;
+    }
+
+    .preset-buttons {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .preset-btn {
+      padding: 1rem;
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius);
+      background: white;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .preset-btn:hover {
+      border-color: var(--color-primary);
+      background: #f0f9f4;
+    }
+
+    .preset-btn-title {
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .preset-btn-desc {
+      font-size: 0.875rem;
+      color: var(--color-text-light);
+    }
+
+    .results-section {
+      background: white;
+      padding: 2rem;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+    }
+
+    .results-section h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--color-primary);
+    }
+
+    .result-hero {
+      background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+      padding: 2rem;
+      border-radius: var(--radius);
+      text-align: center;
+      margin-bottom: 2rem;
+      border: 2px solid #fca5a5;
+    }
+
+    .result-label {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #991b1b;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+
+    .result-amount {
+      font-size: 3.5rem;
+      font-weight: 900;
+      color: #dc2626;
+      line-height: 1;
+      margin-bottom: 0.75rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .result-subtitle {
+      font-size: 1rem;
+      color: #991b1b;
+      font-weight: 600;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .result-card {
+      padding: 1.5rem;
+      border-radius: var(--radius);
+      background: #f9fafb;
+      border: 1px solid var(--color-border);
+    }
+
+    .result-card-label {
+      font-size: 0.875rem;
+      color: var(--color-text-light);
+      margin-bottom: 0.5rem;
+    }
+
+    .result-card-value {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--color-text);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .result-card.cheap {
+      background: #f0fdf4;
+      border-color: #86efac;
+    }
+
+    .result-card.cheap .result-card-value {
+      color: #16a34a;
+    }
+
+    .result-card.expensive .result-card-value {
+      color: #dc2626;
+    }
+
+    .context-box {
+      background: #fffbeb;
+      border: 2px solid #fbbf24;
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .context-box h3 {
+      font-size: 1.125rem;
+      margin-bottom: 1rem;
+      color: #92400e;
+    }
+
+    .context-box ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .context-box li {
+      padding: 0.5rem 0;
+      color: #92400e;
+      font-weight: 500;
+    }
+
+    .context-box li::before {
+      content: "💡 ";
+      margin-right: 0.5rem;
+    }
+
+    .share-section {
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 2px solid var(--color-border);
+    }
+
+    .share-buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .share-btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius);
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+    }
+
+    .share-btn.whatsapp {
+      background: #25D366;
+      color: white;
+    }
+
+    .share-btn.whatsapp:hover {
+      background: #20BA5A;
+    }
+
+    .share-btn.twitter {
+      background: #1DA1F2;
+      color: white;
+    }
+
+    .share-btn.twitter:hover {
+      background: #1A8CD8;
+    }
+
+    .share-btn.copy {
+      background: var(--color-primary);
+      color: white;
+    }
+
+    .share-btn.copy:hover {
+      background: var(--color-primary-dark);
+    }
+
+    .disclaimer {
+      margin-top: 3rem;
+      padding: 2rem;
+      background: #f3f4f6;
+      border-radius: var(--radius);
+      font-size: 0.875rem;
+      color: var(--color-text-light);
+      line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+      .calculator-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .fee-hero h1 {
+        font-size: 2rem;
+      }
+
+      .result-amount {
+        font-size: 2.5rem;
+      }
+
+      .result-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .preset-buttons {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="logo">🎯 RetirementSorted</a>
+        <nav class="nav">
+          <a href="index.html">Two-Pot Calculator</a>
+          <a href="net-salary-calculator.html">Net Salary</a>
+          <a href="fee-calculator.html" style="color: var(--color-primary); font-weight: 700;">Fee Calculator</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <div class="fee-hero">
+    <h1>💸 Investment Fee Impact Calculator</h1>
+    <p>See exactly how much fees are silently destroying your retirement savings</p>
+  </div>
+
+  <div class="calculator-container">
+    <!-- Preset Scenarios -->
+    <div class="preset-buttons">
+      <button class="preset-btn" onclick="applyPreset('graduate')">
+        <div class="preset-btn-title">Recent Graduate</div>
+        <div class="preset-btn-desc">25 years old</div>
+      </button>
+      <button class="preset-btn" onclick="applyPreset('midcareer')">
+        <div class="preset-btn-title">Mid-Career Pro</div>
+        <div class="preset-btn-desc">40 years old</div>
+      </button>
+      <button class="preset-btn" onclick="applyPreset('nearretirement')">
+        <div class="preset-btn-title">Near Retirement</div>
+        <div class="preset-btn-desc">55 years old</div>
+      </button>
+    </div>
+
+    <div class="calculator-grid">
+      <!-- Inputs -->
+      <div class="input-section">
+        <h2>Your Investment Details</h2>
+
+        <div class="input-group">
+          <label class="input-label">
+            <span>Monthly Contribution</span>
+            <span class="input-value" id="monthly-value">R2,000</span>
+          </label>
+          <input 
+            type="range" 
+            class="slider" 
+            id="monthly" 
+            min="500" 
+            max="50000" 
+            step="500" 
+            value="2000"
+            oninput="calculate()"
+          >
+          <div class="slider-range">
+            <span>R500</span>
+            <span>R50,000</span>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">
+            <span>Starting Lump Sum (optional)</span>
+            <span class="input-value" id="lumpsum-value">R0</span>
+          </label>
+          <input 
+            type="range" 
+            class="slider" 
+            id="lumpsum" 
+            min="0" 
+            max="1000000" 
+            step="10000" 
+            value="0"
+            oninput="calculate()"
+          >
+          <div class="slider-range">
+            <span>R0</span>
+            <span>R1,000,000</span>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">
+            <span>Investment Period</span>
+            <span class="input-value" id="years-value">25 years</span>
+          </label>
+          <input 
+            type="range" 
+            class="slider" 
+            id="years" 
+            min="5" 
+            max="40" 
+            step="1" 
+            value="25"
+            oninput="calculate()"
+          >
+          <div class="slider-range">
+            <span>5 years</span>
+            <span>40 years</span>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">
+            <span>Annual Contribution Increase</span>
+            <span class="input-value" id="increase-value">6.0%</span>
+          </label>
+          <input 
+            type="range" 
+            class="slider" 
+            id="increase" 
+            min="0" 
+            max="15" 
+            step="0.5" 
+            value="6"
+            oninput="calculate()"
+          >
+          <div class="slider-range">
+            <span>0%</span>
+            <span>15%</span>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">
+            <span>Your Total Fee</span>
+            <span class="input-value" id="fee-value">2.5%</span>
+          </label>
+          <input 
+            type="range" 
+            class="slider" 
+            id="fee" 
+            min="0.1" 
+            max="4.0" 
+            step="0.1" 
+            value="2.5"
+            oninput="calculate()"
+          >
+          <div class="slider-range">
+            <span>0.1%</span>
+            <span>4.0%</span>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">
+            <span>Expected Annual Return (before fees)</span>
+            <span class="input-value" id="return-value">10.0%</span>
+          </label>
+          <input 
+            type="range" 
+            class="slider" 
+            id="return" 
+            min="4" 
+            max="15" 
+            step="0.5" 
+            value="10"
+            oninput="calculate()"
+          >
+          <div class="slider-range">
+            <span>4%</span>
+            <span>15%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div class="results-section">
+        <h2>The Shocking Truth</h2>
+
+        <div class="result-hero">
+          <div class="result-label">Money Lost to Fees</div>
+          <div class="result-amount" id="total-lost">R0</div>
+          <div class="result-subtitle" id="percent-lost">0% of your returns gone</div>
+        </div>
+
+        <div class="result-grid">
+          <div class="result-card cheap">
+            <div class="result-card-label">Low-Cost ETF (0.16% fee)</div>
+            <div class="result-card-value" id="cheap-balance">R0</div>
+          </div>
+
+          <div class="result-card expensive">
+            <div class="result-card-label">Your Portfolio</div>
+            <div class="result-card-value" id="expensive-balance">R0</div>
+          </div>
+        </div>
+
+        <div class="context-box">
+          <h3>What This Means For You:</h3>
+          <ul id="context-list">
+            <li>Calculating...</li>
+          </ul>
+        </div>
+
+        <div class="share-section">
+          <h3 style="margin-bottom: 1rem; font-size: 1.125rem;">Share Your Results</h3>
+          <div class="share-buttons">
+            <a href="#" class="share-btn whatsapp" id="share-whatsapp" target="_blank">
+              📱 Share on WhatsApp
+            </a>
+            <a href="#" class="share-btn twitter" id="share-twitter" target="_blank">
+              🐦 Share on Twitter
+            </a>
+            <button class="share-btn copy" onclick="copyShareLink()">
+              🔗 Copy Link
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="disclaimer">
+      <strong>Disclaimer:</strong> This calculator is for educational and illustrative purposes only. It uses simplified assumptions and does not constitute financial advice. Actual investment returns vary and past performance does not guarantee future results. Fee structures differ between products — consult your fund's Minimum Disclosure Document for accurate fee information. RetirementSorted is not a licensed financial services provider.
+    </div>
+  </div>
+
+  <script>
+    // Calculator logic
+    function calculate() {
+      const monthly = parseFloat(document.getElementById('monthly').value);
+      const lumpSum = parseFloat(document.getElementById('lumpsum').value);
+      const years = parseInt(document.getElementById('years').value);
+      const increase = parseFloat(document.getElementById('increase').value) / 100;
+      const fee = parseFloat(document.getElementById('fee').value) / 100;
+      const expectedReturn = parseFloat(document.getElementById('return').value) / 100;
+      const benchmarkFee = 0.0016; // 0.16%
+
+      // Update display values
+      document.getElementById('monthly-value').textContent = formatCurrency(monthly);
+      document.getElementById('lumpsum-value').textContent = formatCurrency(lumpSum);
+      document.getElementById('years-value').textContent = years + ' years';
+      document.getElementById('increase-value').textContent = increase.toFixed(1) + '%';
+      document.getElementById('fee-value').textContent = (fee * 100).toFixed(1) + '%';
+      document.getElementById('return-value').textContent = (expectedReturn * 100).toFixed(1) + '%';
+
+      // Calculate balances
+      let expensiveBalance = lumpSum;
+      let cheapBalance = lumpSum;
+      let totalContributed = lumpSum;
+
+      for (let year = 1; year <= years; year++) {
+        const annualContribution = monthly * 12 * Math.pow(1 + increase, year - 1);
+        totalContributed += annualContribution;
+
+        const expensiveReturn = expectedReturn - fee;
+        expensiveBalance = (expensiveBalance + annualContribution) * (1 + expensiveReturn);
+
+        const cheapReturn = expectedReturn - benchmarkFee;
+        cheapBalance = (cheapBalance + annualContribution) * (1 + cheapReturn);
+      }
+
+      const totalLost = cheapBalance - expensiveBalance;
+      const percentLost = (totalLost / cheapBalance) * 100;
+      const monthsOfContributions = totalLost / (monthly * Math.pow(1 + increase, years - 1));
+      const advisorEarned = expensiveBalance * fee / 12;
+
+      // Update results
+      document.getElementById('total-lost').textContent = formatCurrency(totalLost);
+      document.getElementById('percent-lost').textContent = percentLost.toFixed(1) + '% of your returns gone';
+      document.getElementById('cheap-balance').textContent = formatCurrency(cheapBalance);
+      document.getElementById('expensive-balance').textContent = formatCurrency(expensiveBalance);
+
+      // Context
+      const contextList = document.getElementById('context-list');
+      contextList.innerHTML = `
+        <li>That's equivalent to ${monthsOfContributions.toFixed(0)} months of contributions completely wasted</li>
+        <li>Your advisor will personally earn ${formatCurrency(advisorEarned)}/month from your account in the final year</li>
+        <li>You contributed ${formatCurrency(totalContributed)} but lost ${formatCurrency(totalLost)} to fees</li>
+      `;
+
+      // Update share links
+      updateShareLinks(totalLost, years, fee, monthly);
+    }
+
+    function formatCurrency(amount) {
+      if (amount >= 1000000) {
+        return 'R' + (amount / 1000000).toFixed(1) + 'M';
+      } else if (amount >= 1000) {
+        return 'R' + (amount / 1000).toFixed(0) + 'K';
+      }
+      return 'R' + Math.round(amount).toLocaleString('en-ZA');
+    }
+
+    function applyPreset(type) {
+      if (type === 'graduate') {
+        document.getElementById('monthly').value = 2000;
+        document.getElementById('lumpsum').value = 0;
+        document.getElementById('years').value = 35;
+        document.getElementById('fee').value = 2.5;
+      } else if (type === 'midcareer') {
+        document.getElementById('monthly').value = 8000;
+        document.getElementById('lumpsum').value = 100000;
+        document.getElementById('years').value = 20;
+        document.getElementById('fee').value = 2.5;
+      } else if (type === 'nearretirement') {
+        document.getElementById('monthly').value = 5000;
+        document.getElementById('lumpsum').value = 500000;
+        document.getElementById('years').value = 10;
+        document.getElementById('fee').value = 2.5;
+      }
+      calculate();
+    }
+
+    function updateShareLinks(totalLost, years, fee, monthly) {
+      const url = window.location.href.split('?')[0];
+      const params = `?m=${monthly}&y=${years}&f=${(fee * 100).toFixed(1)}`;
+      const shareUrl = url + params;
+      
+      const message = `I just discovered investment fees could cost me ${formatCurrency(totalLost)} over ${years} years 😳 Calculate yours:`;
+      
+      document.getElementById('share-whatsapp').href = `https://wa.me/?text=${encodeURIComponent(message + ' ' + shareUrl)}`;
+      document.getElementById('share-twitter').href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(message)}&url=${encodeURIComponent(shareUrl)}`;
+    }
+
+    function copyShareLink() {
+      const url = window.location.href.split('?')[0];
+      const monthly = document.getElementById('monthly').value;
+      const years = document.getElementById('years').value;
+      const fee = document.getElementById('fee').value;
+      const shareUrl = `${url}?m=${monthly}&y=${years}&f=${fee}`;
+      
+      navigator.clipboard.writeText(shareUrl).then(() => {
+        alert('Link copied to clipboard!');
+      });
+    }
+
+    // Load from URL params if present
+    function loadFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.has('m')) document.getElementById('monthly').value = params.get('m');
+      if (params.has('y')) document.getElementById('years').value = params.get('y');
+      if (params.has('f')) document.getElementById('fee').value = params.get('f');
+    }
+
+    // Initialize
+    window.addEventListener('load', () => {
+      loadFromUrl();
+      calculate();
+    });
+  </script>
+</body>
+</html>

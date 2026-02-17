@@ -4,7 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Calculate your take-home salary in South Africa. Free net salary calculator with 2026 tax brackets, UIF, medical aid credits, and pension contributions.">
+  <link rel="canonical" href="https://retirementsorted.co.za/net-salary-calculator.html">
   <title>SA Net Salary Calculator - What Do You Actually Take Home? | RetirementSorted</title>
+  <link rel="dns-prefetch" href="//www.googletagmanager.com">
+  <link rel="dns-prefetch" href="//fonts.googleapis.com">
+  <link rel="dns-prefetch" href="//fonts.gstatic.com">
+  <link rel="dns-prefetch" href="//wa.me">
+  <link rel="dns-prefetch" href="//twitter.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%232d6a4f' width='100' height='100' rx='20'/><text x='50' y='72' font-size='60' text-anchor='middle' fill='white' font-weight='bold'>✓</text><circle cx='75' cy='25' r='15' fill='%23ffd700'/><text x='75' y='31' font-size='18' text-anchor='middle' fill='%232d6a4f' font-weight='bold'>R</text></svg>">
@@ -17,6 +25,24 @@
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-Z9ENF0SQS9');
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Net Salary Calculator",
+    "applicationCategory": "FinanceApplication",
+    "url": "https://retirementsorted.co.za/net-salary-calculator.html",
+    "description": "Estimate monthly take-home pay using South African tax brackets, UIF, medical aid credits, and pension contributions.",
+    "operatingSystem": "Any",
+    "isAccessibleForFree": true,
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "ZAR"
+    }
+  }
   </script>
   
   <style>
@@ -140,6 +166,27 @@
       margin-bottom: 1rem;
       color: var(--color-text);
     }
+
+    @media (max-width: 768px) {
+      .calculator-page {
+        margin: 1.5rem auto;
+        padding: 0 1.25rem;
+      }
+
+      .calculator-card {
+        padding: 1.5rem;
+      }
+
+      .result-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.35rem;
+      }
+
+      .breakdown {
+        padding: 1rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -147,10 +194,16 @@
   <header class="header">
     <div class="container">
       <div class="header-inner">
-        <a href="/" class="logo">RetirementSorted</a>
-        <nav class="nav">
-          <a href="#calculator">Calculator</a>
+        <a href="index.html" class="logo">RetirementSorted</a>
+        <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation" data-nav-target="#primary-nav">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <nav class="nav" id="primary-nav">
+          <a href="index.html#calculator">Two-Pot</a>
           <a href="net-salary-calculator.html">Salary</a>
+          <a href="fee-calculator.html">Fees</a>
           <a href="joint-budget-calculator.html">Joint Budget</a>
           <a href="airbnb-tax-calculator.html">Airbnb Tax</a>
           <a href="cost-of-living-calculator.html">Cost of Living</a>
@@ -168,7 +221,7 @@
       
       <div class="input-group">
         <label class="input-label">Gross Monthly Salary (before tax)</label>
-        <input type="number" id="grossSalary" class="input-field" placeholder="e.g., 50000" value="50000">
+        <input type="text" id="grossSalary" class="input-field" data-currency placeholder="R 50,000">
       </div>
       
       <div class="checkbox-group">
@@ -184,7 +237,7 @@
       <div id="medicalAidInputs" style="display: none; margin-left: 2rem; margin-bottom: 1rem;">
         <div class="input-group">
           <label class="input-label" style="font-size: 0.9rem;">Number of dependants (including yourself)</label>
-          <input type="number" id="medicalDependants" class="input-field" placeholder="e.g., 2" value="1" min="1">
+          <input type="number" id="medicalDependants" class="input-field" placeholder="e.g., 2" value="1" min="1" inputmode="numeric">
         </div>
       </div>
       
@@ -196,11 +249,12 @@
       <div id="pensionInputs" style="display: none; margin-left: 2rem; margin-bottom: 1rem;">
         <div class="input-group">
           <label class="input-label" style="font-size: 0.9rem;">Monthly contribution (Rand)</label>
-          <input type="number" id="pensionAmount" class="input-field" placeholder="e.g., 5000" value="0">
+          <input type="text" id="pensionAmount" class="input-field" data-currency placeholder="R 5,000">
         </div>
       </div>
       
-      <button class="btn-calculate" onclick="calculate()">Calculate Take-Home</button>
+      <div class="form-error" id="salary-error" role="alert"></div>
+      <div class="form-helper">Auto-updates as you type. No calculate button needed.</div>
       
       <div id="results" class="results">
         <h3 style="margin-bottom: 1.5rem; color: var(--color-text);">Your Take-Home Salary</h3>
@@ -256,7 +310,7 @@
         </div>
         
         <!-- Viral Quote Card -->
-        <div style="background: white; border: 3px solid #2d6a4f; border-radius: 16px; padding: 32px; margin-bottom: 24px; margin-top: 24px; text-align: center; position: relative;">
+        <div class="viral-card" style="background: white; border: 3px solid #2d6a4f; border-radius: 16px; padding: 32px; margin-bottom: 24px; margin-top: 24px; text-align: center; position: relative;">
           <div style="position: absolute; top: 12px; right: 12px; background: #2d6a4f; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;">RetirementSorted.co.za</div>
           <div style="font-size: 16px; color: #666; margin-bottom: 8px;" id="viral-label">💼 SA Take-Home Salary</div>
           <div style="font-size: 32px; font-weight: 700; color: #2d6a4f; margin-bottom: 16px;" id="viral-title">R0 gross salary</div>
@@ -265,20 +319,26 @@
         </div>
 
         <!-- Share Button Section -->
-        <div style="background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: white; border-radius: 16px; padding: 24px; margin-bottom: 24px; text-align: center;">
+        <div class="share-section" style="background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: white; border-radius: 16px; padding: 24px; margin-bottom: 24px; text-align: center;">
           <div style="font-size: 18px; font-weight: 600; margin-bottom: 16px;">📱 Share Your Results</div>
-          <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-            <button onclick="shareTwitter()" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 500;">
+          <div class="share-buttons">
+            <button class="share-button" data-share="twitter">
               🐦 Share on X
             </button>
-            <button onclick="shareWhatsApp()" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 500;">
+            <button class="share-button" data-share="whatsapp">
               💬 Share on WhatsApp
             </button>
-            <button onclick="copyResults()" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 500;">
+            <button class="share-button" data-action="copy">
               📋 Copy Results
             </button>
           </div>
           <div style="font-size: 13px; opacity: 0.9; margin-top: 12px;">Screenshot this page to share your calculation!</div>
+        </div>
+
+        <div class="result-actions">
+          <button class="btn-primary" data-action="email">Email Results</button>
+          <button class="btn-ghost" data-action="save">Save Results</button>
+          <button class="btn-ghost" data-action="reset" data-results-target="#results">Reset</button>
         </div>
         
         <!-- Next Steps Section -->
@@ -315,6 +375,21 @@
               <div class="next-step-arrow-mini">→</div>
             </a>
           </div>
+        </div>
+
+        <div class="cta-card">
+          <h3>See Your Full Retirement Picture</h3>
+          <p>Combine your salary, fees, and withdrawal choices to build a better plan.</p>
+          <a class="btn-secondary" href="fee-calculator.html">Compare Fee Impact</a>
+        </div>
+
+        <div class="calculator-links" aria-label="More calculators">
+          <a href="index.html#calculator">Two-Pot Withdrawal Calculator</a>
+          <a href="fee-calculator.html">Fee Impact Calculator</a>
+          <a href="joint-budget-calculator.html">Joint Budget Calculator</a>
+          <a href="airbnb-tax-calculator.html">Airbnb Tax Calculator</a>
+          <a href="cost-of-living-calculator.html">Cost of Living Calculator</a>
+          <a href="net-salary-calculator.html">Net Salary Calculator</a>
         </div>
       </div>
     </div>
@@ -377,74 +452,79 @@
     </div>
   </div>
 
-  <footer class="site-footer">
-    <p>Made with ❤️ in Mzansi • <a href="https://github.com/brandonkz/paidproperly" target="_blank">GitHub</a></p>
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="logo">
+            <span class="logo-icon">💰</span>
+            <span class="logo-text">RetirementSorted</span>
+          </div>
+          <p>Independent retirement planning tools for South Africans. No jargon. No upselling.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Tools</h4>
+          <a href="index.html#calculator">Two-Pot Calculator</a>
+          <a href="net-salary-calculator.html">Net Salary</a>
+          <a href="fee-calculator.html">Fee Impact</a>
+        </div>
+        <div class="footer-links">
+          <h4>Resources</h4>
+          <a href="/blog/">Articles</a>
+          <a href="index.html#faq">FAQ</a>
+        </div>
+        <div class="footer-links">
+          <h4>Sorted Family</h4>
+          <a href="https://betsorted.co.za" target="_blank" rel="noopener">BetSorted</a>
+          <a href="https://cryptocasino.co.za" target="_blank" rel="noopener">CryptoCasino</a>
+          <a href="https://paidproperly.co.za" target="_blank" rel="noopener">PaidProperly</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 RetirementSorted • Independent financial education</p>
+        <p class="disclaimer">Disclaimer: This calculator provides estimates only. Consult a financial advisor for personalized advice.</p>
+      </div>
+    </div>
   </footer>
 
-  <!-- Viral Share Functions -->
-  <script>
-    function getShareText() {
-      const label = document.getElementById('viral-label').textContent;
-      const title = document.getElementById('viral-title').textContent;
-      const main = document.getElementById('viral-main').textContent;
-      const subtitle = document.getElementById('viral-subtitle').textContent;
-      
-      return `${label}\n${title}: ${main}\n${subtitle}\n\nCalculate yours: ${window.location.href}`;
-    }
-
-    function shareTwitter() {
-      const text = encodeURIComponent(getShareText());
-      window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
-      if (typeof gtag !== 'undefined') {
-        gtag('event', 'share', { 'method': 'Twitter' });
-      }
-    }
-
-    function shareWhatsApp() {
-      const text = encodeURIComponent(getShareText());
-      window.open(`https://wa.me/?text=${text}`, '_blank');
-      if (typeof gtag !== 'undefined') {
-        gtag('event', 'share', { 'method': 'WhatsApp' });
-      }
-    }
-
-    function copyResults() {
-      const text = getShareText();
-      navigator.clipboard.writeText(text).then(() => {
-        const btn = event.target;
-        const originalText = btn.textContent;
-        btn.textContent = '✅ Copied!';
-        setTimeout(() => { btn.textContent = originalText; }, 2000);
-        if (typeof gtag !== 'undefined') {
-          gtag('event', 'share', { 'method': 'Copy' });
-        }
-      });
-    }
-  </script>
+  <script src="nav.js"></script>
+  <script src="calculator-utils.js"></script>
 
   <script>
     // Toggle medical aid inputs
     document.getElementById('hasMedicalAid').addEventListener('change', function(e) {
       document.getElementById('medicalAidInputs').style.display = e.target.checked ? 'block' : 'none';
+      calculate();
     });
     
     // Toggle pension inputs
     document.getElementById('hasPension').addEventListener('change', function(e) {
       document.getElementById('pensionInputs').style.display = e.target.checked ? 'block' : 'none';
+      calculate();
+    });
+
+    document.querySelectorAll('#grossSalary, #medicalDependants, #pensionAmount, #hasUif, #hasMedicalAid, #hasPension').forEach((input) => {
+      input.addEventListener('input', () => {
+        calculate();
+      });
     });
     
     function calculate() {
-      const grossMonthly = parseFloat(document.getElementById('grossSalary').value) || 0;
+      const grossMonthly = CalculatorUtils.getCurrencyValue('grossSalary');
       const hasUif = document.getElementById('hasUif').checked;
       const hasMedicalAid = document.getElementById('hasMedicalAid').checked;
       const medicalDependants = parseInt(document.getElementById('medicalDependants').value) || 1;
       const hasPension = document.getElementById('hasPension').checked;
-      const pensionMonthly = parseFloat(document.getElementById('pensionAmount').value) || 0;
+      const pensionMonthly = CalculatorUtils.getCurrencyValue('pensionAmount');
       
       if (grossMonthly <= 0) {
-        alert('Please enter a valid gross salary');
+        const hasInput = document.getElementById('grossSalary').value.trim().length > 0;
+        CalculatorUtils.showError('salary-error', hasInput ? 'Please enter a valid gross salary to see results.' : '');
+        document.getElementById('results').classList.remove('show');
         return;
       }
+
+      CalculatorUtils.showError('salary-error', '');
       
       // Calculate annual figures
       const grossAnnual = grossMonthly * 12;
@@ -495,7 +575,7 @@
       // Net calculation
       const netMonthly = grossMonthly - payeMonthly - uifMonthly - pensionMonthly + medicalCredit;
       const netAnnual = netMonthly * 12;
-      const effectiveRate = ((paye / taxableIncome) * 100).toFixed(1);
+      const effectiveRate = taxableIncome > 0 ? ((paye / taxableIncome) * 100).toFixed(1) : '0.0';
       
       // Display results
       document.getElementById('resultGross').textContent = 'R' + grossMonthly.toLocaleString('en-ZA', {minimumFractionDigits: 2, maximumFractionDigits: 2});
@@ -530,9 +610,13 @@
       document.getElementById('viral-main').textContent = 'R' + netMonthly.toLocaleString('en-ZA', {minimumFractionDigits: 0, maximumFractionDigits: 0}) + '/month';
       document.getElementById('viral-subtitle').textContent = effectiveRate + '% effective tax rate';
       
-      document.getElementById('results').classList.add('show');
-      document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      const resultsEl = document.getElementById('results');
+      resultsEl.classList.add('show');
+      resultsEl.style.display = 'block';
+      CalculatorUtils.trackCalculatorUse('net-salary');
     }
+
+    calculate();
   </script>
 </body>
 </html>

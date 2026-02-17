@@ -8,6 +8,14 @@
   <meta name="author" content="RetirementSorted">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#2d6a4f">
+  <link rel="canonical" href="https://retirementsorted.co.za/airbnb-tax-calculator.html">
+  <link rel="dns-prefetch" href="//www.googletagmanager.com">
+  <link rel="dns-prefetch" href="//fonts.googleapis.com">
+  <link rel="dns-prefetch" href="//fonts.gstatic.com">
+  <link rel="dns-prefetch" href="//wa.me">
+  <link rel="dns-prefetch" href="//twitter.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z9ENF0SQS9"></script>
@@ -19,6 +27,24 @@
   </script>
   
   <title>Cape Town Airbnb Tax Calculator - Short-Term Rental Rate Impact | RetirementSorted</title>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Cape Town Airbnb Tax Calculator",
+    "applicationCategory": "FinanceApplication",
+    "url": "https://retirementsorted.co.za/airbnb-tax-calculator.html",
+    "description": "Estimate the impact of proposed short-term rental rate changes in Cape Town.",
+    "operatingSystem": "Any",
+    "isAccessibleForFree": true,
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "ZAR"
+    }
+  }
+  </script>
   
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%232d6a4f' width='100' height='100' rx='20'/><text x='50' y='70' font-size='60' text-anchor='middle' fill='white'>💰</text></svg>">
@@ -282,19 +308,23 @@
 </head>
 <body>
   <!-- Header -->
-  <header class="site-header">
+  <header class="header">
     <div class="container">
-      <div class="header-content">
-        <a href="/" style="text-decoration: none;">
-          <h1 class="brand">RetirementSorted</h1>
-        </a>
-        <nav class="header-nav">
-          <a href="/" class="nav-link">Two-Pot</a>
-          <a href="/net-salary-calculator.html" class="nav-link">Salary</a>
-          <a href="/joint-budget-calculator.html" class="nav-link">Joint Budget</a>
-          <a href="/airbnb-tax-calculator.html" class="nav-link">Airbnb Tax</a>
-          <a href="/cost-of-living-calculator.html" class="nav-link">Cost of Living</a>
-          <a href="/blog/" class="nav-link">Articles</a>
+      <div class="header-inner">
+        <a href="index.html" class="logo">RetirementSorted</a>
+        <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation" data-nav-target="#primary-nav">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <nav class="nav" id="primary-nav">
+          <a href="index.html#calculator">Two-Pot</a>
+          <a href="net-salary-calculator.html">Salary</a>
+          <a href="fee-calculator.html">Fees</a>
+          <a href="joint-budget-calculator.html">Joint Budget</a>
+          <a href="airbnb-tax-calculator.html">Airbnb Tax</a>
+          <a href="cost-of-living-calculator.html">Cost of Living</a>
+          <a href="/blog/">Articles</a>
         </nav>
       </div>
     </div>
@@ -314,13 +344,13 @@
       <form id="airbnb-form">
         <div class="form-group">
           <label class="form-label" for="property-value">Municipal Property Value (R)</label>
-          <input type="number" id="property-value" class="form-input" placeholder="2000000" value="2000000" min="0" step="100000" required>
+          <input type="text" id="property-value" class="form-input" data-currency placeholder="R 2,000,000" required>
           <div style="font-size: 14px; color: #6b7280; margin-top: 4px;">
             Your property's official municipal valuation (not market value)
           </div>
         </div>
-        
-        <button type="submit" class="btn-calculate">Calculate Tax Impact</button>
+        <div class="form-error" id="airbnb-error" role="alert"></div>
+        <div class="form-helper">Auto-updates as you type. No calculate button needed.</div>
       </form>
     </div>
     
@@ -358,7 +388,7 @@
       </div>
       
       <!-- Viral Quote Card -->
-      <div style="background: white; border: 3px solid #2d6a4f; border-radius: 16px; padding: 32px; margin-bottom: 24px; text-align: center; position: relative;">
+      <div class="viral-card" style="background: white; border: 3px solid #2d6a4f; border-radius: 16px; padding: 32px; margin-bottom: 24px; text-align: center; position: relative;">
         <div style="position: absolute; top: 12px; right: 12px; background: #2d6a4f; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;">RetirementSorted.co.za</div>
         <div style="font-size: 16px; color: #666; margin-bottom: 8px;" id="viral-label">🏠 Cape Town Airbnb Tax Impact</div>
         <div style="font-size: 32px; font-weight: 700; color: #2d6a4f; margin-bottom: 16px;" id="viral-title">Proposed Rate Increase</div>
@@ -367,20 +397,26 @@
       </div>
 
       <!-- Share Button Section -->
-      <div style="background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: white; border-radius: 16px; padding: 24px; margin-bottom: 24px; text-align: center;">
+      <div class="share-section" style="background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: white; border-radius: 16px; padding: 24px; margin-bottom: 24px; text-align: center;">
         <div style="font-size: 18px; font-weight: 600; margin-bottom: 16px;">📱 Share Your Results</div>
-        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-          <button onclick="shareTwitter()" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 500;">
+        <div class="share-buttons">
+          <button class="share-button" data-share="twitter">
             🐦 Share on X
           </button>
-          <button onclick="shareWhatsApp()" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 500;">
+          <button class="share-button" data-share="whatsapp">
             💬 Share on WhatsApp
           </button>
-          <button onclick="copyResults()" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 500;">
+          <button class="share-button" data-action="copy">
             📋 Copy Results
           </button>
         </div>
         <div style="font-size: 13px; opacity: 0.9; margin-top: 12px;">Screenshot this page to share your calculation!</div>
+      </div>
+
+      <div class="result-actions">
+        <button class="btn-primary" data-action="email">Email Results</button>
+        <button class="btn-ghost" data-action="save">Save Results</button>
+        <button class="btn-ghost" data-action="reset" data-results-target="#result" data-reset-extra="#next-steps">Reset</button>
       </div>
       
     </div>
@@ -437,6 +473,21 @@
         </div>
       </div>
     </div>
+
+    <div class="cta-card">
+      <h3>Plan Your Cash Flow Next</h3>
+      <p>See how taxes and fees affect your income before you decide to keep or sell.</p>
+      <a class="btn-secondary" href="net-salary-calculator.html">Run Net Salary Calculator</a>
+    </div>
+
+    <div class="calculator-links" aria-label="More calculators">
+      <a href="index.html#calculator">Two-Pot Withdrawal Calculator</a>
+      <a href="fee-calculator.html">Fee Impact Calculator</a>
+      <a href="joint-budget-calculator.html">Joint Budget Calculator</a>
+      <a href="cost-of-living-calculator.html">Cost of Living Calculator</a>
+      <a href="net-salary-calculator.html">Net Salary Calculator</a>
+      <a href="airbnb-tax-calculator.html">Airbnb Tax Calculator</a>
+    </div>
     
     <!-- Info Section -->
     <div class="info-section">
@@ -488,109 +539,104 @@
     </div>
     
     <div style="text-align: center; margin-top: 40px;">
-      <a href="/" style="display: inline-block; padding: 14px 28px; background: #2d6a4f; color: white; text-decoration: none; border-radius: 8px; font-weight: 600;">Back to RetirementSorted</a>
+      <a href="index.html" style="display: inline-block; padding: 14px 28px; background: #2d6a4f; color: white; text-decoration: none; border-radius: 8px; font-weight: 600;">Back to RetirementSorted</a>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <p style="margin-bottom: 8px;">
-        <strong>Disclaimer:</strong> This calculator uses proposed rates as of February 2026. Final policy may differ. Consult a tax professional for personalized advice.
-      </p>
-      <p>© 2026 RetirementSorted. Rates sourced from City of Cape Town 2025/26 budget and Bloomberg reporting.</p>
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="logo">
+            <span class="logo-icon">💰</span>
+            <span class="logo-text">RetirementSorted</span>
+          </div>
+          <p>Independent retirement planning tools for South Africans. No jargon. No upselling.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Tools</h4>
+          <a href="index.html#calculator">Two-Pot Calculator</a>
+          <a href="airbnb-tax-calculator.html">Airbnb Tax</a>
+          <a href="fee-calculator.html">Fee Impact</a>
+        </div>
+        <div class="footer-links">
+          <h4>Resources</h4>
+          <a href="/blog/">Articles</a>
+          <a href="index.html#faq">FAQ</a>
+        </div>
+        <div class="footer-links">
+          <h4>Sorted Family</h4>
+          <a href="https://betsorted.co.za" target="_blank" rel="noopener">BetSorted</a>
+          <a href="https://cryptocasino.co.za" target="_blank" rel="noopener">CryptoCasino</a>
+          <a href="https://paidproperly.co.za" target="_blank" rel="noopener">PaidProperly</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 RetirementSorted • Independent financial education</p>
+        <p class="disclaimer">Disclaimer: This calculator provides estimates only. Consult a tax professional for personalized advice.</p>
+      </div>
     </div>
   </footer>
 
-  <!-- Viral Share Functions -->
-  <script>
-    function getShareText() {
-      const label = document.getElementById('viral-label').textContent;
-      const title = document.getElementById('viral-title').textContent;
-      const main = document.getElementById('viral-main').textContent;
-      const subtitle = document.getElementById('viral-subtitle').textContent;
-      
-      return `${label}\n${title}: ${main}\n${subtitle}\n\nCalculate yours: ${window.location.href}`;
-    }
-
-    function shareTwitter() {
-      const text = encodeURIComponent(getShareText());
-      window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
-      if (typeof gtag !== 'undefined') {
-        gtag('event', 'share', { 'method': 'Twitter' });
-      }
-    }
-
-    function shareWhatsApp() {
-      const text = encodeURIComponent(getShareText());
-      window.open(`https://wa.me/?text=${text}`, '_blank');
-      if (typeof gtag !== 'undefined') {
-        gtag('event', 'share', { 'method': 'WhatsApp' });
-      }
-    }
-
-    function copyResults() {
-      const text = getShareText();
-      navigator.clipboard.writeText(text).then(() => {
-        const btn = event.target;
-        const originalText = btn.textContent;
-        btn.textContent = '✅ Copied!';
-        setTimeout(() => { btn.textContent = originalText; }, 2000);
-        if (typeof gtag !== 'undefined') {
-          gtag('event', 'share', { 'method': 'Copy' });
-        }
-      });
-    }
-  </script>
+  <script src="nav.js"></script>
+  <script src="calculator-utils.js"></script>
 
   <script>
-    document.getElementById('airbnb-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      // Blur input to dismiss keyboard
-      document.getElementById('property-value').blur();
-      
-      const propertyValue = parseFloat(document.getElementById('property-value').value) || 0;
-      
+    const propertyInput = document.getElementById('property-value');
+    const resultCard = document.getElementById('result');
+    const nextSteps = document.getElementById('next-steps');
+
+    function calculateImpact() {
+      const propertyValue = CalculatorUtils.getCurrencyValue('property-value');
+
+      if (propertyValue <= 0) {
+        const hasInput = propertyInput.value.trim().length > 0;
+        CalculatorUtils.showError('airbnb-error', hasInput ? 'Please enter a valid municipal property value.' : '');
+        resultCard.style.display = 'none';
+        nextSteps.style.display = 'none';
+        return;
+      }
+
+      CalculatorUtils.showError('airbnb-error', '');
+
       // Current residential rate (with R300k rebate)
       const residentialRate = 0.008572; // 0.8572 cents per rand
       const rebate = 300000;
       const taxableValueCurrent = Math.max(0, propertyValue - rebate);
       const currentAnnual = taxableValueCurrent * residentialRate;
       const currentMonthly = currentAnnual / 12;
-      
+
       // Proposed commercial rate (135% increase = 2.35x, no rebate)
       const commercialRate = residentialRate * 2.35; // ~0.02014 (2.01 cents per rand)
       const proposedAnnual = propertyValue * commercialRate;
       const proposedMonthly = proposedAnnual / 12;
-      
+
       // Calculate increase
       const increaseAnnual = proposedAnnual - currentAnnual;
       const increasePercent = currentAnnual > 0 ? ((increaseAnnual / currentAnnual) * 100) : 0;
-      
+
       // Update display
       document.getElementById('current-annual').textContent = 'R' + currentAnnual.toLocaleString('en-ZA', {minimumFractionDigits: 0, maximumFractionDigits: 0});
       document.getElementById('current-monthly').textContent = 'R' + currentMonthly.toLocaleString('en-ZA', {minimumFractionDigits: 0, maximumFractionDigits: 0}) + '/month';
-      
+
       document.getElementById('proposed-annual').textContent = 'R' + proposedAnnual.toLocaleString('en-ZA', {minimumFractionDigits: 0, maximumFractionDigits: 0});
       document.getElementById('proposed-monthly').textContent = 'R' + proposedMonthly.toLocaleString('en-ZA', {minimumFractionDigits: 0, maximumFractionDigits: 0}) + '/month';
-      
+
       document.getElementById('increase-amount').textContent = 'R' + increaseAnnual.toLocaleString('en-ZA', {minimumFractionDigits: 0, maximumFractionDigits: 0});
       document.getElementById('increase-percent').textContent = '+' + increasePercent.toFixed(1) + '% increase';
-      
+
       // Update viral card
       document.getElementById('viral-main').textContent = '+R' + increaseAnnual.toLocaleString('en-ZA', {minimumFractionDigits: 0, maximumFractionDigits: 0}) + '/year';
       document.getElementById('viral-subtitle').textContent = 'R' + currentAnnual.toLocaleString('en-ZA', {minimumFractionDigits: 0, maximumFractionDigits: 0}) + ' → R' + proposedAnnual.toLocaleString('en-ZA', {minimumFractionDigits: 0, maximumFractionDigits: 0}) + ' rates bill';
-      
-      // Show result and next steps
-      document.getElementById('result').style.display = 'block';
-      document.getElementById('next-steps').style.display = 'block';
-      
-      // Scroll to results after a brief delay to ensure render
-      setTimeout(() => {
-        document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 100);
-    });
+
+      resultCard.style.display = 'block';
+      nextSteps.style.display = 'block';
+      CalculatorUtils.trackCalculatorUse('airbnb-tax');
+    }
+
+    propertyInput.addEventListener('input', calculateImpact);
+    calculateImpact();
   </script>
 </body>
 </html>

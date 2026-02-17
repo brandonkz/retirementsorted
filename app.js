@@ -17,10 +17,15 @@ const resultsDiv = document.getElementById('results');
 const decisionForm = document.getElementById('decision-form');
 const decisionResult = document.getElementById('decision-result');
 
-// Calculator Form
-calcForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-  calculateWithdrawal();
+// Live calculator updates
+let calcTimer;
+function scheduleCalculation() {
+  clearTimeout(calcTimer);
+  calcTimer = setTimeout(calculateWithdrawal, 200);
+}
+
+calcForm.querySelectorAll('input').forEach((input) => {
+  input.addEventListener('input', scheduleCalculation);
 });
 
 // Update max withdrawal helper text on fund value change
@@ -28,7 +33,7 @@ document.getElementById('fund-value').addEventListener('input', updateMaxWithdra
 document.getElementById('withdrawal-amount').addEventListener('input', validateWithdrawalAmount);
 
 function updateMaxWithdrawalHelper() {
-  const fundValue = parseFloat(document.getElementById('fund-value').value) || 0;
+  const fundValue = CalculatorUtils.getCurrencyValue('fund-value');
   const savingsPot = fundValue / 3;
   const maxWithdrawal = savingsPot * 0.1;
   
@@ -42,8 +47,8 @@ function updateMaxWithdrawalHelper() {
 }
 
 function validateWithdrawalAmount() {
-  const fundValue = parseFloat(document.getElementById('fund-value').value) || 0;
-  const withdrawalAmount = parseFloat(document.getElementById('withdrawal-amount').value) || 0;
+  const fundValue = CalculatorUtils.getCurrencyValue('fund-value');
+  const withdrawalAmount = CalculatorUtils.getCurrencyValue('withdrawal-amount');
   const savingsPot = fundValue / 3;
   const maxWithdrawal = savingsPot * 0.1;
   
@@ -60,13 +65,14 @@ function validateWithdrawalAmount() {
 
 function calculateWithdrawal() {
   // Get inputs
-  const annualSalary = parseFloat(document.getElementById('annual-salary').value);
-  const fundValue = parseFloat(document.getElementById('fund-value').value);
-  const withdrawalAmount = parseFloat(document.getElementById('withdrawal-amount').value);
+  const annualSalary = CalculatorUtils.getCurrencyValue('annual-salary');
+  const fundValue = CalculatorUtils.getCurrencyValue('fund-value');
+  const withdrawalAmount = CalculatorUtils.getCurrencyValue('withdrawal-amount');
   
   // Validate
   if (!annualSalary || !fundValue || !withdrawalAmount) {
-    alert('Please fill in all fields');
+    CalculatorUtils.showError('calc-error', 'Please fill in all fields to see your results.');
+    resultsDiv.classList.add('hidden');
     return;
   }
   
@@ -76,9 +82,15 @@ function calculateWithdrawal() {
   
   // Validate withdrawal amount
   if (withdrawalAmount > maxWithdrawal) {
-    alert(`Maximum withdrawal is R ${formatNumber(maxWithdrawal)} (10% of your savings pot)`);
+    CalculatorUtils.showError(
+      'calc-error',
+      `Maximum withdrawal is R ${formatNumber(maxWithdrawal)} (10% of your savings pot).`
+    );
+    resultsDiv.classList.add('hidden');
     return;
   }
+
+  CalculatorUtils.showError('calc-error', '');
   
   // Calculate tax
   // Lump sum withdrawals are taxed using retirement lump sum tax table
@@ -107,7 +119,8 @@ function calculateWithdrawal() {
   
   // Show results
   resultsDiv.classList.remove('hidden');
-  resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  resultsDiv.style.display = 'block';
+  CalculatorUtils.trackCalculatorUse('two-pot');
 }
 
 function calculateLumpSumTax(amount) {

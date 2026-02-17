@@ -4,6 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="How much does it really cost to raise a family in South Africa? Calculate monthly expenses for Cape Town, Johannesburg, Durban, and Pretoria. Includes rent, schools, medical aid, and more.">
+  <link rel="canonical" href="https://retirementsorted.co.za/cost-of-living-calculator.html">
+  <link rel="dns-prefetch" href="//www.googletagmanager.com">
+  <link rel="dns-prefetch" href="//fonts.googleapis.com">
+  <link rel="dns-prefetch" href="//fonts.gstatic.com">
+  <link rel="dns-prefetch" href="//wa.me">
+  <link rel="dns-prefetch" href="//twitter.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <meta name="keywords" content="cost of living south africa, family expenses calculator, cape town living costs, johannesburg expenses, durban cost of living, pretoria family budget, private school costs, medical aid costs">
   <title>Family Cost of Living Calculator - South Africa 2026 | RetirementSorted</title>
   
@@ -14,6 +22,24 @@
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-Z9ENF0SQS9');
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Cost of Living Calculator",
+    "applicationCategory": "FinanceApplication",
+    "url": "https://retirementsorted.co.za/cost-of-living-calculator.html",
+    "description": "Estimate monthly family expenses across major South African cities.",
+    "operatingSystem": "Any",
+    "isAccessibleForFree": true,
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "ZAR"
+    }
+  }
   </script>
   
   <!-- Open Graph -->
@@ -312,7 +338,14 @@
       .city-selector {
         grid-template-columns: repeat(2, 1fr);
       }
-      
+
+      .expense-item,
+      .comparison-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+
       .total-amount {
         font-size: 36px;
       }
@@ -337,10 +370,16 @@
   <header class="header">
     <div class="container">
       <div class="header-inner">
-        <a href="/" class="logo">RetirementSorted</a>
-        <nav class="nav">
-          <a href="/">Two-Pot</a>
+        <a href="index.html" class="logo">RetirementSorted</a>
+        <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation" data-nav-target="#primary-nav">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <nav class="nav" id="primary-nav">
+          <a href="index.html#calculator">Two-Pot</a>
           <a href="net-salary-calculator.html">Salary</a>
+          <a href="fee-calculator.html">Fees</a>
           <a href="joint-budget-calculator.html">Joint Budget</a>
           <a href="airbnb-tax-calculator.html">Airbnb Tax</a>
           <a href="cost-of-living-calculator.html" class="active">Cost of Living</a>
@@ -405,30 +444,34 @@
           </div>
           
           <!-- Share Section -->
-          <div style="background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: white; border-radius: 16px; padding: 24px; margin-bottom: 24px; text-align: center;">
+          <div class="share-section" style="background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: white; border-radius: 16px; padding: 24px; margin-bottom: 24px; text-align: center;">
             <div style="font-size: 18px; font-weight: 600; margin-bottom: 16px;">📱 Share Your Results</div>
-            <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-              <button onclick="shareTwitter()" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 500; transition: all 0.2s;">
+            <div class="share-buttons">
+              <button class="share-button" data-share="twitter">
                 🐦 Share on X
               </button>
-              <button onclick="shareWhatsApp()" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 500; transition: all 0.2s;">
+              <button class="share-button" data-share="whatsapp">
                 💬 Share on WhatsApp
               </button>
-              <button onclick="copyResults()" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 500; transition: all 0.2s;">
+              <button class="share-button" data-action="copy">
                 📋 Copy Results
               </button>
             </div>
             <div style="font-size: 13px; opacity: 0.9; margin-top: 12px;">Screenshot this page to share your calculation!</div>
           </div>
+
+          <div class="result-actions">
+            <button class="btn-primary" data-action="email">Email Results</button>
+            <button class="btn-ghost" data-action="save">Save Results</button>
+          </div>
           
           <!-- Viral Quote Card -->
-          <div style="background: white; border: 3px solid #2d6a4f; border-radius: 16px; padding: 32px; margin-bottom: 24px; text-align: center; position: relative;">
+          <div class="viral-card" style="background: white; border: 3px solid #2d6a4f; border-radius: 16px; padding: 32px; margin-bottom: 24px; text-align: center; position: relative;">
             <div style="position: absolute; top: 12px; right: 12px; background: #2d6a4f; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;">RetirementSorted.co.za</div>
-            <div style="font-size: 16px; color: #666; margin-bottom: 8px;">💰 Upper-Middle Class Life in</div>
-            <div style="font-size: 32px; font-weight: 700; color: #2d6a4f; margin-bottom: 16px;" id="viral-city">Cape Town</div>
-            <div style="font-size: 48px; font-weight: 800; color: #1b4332; margin-bottom: 8px;" id="viral-total">R101k/month</div>
-            <div style="font-size: 18px; color: #666; margin-bottom: 16px;">Needs <span style="color: #dc2626; font-weight: 700;" id="viral-gross">R143k</span> gross salary</div>
-            <div style="font-size: 14px; color: #92400e; background: #fff9e6; padding: 8px 16px; border-radius: 8px; display: inline-block;" id="viral-percentile">Top 3% of SA earners</div>
+            <div style="font-size: 16px; color: #666; margin-bottom: 8px;" id="viral-label">💰 Cost of Living</div>
+            <div style="font-size: 32px; font-weight: 700; color: #2d6a4f; margin-bottom: 16px;" id="viral-title">Cape Town family budget</div>
+            <div style="font-size: 48px; font-weight: 800; color: #1b4332; margin-bottom: 8px;" id="viral-main">R101k/month</div>
+            <div style="font-size: 18px; color: #666;" id="viral-subtitle">Needs R143k gross salary (Top 3%)</div>
           </div>
           
           <!-- Comparison Section -->
@@ -519,7 +562,7 @@
                 <div class="cta-desc">Calculate your take-home pay after tax, UIF, and deductions. See what you actually earn.</div>
               </a>
               
-              <a href="/" class="cta-card">
+              <a href="index.html#calculator" class="cta-card">
                 <div class="cta-icon">🏦</div>
                 <div class="cta-title">Two-Pot Retirement Calculator</div>
                 <div class="cta-desc">Should you withdraw from your retirement savings? Calculate tax and long-term impact.</div>
@@ -565,31 +608,39 @@
   <footer class="footer">
     <div class="container">
       <div class="footer-content">
-        <div class="footer-section">
-          <h3>RetirementSorted</h3>
-          <p>Independent financial tools for South Africans. No jargon, no upselling, just sorted.</p>
+        <div class="footer-brand">
+          <div class="logo">
+            <span class="logo-icon">💰</span>
+            <span class="logo-text">RetirementSorted</span>
+          </div>
+          <p>Independent retirement planning tools for South Africans. No jargon. No upselling.</p>
         </div>
-        <div class="footer-section">
+        <div class="footer-links">
           <h4>Tools</h4>
-          <a href="/">Two-Pot Calculator</a>
-          <a href="net-salary-calculator.html">Salary Calculator</a>
-          <a href="airbnb-tax-calculator.html">Airbnb Tax</a>
+          <a href="index.html#calculator">Two-Pot Calculator</a>
           <a href="cost-of-living-calculator.html">Cost of Living</a>
+          <a href="fee-calculator.html">Fee Impact</a>
         </div>
-        <div class="footer-section">
+        <div class="footer-links">
           <h4>Resources</h4>
           <a href="/blog/">Articles</a>
-          <a href="/blog/should-you-withdraw-two-pot-retirement.html">Should I Withdraw?</a>
-          <a href="/blog/two-pot-tax-calculator-how-much-sars-takes.html">Tax Guide</a>
+          <a href="index.html#faq">FAQ</a>
+        </div>
+        <div class="footer-links">
+          <h4>Sorted Family</h4>
+          <a href="https://betsorted.co.za" target="_blank" rel="noopener">BetSorted</a>
+          <a href="https://cryptocasino.co.za" target="_blank" rel="noopener">CryptoCasino</a>
+          <a href="https://paidproperly.co.za" target="_blank" rel="noopener">PaidProperly</a>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2026 RetirementSorted.co.za • Built in 🇿🇦 for South Africans</p>
-        <p style="font-size: 13px; margin-top: 8px; opacity: 0.8;">Not financial advice. For informational purposes only. Consult a certified financial advisor for personalized guidance.</p>
+        <p>&copy; 2026 RetirementSorted • Independent financial education</p>
+        <p class="disclaimer">Disclaimer: This calculator provides estimates only. Consult a financial advisor for personalized advice.</p>
       </div>
     </div>
   </footer>
 
+  <script src="calculator-utils.js"></script>
   <script>
     // City data
     const cityData = {
@@ -673,10 +724,9 @@
       annualDisplay.textContent = `(~${formatCurrency(city.annual / 1000)}k per year)`;
       
       // Update viral card
-      document.getElementById('viral-city').textContent = city.name;
-      document.getElementById('viral-total').textContent = formatCurrency(city.total) + '/month';
-      document.getElementById('viral-gross').textContent = formatCurrency(city.gross);
-      document.getElementById('viral-percentile').textContent = `Top ${city.percentile.replace('top ', '').replace('%', '')}% of SA earners`;
+      document.getElementById('viral-title').textContent = `${city.name} family budget`;
+      document.getElementById('viral-main').textContent = formatCurrency(city.total) + '/month';
+      document.getElementById('viral-subtitle').textContent = `Needs ${formatCurrency(city.gross)} gross salary (Top ${city.percentile.replace('top ', '').replace('%', '')}%)`;
       
       // Update expenses (Benoni has custom funny labels)
       if (city.expenses) {
@@ -737,6 +787,7 @@
       
       // Generate comparison
       generateComparison(cityKey);
+      CalculatorUtils.trackCalculatorUse('cost-of-living');
     }
     
     // Generate city comparison
@@ -817,50 +868,6 @@
       console.log('Newsletter signup:', email);
     });
     
-    // Share functions
-    function getShareText() {
-      const cityName = document.getElementById('viral-city').textContent;
-      const total = document.getElementById('viral-total').textContent;
-      const gross = document.getElementById('viral-gross').textContent;
-      const percentile = document.getElementById('viral-percentile').textContent;
-      
-      return `💰 Upper-middle class life in ${cityName}: ${total}\n\nNeeds ${gross} gross salary (${percentile})\n\nCalculate yours: https://retirementsorted.co.za/cost-of-living-calculator.html`;
-    }
-    
-    function shareTwitter() {
-      const text = encodeURIComponent(getShareText());
-      window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
-      
-      if (typeof gtag !== 'undefined') {
-        gtag('event', 'share', { 'method': 'Twitter' });
-      }
-    }
-    
-    function shareWhatsApp() {
-      const text = encodeURIComponent(getShareText());
-      window.open(`https://wa.me/?text=${text}`, '_blank');
-      
-      if (typeof gtag !== 'undefined') {
-        gtag('event', 'share', { 'method': 'WhatsApp' });
-      }
-    }
-    
-    function copyResults() {
-      const text = getShareText();
-      navigator.clipboard.writeText(text).then(() => {
-        const btn = event.target;
-        const originalText = btn.textContent;
-        btn.textContent = '✅ Copied!';
-        setTimeout(() => {
-          btn.textContent = originalText;
-        }, 2000);
-        
-        if (typeof gtag !== 'undefined') {
-          gtag('event', 'share', { 'method': 'Copy' });
-        }
-      });
-    }
-    
     // Initialize with Cape Town
     updateCalculator('capetown');
     
@@ -872,5 +879,7 @@
       });
     }
   </script>
+
+  <script src="nav.js"></script>
 </body>
 </html>

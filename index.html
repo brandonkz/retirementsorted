@@ -7,6 +7,13 @@
   <link rel="canonical" href="https://retirementsorted.co.za/">
   <meta name="keywords" content="two pot calculator, two pot retirement, retirement calculator south africa, savings pot withdrawal, two pot tax calculator, should I withdraw retirement">
   <title>Should I Withdraw From My Two-Pot Retirement? Calculator + Advice | RetirementSorted</title>
+  <link rel="dns-prefetch" href="//www.googletagmanager.com">
+  <link rel="dns-prefetch" href="//fonts.googleapis.com">
+  <link rel="dns-prefetch" href="//fonts.gstatic.com">
+  <link rel="dns-prefetch" href="//wa.me">
+  <link rel="dns-prefetch" href="//twitter.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z9ENF0SQS9"></script>
@@ -40,6 +47,24 @@
     "operatingSystem": "Any",
     "browserRequirements": "Requires JavaScript",
     "dateModified": "2026-02-10"
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Two-Pot Retirement Calculator",
+    "applicationCategory": "FinanceApplication",
+    "url": "https://retirementsorted.co.za/",
+    "description": "Estimate your two-pot withdrawal, tax impact, and net amount in South Africa.",
+    "operatingSystem": "Any",
+    "isAccessibleForFree": true,
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "ZAR"
+    }
   }
   </script>
   
@@ -111,9 +136,15 @@
     <div class="container">
       <div class="header-inner">
         <a href="/" class="logo">RetirementSorted</a>
-        <nav class="nav">
+        <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation" data-nav-target="#primary-nav">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <nav class="nav" id="primary-nav">
           <a href="#calculator">Calculator</a>
           <a href="net-salary-calculator.html">Salary</a>
+          <a href="fee-calculator.html">Fees</a>
           <a href="joint-budget-calculator.html">Joint Budget</a>
           <a href="airbnb-tax-calculator.html">Airbnb Tax</a>
           <a href="cost-of-living-calculator.html">Cost of Living</a>
@@ -152,8 +183,7 @@
                 </span>
               </label>
               <div class="input-wrapper">
-                <span class="input-prefix">R</span>
-                <input type="number" id="annual-salary" placeholder="600000" min="0" step="1000" required>
+                <input type="text" id="annual-salary" data-currency placeholder="R 600,000" required>
               </div>
             </div>
 
@@ -165,8 +195,7 @@
                 </span>
               </label>
               <div class="input-wrapper">
-                <span class="input-prefix">R</span>
-                <input type="number" id="fund-value" placeholder="500000" min="0" step="1000" required>
+                <input type="text" id="fund-value" data-currency placeholder="R 500,000" required>
               </div>
             </div>
 
@@ -178,13 +207,13 @@
                 </span>
               </label>
               <div class="input-wrapper">
-                <span class="input-prefix">R</span>
-                <input type="number" id="withdrawal-amount" placeholder="16650" min="0" step="100" required>
+                <input type="text" id="withdrawal-amount" data-currency placeholder="R 16,650" required>
               </div>
               <div class="form-helper" id="max-withdrawal-helper"></div>
             </div>
 
-            <button type="submit" class="btn-primary">Calculate</button>
+            <div class="form-error" id="calc-error" role="alert"></div>
+            <div class="form-helper">Auto-updates as you type. No calculate button needed.</div>
           </form>
 
           <!-- Results -->
@@ -220,7 +249,7 @@
             </div>
 
             <!-- Viral Quote Card -->
-            <div style="background: white; border: 3px solid #2d6a4f; border-radius: 16px; padding: 32px; margin-bottom: 24px; text-align: center; position: relative;">
+            <div class="viral-card" style="background: white; border: 3px solid #2d6a4f; border-radius: 16px; padding: 32px; margin-bottom: 24px; text-align: center; position: relative;">
               <div style="position: absolute; top: 12px; right: 12px; background: #2d6a4f; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;">RetirementSorted.co.za</div>
               <div style="font-size: 16px; color: #666; margin-bottom: 8px;" id="viral-label">💰 Two-Pot Retirement Withdrawal</div>
               <div style="font-size: 32px; font-weight: 700; color: #2d6a4f; margin-bottom: 16px;" id="viral-title">Savings Pot Available</div>
@@ -229,23 +258,28 @@
             </div>
 
             <!-- Share Button Section -->
-            <div style="background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: white; border-radius: 16px; padding: 24px; margin-bottom: 24px; text-align: center;">
+            <div class="share-section" style="background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: white; border-radius: 16px; padding: 24px; margin-bottom: 24px; text-align: center;">
               <div style="font-size: 18px; font-weight: 600; margin-bottom: 16px;">📱 Share Your Results</div>
-              <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-                <button onclick="shareTwitter()" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 500;">
+              <div class="share-buttons">
+                <button class="share-button" data-share="twitter">
                   🐦 Share on X
                 </button>
-                <button onclick="shareWhatsApp()" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 500;">
+                <button class="share-button" data-share="whatsapp">
                   💬 Share on WhatsApp
                 </button>
-                <button onclick="copyResults()" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 500;">
+                <button class="share-button" data-action="copy">
                   📋 Copy Results
                 </button>
               </div>
               <div style="font-size: 13px; opacity: 0.9; margin-top: 12px;">Screenshot this page to share your calculation!</div>
             </div>
 
-            <button class="btn-secondary" onclick="location.href='#decision-tool'">Should I Withdraw? →</button>
+            <div class="result-actions">
+              <button class="btn-primary" data-action="email">Email Results</button>
+              <button class="btn-ghost" data-action="save">Save Results</button>
+              <button class="btn-secondary" onclick="location.href='#decision-tool'">Should I Withdraw? →</button>
+              <button class="btn-ghost" data-action="reset" data-reset-target="calc-form" data-results-target="#results">Reset</button>
+            </div>
             
             <!-- Next Steps Section -->
             <div class="next-steps-section" style="margin-top: 32px; padding-top: 32px; border-top: 2px solid #e5e7eb;">
@@ -281,6 +315,21 @@
                   <div class="next-step-arrow-mini">→</div>
                 </a>
               </div>
+            </div>
+
+            <div class="cta-card">
+              <h3>Keep Your Plan on Track</h3>
+              <p>Compare fees, understand your net salary, and build a more accurate retirement forecast.</p>
+              <a class="btn-secondary" href="fee-calculator.html">Compare Fee Impact</a>
+            </div>
+
+            <div class="calculator-links" aria-label="More calculators">
+              <a href="net-salary-calculator.html">Net Salary Calculator</a>
+              <a href="joint-budget-calculator.html">Joint Budget Calculator</a>
+              <a href="airbnb-tax-calculator.html">Airbnb Tax Calculator</a>
+              <a href="cost-of-living-calculator.html">Cost of Living Calculator</a>
+              <a href="fee-calculator.html">Fee Impact Calculator</a>
+              <a href="index.html#decision-tool">Withdrawal Decision Tool</a>
             </div>
           </div>
         </div>
@@ -528,9 +577,9 @@
         </div>
         <div class="footer-links">
           <h4>Sorted Family</h4>
-          <a href="https://paidproperly.co.za" target="_blank">PaidProperly</a>
-          <a href="https://paidproperly.co.za/blog/" target="_blank">Remote Work Blog</a>
-          <a href="https://powersorted.co.za" target="_blank">PowerSorted</a>
+          <a href="https://betsorted.co.za" target="_blank" rel="noopener">BetSorted</a>
+          <a href="https://cryptocasino.co.za" target="_blank" rel="noopener">CryptoCasino</a>
+          <a href="https://paidproperly.co.za" target="_blank" rel="noopener">PaidProperly</a>
         </div>
       </div>
       <div class="footer-bottom">
@@ -540,48 +589,9 @@
     </div>
   </footer>
 
+  <script src="nav.js"></script>
+  <script src="calculator-utils.js"></script>
   <script src="app.js"></script>
-  
-  <!-- Viral Share Functions -->
-  <script>
-    function getShareText() {
-      const label = document.getElementById('viral-label').textContent;
-      const title = document.getElementById('viral-title').textContent;
-      const main = document.getElementById('viral-main').textContent;
-      const subtitle = document.getElementById('viral-subtitle').textContent;
-      
-      return `${label}\n${title}: ${main}\n${subtitle}\n\nCalculate yours: ${window.location.href}`;
-    }
-
-    function shareTwitter() {
-      const text = encodeURIComponent(getShareText());
-      window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
-      if (typeof gtag !== 'undefined') {
-        gtag('event', 'share', { 'method': 'Twitter' });
-      }
-    }
-
-    function shareWhatsApp() {
-      const text = encodeURIComponent(getShareText());
-      window.open(`https://wa.me/?text=${text}`, '_blank');
-      if (typeof gtag !== 'undefined') {
-        gtag('event', 'share', { 'method': 'WhatsApp' });
-      }
-    }
-
-    function copyResults() {
-      const text = getShareText();
-      navigator.clipboard.writeText(text).then(() => {
-        const btn = event.target;
-        const originalText = btn.textContent;
-        btn.textContent = '✅ Copied!';
-        setTimeout(() => { btn.textContent = originalText; }, 2000);
-        if (typeof gtag !== 'undefined') {
-          gtag('event', 'share', { 'method': 'Copy' });
-        }
-      });
-    }
-  </script>
   
   <!-- Affiliate Link Tracking -->
   <script>

@@ -7,14 +7,40 @@
   <meta name="description" content="Calculate exactly how much investment fees are costing you over time. See the shocking impact of advisor fees, TER, and platform costs on your retirement savings.">
   <meta name="keywords" content="investment fees calculator, TER, TIC, financial advisor fees, retirement calculator South Africa">
   <link rel="canonical" href="https://retirementsorted.co.za/fee-calculator.html">
+  <link rel="dns-prefetch" href="//www.googletagmanager.com">
+  <link rel="dns-prefetch" href="//fonts.googleapis.com">
+  <link rel="dns-prefetch" href="//fonts.gstatic.com">
+  <link rel="dns-prefetch" href="//wa.me">
+  <link rel="dns-prefetch" href="//twitter.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z9ENF0SQS9"></script>
+  <script src="calculator-utils.js"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-Z9ENF0SQS9');
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Investment Fee Impact Calculator",
+    "applicationCategory": "FinanceApplication",
+    "url": "https://retirementsorted.co.za/fee-calculator.html",
+    "description": "Estimate the long-term impact of investment fees on retirement savings.",
+    "operatingSystem": "Any",
+    "isAccessibleForFree": true,
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "ZAR"
+    }
+  }
   </script>
 
   <link rel="stylesheet" href="style.css">
@@ -370,11 +396,20 @@
   <header class="header">
     <div class="container">
       <div class="header-inner">
-        <a href="index.html" class="logo">🎯 RetirementSorted</a>
-        <nav class="nav">
-          <a href="index.html">Two-Pot Calculator</a>
-          <a href="net-salary-calculator.html">Net Salary</a>
-          <a href="fee-calculator.html" style="color: var(--color-primary); font-weight: 700;">Fee Calculator</a>
+        <a href="index.html" class="logo">RetirementSorted</a>
+        <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation" data-nav-target="#primary-nav">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <nav class="nav" id="primary-nav">
+          <a href="index.html#calculator">Two-Pot</a>
+          <a href="net-salary-calculator.html">Salary</a>
+          <a href="fee-calculator.html" style="color: var(--color-primary); font-weight: 700;">Fees</a>
+          <a href="joint-budget-calculator.html">Joint Budget</a>
+          <a href="airbnb-tax-calculator.html">Airbnb Tax</a>
+          <a href="cost-of-living-calculator.html">Cost of Living</a>
+          <a href="/blog/">Articles</a>
         </nav>
       </div>
     </div>
@@ -572,27 +607,91 @@
           </ul>
         </div>
 
+        <div class="viral-card" style="background: white; border: 3px solid #2d6a4f; border-radius: 16px; padding: 32px; margin-bottom: 24px; text-align: center; position: relative;">
+          <div style="position: absolute; top: 12px; right: 12px; background: #2d6a4f; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;">RetirementSorted.co.za</div>
+          <div style="font-size: 16px; color: #666; margin-bottom: 8px;" id="viral-label">💸 Investment Fee Impact</div>
+          <div style="font-size: 32px; font-weight: 700; color: #2d6a4f; margin-bottom: 16px;" id="viral-title">Money lost to fees</div>
+          <div style="font-size: 48px; font-weight: 800; color: #1b4332; margin-bottom: 8px;" id="viral-main">R0</div>
+          <div style="font-size: 18px; color: #666;" id="viral-subtitle">0% of returns gone</div>
+        </div>
+
         <div class="share-section">
           <h3 style="margin-bottom: 1rem; font-size: 1.125rem;">Share Your Results</h3>
           <div class="share-buttons">
-            <a href="#" class="share-btn whatsapp" id="share-whatsapp" target="_blank">
+            <button class="share-btn whatsapp" data-share="whatsapp">
               📱 Share on WhatsApp
-            </a>
-            <a href="#" class="share-btn twitter" id="share-twitter" target="_blank">
-              🐦 Share on Twitter
-            </a>
-            <button class="share-btn copy" onclick="copyShareLink()">
-              🔗 Copy Link
+            </button>
+            <button class="share-btn twitter" data-share="twitter">
+              🐦 Share on X
+            </button>
+            <button class="share-btn copy" data-action="copy">
+              📋 Copy Results
             </button>
           </div>
         </div>
+
+        <div class="result-actions">
+          <button class="btn-primary" data-action="email">Email Results</button>
+          <button class="btn-ghost" data-action="save">Save Results</button>
+          <button class="btn-ghost" id="reset-fee">Reset</button>
+        </div>
       </div>
+    </div>
+
+    <div class="cta-card">
+      <h3>Turn Fee Savings Into Retirement Wins</h3>
+      <p>Compare your net salary and two-pot options to see the full impact.</p>
+      <a class="btn-secondary" href="net-salary-calculator.html">Run Net Salary Calculator</a>
+    </div>
+
+    <div class="calculator-links" aria-label="More calculators">
+      <a href="index.html#calculator">Two-Pot Withdrawal Calculator</a>
+      <a href="net-salary-calculator.html">Net Salary Calculator</a>
+      <a href="joint-budget-calculator.html">Joint Budget Calculator</a>
+      <a href="airbnb-tax-calculator.html">Airbnb Tax Calculator</a>
+      <a href="cost-of-living-calculator.html">Cost of Living Calculator</a>
+      <a href="fee-calculator.html">Fee Impact Calculator</a>
     </div>
 
     <div class="disclaimer">
       <strong>Disclaimer:</strong> This calculator is for educational and illustrative purposes only. It uses simplified assumptions and does not constitute financial advice. Actual investment returns vary and past performance does not guarantee future results. Fee structures differ between products — consult your fund's Minimum Disclosure Document for accurate fee information. RetirementSorted is not a licensed financial services provider.
     </div>
   </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="logo">
+            <span class="logo-icon">💰</span>
+            <span class="logo-text">RetirementSorted</span>
+          </div>
+          <p>Independent retirement planning tools for South Africans. No jargon. No upselling.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Tools</h4>
+          <a href="index.html#calculator">Two-Pot Calculator</a>
+          <a href="fee-calculator.html">Fee Impact</a>
+          <a href="net-salary-calculator.html">Net Salary</a>
+        </div>
+        <div class="footer-links">
+          <h4>Resources</h4>
+          <a href="/blog/">Articles</a>
+          <a href="index.html#faq">FAQ</a>
+        </div>
+        <div class="footer-links">
+          <h4>Sorted Family</h4>
+          <a href="https://betsorted.co.za" target="_blank" rel="noopener">BetSorted</a>
+          <a href="https://cryptocasino.co.za" target="_blank" rel="noopener">CryptoCasino</a>
+          <a href="https://paidproperly.co.za" target="_blank" rel="noopener">PaidProperly</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 RetirementSorted • Independent financial education</p>
+        <p class="disclaimer">Disclaimer: This calculator provides estimates only. Consult a financial advisor for personalized advice.</p>
+      </div>
+    </div>
+  </footer>
 
   <script>
     // Calculator logic
@@ -641,6 +740,8 @@
       document.getElementById('percent-lost').textContent = percentLost.toFixed(1) + '% of your returns gone';
       document.getElementById('cheap-balance').textContent = formatCurrency(cheapBalance);
       document.getElementById('expensive-balance').textContent = formatCurrency(expensiveBalance);
+      document.getElementById('viral-main').textContent = formatCurrency(totalLost);
+      document.getElementById('viral-subtitle').textContent = percentLost.toFixed(1) + '% of returns gone';
 
       // Context
       const contextList = document.getElementById('context-list');
@@ -649,9 +750,7 @@
         <li>Your advisor will personally earn ${formatCurrency(advisorEarned)}/month from your account in the final year</li>
         <li>You contributed ${formatCurrency(totalContributed)} but lost ${formatCurrency(totalLost)} to fees</li>
       `;
-
-      // Update share links
-      updateShareLinks(totalLost, years, fee, monthly);
+      CalculatorUtils.trackCalculatorUse('fee-impact');
     }
 
     function formatCurrency(amount) {
@@ -683,29 +782,6 @@
       calculate();
     }
 
-    function updateShareLinks(totalLost, years, fee, monthly) {
-      const url = window.location.href.split('?')[0];
-      const params = `?m=${monthly}&y=${years}&f=${(fee * 100).toFixed(1)}`;
-      const shareUrl = url + params;
-      
-      const message = `I just discovered investment fees could cost me ${formatCurrency(totalLost)} over ${years} years 😳 Calculate yours:`;
-      
-      document.getElementById('share-whatsapp').href = `https://wa.me/?text=${encodeURIComponent(message + ' ' + shareUrl)}`;
-      document.getElementById('share-twitter').href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(message)}&url=${encodeURIComponent(shareUrl)}`;
-    }
-
-    function copyShareLink() {
-      const url = window.location.href.split('?')[0];
-      const monthly = document.getElementById('monthly').value;
-      const years = document.getElementById('years').value;
-      const fee = document.getElementById('fee').value;
-      const shareUrl = `${url}?m=${monthly}&y=${years}&f=${fee}`;
-      
-      navigator.clipboard.writeText(shareUrl).then(() => {
-        alert('Link copied to clipboard!');
-      });
-    }
-
     // Load from URL params if present
     function loadFromUrl() {
       const params = new URLSearchParams(window.location.search);
@@ -714,11 +790,28 @@
       if (params.has('f')) document.getElementById('fee').value = params.get('f');
     }
 
+    function resetFeeCalculator() {
+      document.getElementById('monthly').value = 2000;
+      document.getElementById('lumpsum').value = 0;
+      document.getElementById('years').value = 25;
+      document.getElementById('increase').value = 6;
+      document.getElementById('fee').value = 2.5;
+      document.getElementById('return').value = 10;
+      calculate();
+    }
+
+    const resetButton = document.getElementById('reset-fee');
+    if (resetButton) {
+      resetButton.addEventListener('click', resetFeeCalculator);
+    }
+
     // Initialize
     window.addEventListener('load', () => {
       loadFromUrl();
       calculate();
     });
   </script>
+
+  <script src="nav.js"></script>
 </body>
 </html>

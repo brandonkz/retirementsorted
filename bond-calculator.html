@@ -638,6 +638,21 @@
             <label class="field-label" for="rvb-prop-value">Property Purchase Price</label>
             <input class="field-input" type="text" id="rvb-prop-value" placeholder="R 1,500,000" inputmode="numeric">
           </div>
+          <div class="field-group">
+            <label class="field-label" for="rvb-current-value">
+              Current Market Value
+              <span class="field-hint">Optional — if you already own, enter what it's worth today. Appreciation calculates from this value.</span>
+            </label>
+            <input class="field-input" type="text" id="rvb-current-value" placeholder="Leave blank if buying now">
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="rvb-current-bond">
+              Current Remaining Bond Balance
+              <span class="field-hint">Optional — leave blank if buying now</span>
+            </label>
+            <input class="field-input" type="text" id="rvb-current-bond" placeholder="Leave blank if buying now">
+          </div>
+          <div id="rvb-current-position" class="hidden" style="margin:4px 0 16px;"></div>
           <div class="field-group" id="rvb-costs-preview" style="display:none;">
             <label class="field-label">Sunk Costs (Auto-Calculated)
               <span class="field-hint">These are the buyer's costs that become nothing — they never appear in your equity</span>
@@ -1143,7 +1158,7 @@
   }
 
   // ─── Tab 4: Rent vs Buy ───────────────────────────────────────────────────
-  ['rvb-rent','rvb-bond-repay','rvb-deposit','rvb-prop-value'].forEach(id => {
+  ['rvb-rent','rvb-bond-repay','rvb-deposit','rvb-prop-value','rvb-current-value','rvb-current-bond'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.addEventListener('input', () => { formatCurrInput(el); calcRentVsBuy(); });
   });
@@ -1160,6 +1175,8 @@
     const bondRepay      = parseCurrency(document.getElementById('rvb-bond-repay').value);
     const deposit        = parseCurrency(document.getElementById('rvb-deposit').value);
     const propValue      = parseCurrency(document.getElementById('rvb-prop-value').value);
+    const currentValue   = parseCurrency(document.getElementById('rvb-current-value').value);
+    const currentBond    = parseCurrency(document.getElementById('rvb-current-bond').value);
     const bondRate       = (parseFloat(document.getElementById('rvb-bond-rate').value) || 0) / 100;
     const bondTerm       = parseInt(document.getElementById('rvb-bond-term').value) || 20;
     const appreciation   = (parseFloat(document.getElementById('rvb-appreciation').value) || 0) / 100;
@@ -1168,6 +1185,61 @@
     const years          = parseInt(document.getElementById('rvb-years').value) || 0;
 
     if (!monthlyRent || !bondRepay || !propValue || !years) return;
+
+    // ── Current Position Card (existing owners) ───────────────────────────────
+    const currentPosEl = document.getElementById('rvb-current-position');
+    const alreadyOwns  = currentValue > 0;
+    if (alreadyOwns && deposit > 0) {
+      const unrealisedGain  = currentValue - propValue;
+      const currentEquity   = currentBond > 0 ? currentValue - currentBond : currentValue - (propValue - deposit);
+      const roiOnDeposit    = deposit > 0 ? ((currentEquity - deposit) / deposit * 100) : 0;
+      const currentLeverage = currentEquity > 0 ? currentValue / currentEquity : 0;
+      const yr1FwdGain      = currentValue * appreciation;
+      const yr1FwdROE       = currentEquity > 0 ? (yr1FwdGain / currentEquity * 100) : 0;
+
+      currentPosEl.className = '';
+      currentPosEl.innerHTML = `
+        <div style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:2px solid #86efac;border-radius:12px;padding:20px 24px;">
+          <div style="font-weight:700;color:#15803d;font-size:1rem;margin-bottom:14px;">📍 Your Current Position</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;">
+            <div style="text-align:center;">
+              <div style="font-size:0.75rem;color:#6b7280;font-weight:600;text-transform:uppercase;margin-bottom:4px;">Current Value</div>
+              <div style="font-size:1.4rem;font-weight:800;color:#1b4332;">${fmtR(currentValue)}</div>
+              <div style="font-size:0.78rem;color:#6b7280;">bought at ${fmtR(propValue)}</div>
+            </div>
+            <div style="text-align:center;">
+              <div style="font-size:0.75rem;color:#6b7280;font-weight:600;text-transform:uppercase;margin-bottom:4px;">Unrealised Gain</div>
+              <div style="font-size:1.4rem;font-weight:800;color:#15803d;">+${fmtR(unrealisedGain)}</div>
+              <div style="font-size:0.78rem;color:#6b7280;">${((unrealisedGain/propValue)*100).toFixed(1)}% since purchase</div>
+            </div>
+            <div style="text-align:center;">
+              <div style="font-size:0.75rem;color:#6b7280;font-weight:600;text-transform:uppercase;margin-bottom:4px;">Current Equity</div>
+              <div style="font-size:1.4rem;font-weight:800;color:#1b4332;">${fmtR(currentEquity)}</div>
+              <div style="font-size:0.78rem;color:#6b7280;">${currentBond > 0 ? fmtR(currentBond) + ' bond remaining' : 'est. from deposit'}</div>
+            </div>
+            <div style="text-align:center;">
+              <div style="font-size:0.75rem;color:#6b7280;font-weight:600;text-transform:uppercase;margin-bottom:4px;">Return on Deposit</div>
+              <div style="font-size:1.4rem;font-weight:800;color:${roiOnDeposit >= 0 ? '#15803d' : '#dc2626'};">${roiOnDeposit >= 0 ? '+' : ''}${roiOnDeposit.toFixed(0)}%</div>
+              <div style="font-size:0.78rem;color:#6b7280;">on your ${fmtR(deposit)} deposit</div>
+            </div>
+            <div style="text-align:center;">
+              <div style="font-size:0.75rem;color:#6b7280;font-weight:600;text-transform:uppercase;margin-bottom:4px;">Current Leverage</div>
+              <div style="font-size:1.4rem;font-weight:800;color:#1b4332;">${currentLeverage.toFixed(1)}×</div>
+              <div style="font-size:0.78rem;color:#6b7280;">${fmtR(currentValue)} ÷ ${fmtR(currentEquity)}</div>
+            </div>
+            <div style="text-align:center;">
+              <div style="font-size:0.75rem;color:#6b7280;font-weight:600;text-transform:uppercase;margin-bottom:4px;">Next Year Appreciation</div>
+              <div style="font-size:1.4rem;font-weight:800;color:#15803d;">+${fmtR(yr1FwdGain)}</div>
+              <div style="font-size:0.78rem;color:#6b7280;">${yr1FwdROE.toFixed(1)}% on your equity</div>
+            </div>
+          </div>
+        </div>`;
+    } else {
+      currentPosEl.className = 'hidden';
+    }
+
+    // Use current value as appreciation base if already owns
+    const appreciationBase = alreadyOwns ? currentValue : propValue;
 
     // Ongoing costs of ownership (rates, maintenance, insurance) ≈ 1.5% of property value p.a.
     const ongoingCostRate = 0.015;
@@ -1196,16 +1268,25 @@
     const monthlyRate    = bondRate / 12;
     const totalMonths    = bondTerm * 12;
 
-    let bondBalance = propValue - deposit;
+    // If existing owner, use their current bond balance; otherwise original bond = purchase price - deposit
+    const startingBond = alreadyOwns && currentBond > 0 ? currentBond : (propValue - deposit);
+    let bondBalance = startingBond;
     let totalInterestPaid = 0;
 
+    // Starting equity
+    const startingEquity = alreadyOwns
+      ? (currentValue - startingBond)
+      : deposit;
+
     // ── Simulate both paths year by year ──────────────────────────────────────
-    // Buyer:  deposit → equity (capital), sunk costs → lost forever
-    // Renter: invests deposit AND the sunk costs they don't pay (both are available capital)
-    let buyingEquity     = deposit;
-    let rentingPortfolio = deposit + sunkCosts; // renter has MORE capital from day 1
+    // For existing owners: "keep property vs sell & rent (investing the proceeds)"
+    // For new buyers: "buy vs rent (investing deposit + saved transfer costs)"
+    let buyingEquity     = startingEquity;
+    let rentingPortfolio = alreadyOwns
+      ? startingEquity * 0.97  // ~3% selling costs if they sell today
+      : deposit + sunkCosts;
     let currentRent      = monthlyRent;
-    let currentPropValue = propValue;
+    let currentPropValue = appreciationBase; // current value if already owns, purchase price if new
     let currentBondBal   = bondBalance;
 
     const monthlyInvestRate = investReturn / 12;
@@ -1261,10 +1342,10 @@
       if (s.buyEquity >= s.rentPortfolio) { breakevenYear = s.year; break; }
     }
 
-    // Year 1 leverage metrics
-    const leverageRatio  = propValue / deposit;
-    const yr1AppGain     = propValue * appreciation;
-    const yr1AppOnEquity = (yr1AppGain / deposit) * 100;
+    // Year 1 leverage metrics (use current value/equity for existing owners)
+    const leverageRatio  = startingEquity > 0 ? appreciationBase / startingEquity : 0;
+    const yr1AppGain     = appreciationBase * appreciation;
+    const yr1AppOnEquity = startingEquity > 0 ? (yr1AppGain / startingEquity) * 100 : 0;
     const monthlySurplus = Math.max(0, (bondRepay + monthlyOwnerCosts) - monthlyRent);
 
     // ── Verdict ───────────────────────────────────────────────────────────────

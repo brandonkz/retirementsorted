@@ -176,14 +176,14 @@
           <span></span>
         </button>
         <nav class="nav" id="primary-nav">
-          <a href="#calculator">Calculator</a>
+          <a href="#calculator">Two-Pot</a>
+          <a href="#ra-saver" style="color:#15803d;font-weight:600;">💰 RA Saver</a>
           <a href="net-salary-calculator.html">Salary</a>
           <a href="fee-calculator.html">Fees</a>
           <a href="joint-budget-calculator.html">Joint Budget</a>
           <a href="airbnb-tax-calculator.html">Airbnb Tax</a>
           <a href="cost-of-living-calculator.html">Cost of Living</a>
           <a href="/blog/">Articles</a>
-          <a href="#faq">FAQ</a>
         </nav>
       </div>
     </div>
@@ -256,6 +256,19 @@
               <div class="form-helper" id="max-withdrawal-helper"></div>
             </div>
 
+            <div class="form-group">
+              <label for="years-to-retirement">
+                Years Until Retirement
+                <span class="tooltip">ℹ️
+                  <span class="tooltip-text">Used to show the compound growth cost of withdrawing now</span>
+                </span>
+              </label>
+              <div class="input-wrapper" style="display:flex;align-items:center;gap:12px;">
+                <input type="range" id="years-to-retirement" min="1" max="40" value="20" style="flex:1;accent-color:var(--color-primary);">
+                <span id="years-label" style="min-width:60px;font-weight:600;color:var(--color-primary);">20 years</span>
+              </div>
+            </div>
+
             <div class="form-error" id="calc-error" role="alert"></div>
             <div class="form-helper">Auto-updates as you type. No calculate button needed.</div>
           </form>
@@ -291,6 +304,9 @@
             <div class="calculator-credit">
               retirementsorted.co.za • Free Two-Pot Calculator
             </div>
+
+            <!-- True Retirement Cost Card -->
+            <div id="future-cost-card" class="future-cost-card" style="background:linear-gradient(135deg,#fff7ed,#fef3c7);border:2px solid #f59e0b;border-radius:12px;padding:20px 24px;margin-bottom:20px;"></div>
 
             <!-- Viral Quote Card -->
             <div class="viral-card" style="background: white; border: 3px solid #2d6a4f; border-radius: 16px; padding: 32px; margin-bottom: 24px; text-align: center; position: relative;">
@@ -505,6 +521,85 @@
     </div>
   </section>
 
+  <!-- RA Tax Saver Section -->
+  <section id="ra-saver" class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2>💰 RA Contribution Tax Saver</h2>
+        <p>SARS lets you deduct up to 27.5% of your salary in retirement fund contributions. Most South Africans are leaving a massive tax break unclaimed. See exactly how much you'd save.</p>
+      </div>
+
+      <div class="calculator-wrapper">
+        <div class="calculator-card">
+          <h3>How Much Tax Could You Save?</h3>
+          <p class="calculator-intro" style="color:#6b7280;margin-bottom:24px;">Every extra rand you contribute to your RA, pension, or provident fund reduces your taxable income. SARS effectively subsidises your retirement savings.</p>
+
+          <form id="ra-saver-form" class="calc-form">
+            <div class="form-group">
+              <label for="ra-monthly-salary">
+                Monthly Gross Salary (Before Tax)
+                <span class="tooltip">ℹ️<span class="tooltip-text">Your total salary before any deductions</span></span>
+              </label>
+              <div class="input-wrapper">
+                <input type="text" id="ra-monthly-salary" data-currency placeholder="R 25,000">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="ra-current-contribution">
+                Current Monthly RA / Pension Contribution
+                <span class="tooltip">ℹ️<span class="tooltip-text">What your employer and/or you currently contribute to any retirement fund</span></span>
+              </label>
+              <div class="input-wrapper">
+                <input type="text" id="ra-current-contribution" data-currency placeholder="R 2,000">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="ra-extra-contribution">
+                Extra Monthly Contribution You're Considering
+                <span class="tooltip">ℹ️<span class="tooltip-text">How much more you're thinking of contributing per month</span></span>
+              </label>
+              <div class="input-wrapper">
+                <input type="text" id="ra-extra-contribution" data-currency placeholder="R 1,000">
+              </div>
+            </div>
+          </form>
+
+          <div id="ra-saver-results" class="hidden" style="margin-top:24px;"></div>
+
+          <div style="margin-top:28px;padding:16px 20px;background:#f0fdf4;border-radius:8px;border-left:4px solid #22c55e;">
+            <strong style="color:#15803d;">The big idea:</strong>
+            <p style="margin:8px 0 0;color:#374151;line-height:1.7;">If your marginal tax rate is 31% and you contribute an extra R1,000/month to your RA — SARS effectively gives you R310 back. Your real cost is only R690/month, but your retirement fund grows by the full R1,000.</p>
+          </div>
+        </div>
+
+        <div class="info-sidebar">
+          <div class="info-card">
+            <h3>🎯 SARS Rules</h3>
+            <ul>
+              <li><strong>27.5%</strong> of gross remuneration is deductible</li>
+              <li>Hard cap at <strong>R350,000/year</strong></li>
+              <li>Includes: RA, pension, provident fund contributions</li>
+              <li>Excess rolls over to next year — not wasted</li>
+              <li>Applies to salaried employees &amp; self-employed</li>
+            </ul>
+          </div>
+          <div class="info-card">
+            <h3>📈 Why This Matters</h3>
+            <ul>
+              <li>Immediately reduces PAYE deductions via employer</li>
+              <li>Or claim back on annual tax return</li>
+              <li>Tax-free growth inside the fund</li>
+              <li>Compound effect: tax saving + fund growth</li>
+              <li>Better alternative to withdrawing from two-pot</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Guide Section -->
   <section id="guide" class="section">
     <div class="container">
@@ -636,6 +731,24 @@
   <script src="nav.js"></script>
   <script src="calculator-utils.js"></script>
   <script src="app.js"></script>
+  <script>
+    // Years-to-retirement slider label sync
+    const slider = document.getElementById('years-to-retirement');
+    const label  = document.getElementById('years-label');
+    if (slider && label) {
+      slider.addEventListener('input', () => {
+        label.textContent = slider.value + ' years';
+      });
+    }
+    // Wire up RA saver currency inputs
+    document.querySelectorAll('#ra-saver-form [data-currency]').forEach(input => {
+      input.addEventListener('input', function() {
+        if (typeof CalculatorUtils !== 'undefined' && CalculatorUtils.formatCurrencyInput) {
+          CalculatorUtils.formatCurrencyInput(this);
+        }
+      });
+    });
+  </script>
   
   <!-- Affiliate Link Tracking -->
   <script>

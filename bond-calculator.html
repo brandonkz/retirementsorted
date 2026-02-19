@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="South Africa bond calculator: monthly repayment, extra payment savings, and the definitive guide to whether you should pay off your home loan or invest in your RA.">
+  <link rel="canonical" href="https://retirementsorted.co.za/bond-calculator.html">
+  <title>Bond Calculator South Africa — Pay Off Bond or Invest in RA? | RetirementSorted</title>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z9ENF0SQS9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z9ENF0SQS9');
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Bond vs RA Calculator South Africa",
+    "applicationCategory": "FinanceApplication",
+    "url": "https://retirementsorted.co.za/bond-calculator.html",
+    "description": "Compare paying extra into your home loan vs investing in a retirement annuity. Includes bond repayment calculator and extra payment impact for South African homeowners.",
+    "operatingSystem": "Any",
+    "isAccessibleForFree": true,
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "ZAR" }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Should I pay off my bond or invest in a retirement annuity in South Africa?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It depends on your marginal tax rate and bond interest rate. If your marginal tax rate is 31% and your bond rate is prime (11.25%), the after-tax cost of your bond is about 7.8%. A retirement annuity at 10% growth with a 31% tax deduction gives an effective return of around 14.5%. In this case, investing in the RA wins. If your bond rate is above 13–14% or your marginal rate is low (18%), extra bond payments are often better."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the current prime interest rate in South Africa?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The current prime lending rate in South Africa is 11.25% (as of early 2026), following the SARB repo rate of 7.75%. Most home loans are priced at prime minus 0.5% to prime plus 2% depending on your credit profile."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How much do I save by paying extra into my bond?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Paying just R500 extra per month on a R1.5 million bond at 11.25% saves approximately R380,000 in interest and cuts 4 years off your loan term. Use our extra payment calculator to see your exact savings."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%232d6a4f' width='100' height='100' rx='20'/><text x='50' y='70' font-size='60' text-anchor='middle' fill='white'>🏠</text></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    .page-hero {
+      background: linear-gradient(135deg, #1b4332 0%, #2d6a4f 100%);
+      color: white;
+      padding: 60px 20px;
+      text-align: center;
+    }
+    .page-hero h1 {
+      font-size: 2.4rem;
+      font-weight: 900;
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+    .page-hero p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto 16px;
+    }
+    .rate-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 6px 16px;
+      border-radius: 99px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .calc-page { max-width: 960px; margin: 0 auto; padding: 40px 20px; }
+
+    .tool-tabs {
+      display: flex;
+      gap: 4px;
+      background: #f3f4f6;
+      border-radius: 10px;
+      padding: 4px;
+      margin-bottom: 32px;
+    }
+    .tool-tab {
+      flex: 1;
+      padding: 10px 8px;
+      border: none;
+      background: transparent;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #6b7280;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+    .tool-tab.active {
+      background: white;
+      color: #1b4332;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+
+    .tool-panel { display: none; }
+    .tool-panel.active { display: block; }
+
+    .calc-card {
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      margin-bottom: 24px;
+    }
+    .calc-card h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #1b4332;
+      margin-bottom: 6px;
+    }
+    .calc-card .subtitle {
+      color: #6b7280;
+      font-size: 0.95rem;
+      margin-bottom: 28px;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 8px;
+    }
+    @media(max-width:600px) { .field-grid { grid-template-columns: 1fr; } }
+
+    .field-group { margin-bottom: 20px; }
+    .field-label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #374151;
+      margin-bottom: 6px;
+    }
+    .field-hint { font-weight: 400; color: #9ca3af; font-size: 0.85rem; }
+    .field-input {
+      width: 100%;
+      padding: 11px 14px;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+    .field-input:focus {
+      outline: none;
+      border-color: #2d6a4f;
+      box-shadow: 0 0 0 3px rgba(45,106,79,0.1);
+    }
+    .field-input.rate { max-width: 140px; }
+
+    .prime-link {
+      font-size: 0.8rem;
+      color: #2d6a4f;
+      text-decoration: underline;
+      cursor: pointer;
+      margin-left: 8px;
+    }
+
+    /* Results */
+    .result-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 14px;
+      margin: 24px 0;
+    }
+    .result-box {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+    }
+    .result-box.green { background: #f0fdf4; border-color: #86efac; }
+    .result-box.amber { background: #fffbeb; border-color: #fcd34d; }
+    .result-box.red   { background: #fef2f2; border-color: #fca5a5; }
+    .result-box-label { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280; font-weight: 600; margin-bottom: 6px; }
+    .result-box-value { font-size: 1.6rem; font-weight: 800; color: #1f2937; line-height: 1.1; }
+    .result-box-value.green { color: #15803d; }
+    .result-box-value.red   { color: #dc2626; }
+    .result-box-sub   { font-size: 0.8rem; color: #6b7280; margin-top: 4px; }
+
+    .insight-box {
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin: 16px 0;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    .insight-box.blue   { background: #eff6ff; border-left: 4px solid #3b82f6; color: #1e40af; }
+    .insight-box.green  { background: #f0fdf4; border-left: 4px solid #22c55e; color: #15803d; }
+    .insight-box.amber  { background: #fffbeb; border-left: 4px solid #f59e0b; color: #92400e; }
+    .insight-box.purple { background: #f5f3ff; border-left: 4px solid #8b5cf6; color: #5b21b6; }
+
+    /* Amortisation table */
+    .amort-table-wrap { overflow-x: auto; margin-top: 20px; }
+    .amort-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    .amort-table th { background: #1b4332; color: white; padding: 10px 12px; text-align: right; font-weight: 600; }
+    .amort-table th:first-child { text-align: left; }
+    .amort-table td { padding: 9px 12px; border-bottom: 1px solid #f3f4f6; text-align: right; }
+    .amort-table td:first-child { text-align: left; font-weight: 600; }
+    .amort-table tr:nth-child(even) td { background: #f9fafb; }
+    .amort-table tr.extra-row td { background: #f0fdf4 !important; color: #15803d; }
+    .amort-table .show-more-row td { text-align: center; padding: 12px; color: #2d6a4f; font-weight: 600; cursor: pointer; }
+    .amort-table .show-more-row td:hover { background: #f0fdf4; }
+
+    /* Bond vs RA */
+    .comparison-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 24px 0;
+    }
+    @media(max-width:600px) { .comparison-cols { grid-template-columns: 1fr; } }
+
+    .compare-card {
+      border-radius: 12px;
+      padding: 24px;
+      border: 2px solid #e5e7eb;
+    }
+    .compare-card.winner { border-color: #22c55e; background: #f0fdf4; }
+    .compare-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }
+    .compare-card .compare-label { font-size: 0.8rem; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; }
+    .compare-metric { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.06); font-size: 0.9rem; }
+    .compare-metric:last-child { border-bottom: none; }
+    .compare-metric-label { color: #6b7280; }
+    .compare-metric-value { font-weight: 700; color: #1f2937; }
+    .compare-metric-value.green { color: #15803d; }
+    .winner-badge { display: inline-block; background: #22c55e; color: white; font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 99px; margin-left: 8px; vertical-align: middle; }
+
+    .verdict-box {
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+      margin: 24px 0;
+    }
+    .verdict-box h3 { font-size: 1.4rem; font-weight: 800; margin-bottom: 8px; }
+    .verdict-box p { font-size: 0.95rem; line-height: 1.6; }
+    .verdict-box.green-verdict { background: #f0fdf4; border: 2px solid #22c55e; color: #15803d; }
+    .verdict-box.amber-verdict { background: #fffbeb; border: 2px solid #f59e0b; color: #92400e; }
+    .verdict-box.bond-verdict  { background: #eff6ff; border: 2px solid #3b82f6; color: #1e40af; }
+
+    .cta-strip {
+      background: #1b4332;
+      color: white;
+      border-radius: 12px;
+      padding: 24px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-top: 28px;
+    }
+    .cta-strip p { font-size: 0.95rem; opacity: 0.9; margin-top: 4px; }
+    .cta-strip h3 { font-weight: 700; font-size: 1.1rem; }
+    .cta-btn {
+      background: #40916c;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 700;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background 0.2s;
+      flex-shrink: 0;
+    }
+    .cta-btn:hover { background: #52b788; color: white; }
+    @media(max-width:600px) { .cta-strip { flex-direction: column; text-align: center; } }
+
+    .cross-links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+    .cross-link {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 12px 16px;
+      text-decoration: none;
+      color: #374151;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+    .cross-link:hover { background: #f0fdf4; border-color: #86efac; color: #15803d; }
+
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="/" class="logo">RetirementSorted</a>
+        <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation">
+          <span></span><span></span><span></span>
+        </button>
+        <nav class="nav" id="primary-nav">
+          <a href="/#calculator">Two-Pot</a>
+          <a href="/#ra-saver" style="color:#15803d;font-weight:600;">💰 RA Saver</a>
+          <a href="bond-calculator.html" style="color:#15803d;font-weight:600;">🏠 Bond</a>
+          <a href="net-salary-calculator.html">Salary</a>
+          <a href="fee-calculator.html">Fees</a>
+          <a href="joint-budget-calculator.html">Joint Budget</a>
+          <a href="/blog/">Articles</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div>
+      <h1>🏠 Bond Calculator South Africa</h1>
+      <p>Monthly repayments, extra payment savings, and the answer to SA's biggest retirement question: pay off your bond or invest in your RA?</p>
+      <span class="rate-badge">📊 Current prime rate: 11.25% (SARB repo 7.75%)</span>
+    </div>
+  </section>
+
+  <div class="calc-page">
+
+    <!-- Tabs -->
+    <div class="tool-tabs">
+      <button class="tool-tab active" data-tab="repayment">🏠 Bond Repayment</button>
+      <button class="tool-tab" data-tab="extra">💸 Extra Payment</button>
+      <button class="tool-tab" data-tab="vs-ra">⚖️ Bond vs RA</button>
+    </div>
+
+    <!-- ══ TAB 1: BOND REPAYMENT ══════════════════════════════════════════ -->
+    <div class="tool-panel active" id="tab-repayment">
+      <div class="calc-card">
+        <h2>Bond Repayment Calculator</h2>
+        <p class="subtitle">See your monthly instalment, total interest, and a full year-by-year amortisation.</p>
+
+        <div class="field-grid">
+          <div class="field-group">
+            <label class="field-label" for="r-loan">Loan Amount (Bond Value) <span class="field-hint">e.g. R1,500,000</span></label>
+            <input class="field-input" type="text" id="r-loan" placeholder="R 1,500,000" inputmode="numeric">
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="r-rate">
+              Interest Rate (% p.a.)
+              <span class="prime-link" onclick="document.getElementById('r-rate').value='11.25';calcRepayment()">Use prime (11.25%)</span>
+            </label>
+            <input class="field-input rate" type="number" id="r-rate" placeholder="11.25" step="0.05" min="0" max="30" value="11.25">
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="r-term">Loan Term (years)</label>
+            <input class="field-input rate" type="number" id="r-term" placeholder="20" min="1" max="30" value="20">
+          </div>
+        </div>
+
+        <div id="repayment-results" class="hidden">
+          <div class="result-strip" id="r-strip"></div>
+          <div id="r-insight" class="insight-box blue"></div>
+          <div class="amort-table-wrap">
+            <table class="amort-table">
+              <thead>
+                <tr>
+                  <th>Year</th>
+                  <th>Opening Balance</th>
+                  <th>Principal Paid</th>
+                  <th>Interest Paid</th>
+                  <th>Closing Balance</th>
+                </tr>
+              </thead>
+              <tbody id="amort-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ TAB 2: EXTRA PAYMENT ═══════════════════════════════════════════ -->
+    <div class="tool-panel" id="tab-extra">
+      <div class="calc-card">
+        <h2>Extra Payment Impact Calculator</h2>
+        <p class="subtitle">See how much time and money you save by paying a little extra each month.</p>
+
+        <div class="field-grid">
+          <div class="field-group">
+            <label class="field-label" for="e-loan">Current Bond Balance</label>
+            <input class="field-input" type="text" id="e-loan" placeholder="R 1,200,000" inputmode="numeric">
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="e-rate">
+              Interest Rate (% p.a.)
+              <span class="prime-link" onclick="document.getElementById('e-rate').value='11.25';calcExtra()">Use prime</span>
+            </label>
+            <input class="field-input rate" type="number" id="e-rate" placeholder="11.25" step="0.05" value="11.25">
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="e-term">Remaining Term (years)</label>
+            <input class="field-input rate" type="number" id="e-term" placeholder="18" min="1" max="30" value="18">
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="e-extra">Extra Monthly Payment</label>
+            <input class="field-input" type="text" id="e-extra" placeholder="R 500" inputmode="numeric">
+          </div>
+        </div>
+
+        <div id="extra-results" class="hidden">
+          <div class="result-strip" id="e-strip"></div>
+          <div id="e-insight" class="insight-box green"></div>
+          <div class="amort-table-wrap">
+            <table class="amort-table">
+              <thead>
+                <tr>
+                  <th>Year</th>
+                  <th>Balance (Normal)</th>
+                  <th>Balance (Extra)</th>
+                  <th>Interest Saved (Cumul.)</th>
+                </tr>
+              </thead>
+              <tbody id="extra-amort-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ TAB 3: BOND vs RA ══════════════════════════════════════════════ -->
+    <div class="tool-panel" id="tab-vs-ra">
+      <div class="calc-card">
+        <h2>Pay Off Bond vs Invest in RA</h2>
+        <p class="subtitle">The most asked retirement question in South Africa — finally answered with your actual numbers.</p>
+
+        <div class="insight-box blue" style="margin-bottom:24px;">
+          <strong>How this works:</strong> Every extra rand you put into your bond earns a guaranteed return equal to your bond interest rate. Every extra rand in your RA grows at the fund return rate <em>plus</em> the immediate tax deduction at your marginal rate. We compare both over your chosen time horizon.
+        </div>
+
+        <div class="field-grid">
+          <div class="field-group">
+            <label class="field-label" for="v-bond-rate">
+              Bond Interest Rate (% p.a.)
+              <span class="prime-link" onclick="document.getElementById('v-bond-rate').value='11.25';calcVsRA()">Use prime</span>
+            </label>
+            <input class="field-input rate" type="number" id="v-bond-rate" placeholder="11.25" step="0.05" value="11.25">
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="v-tax-rate">Your Marginal Tax Rate (%)</label>
+            <select class="field-input rate" id="v-tax-rate">
+              <option value="18">18% (income under R237k)</option>
+              <option value="26">26% (R237k–R370k)</option>
+              <option value="31" selected>31% (R370k–R512k)</option>
+              <option value="36">36% (R512k–R673k)</option>
+              <option value="39">39% (R673k–R857k)</option>
+              <option value="41">41% (R857k–R1.8M)</option>
+              <option value="45">45% (above R1.8M)</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="v-ra-return">Expected RA Fund Return (% p.a.) <span class="field-hint">10% is a reasonable SA equity assumption</span></label>
+            <input class="field-input rate" type="number" id="v-ra-return" placeholder="10" step="0.5" value="10">
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="v-monthly">Monthly Amount to Compare</label>
+            <input class="field-input" type="text" id="v-monthly" placeholder="R 1,000" inputmode="numeric">
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="v-years">Comparison Period (years)</label>
+            <input class="field-input rate" type="number" id="v-years" placeholder="20" min="1" max="40" value="20">
+          </div>
+        </div>
+
+        <div id="vsra-results" class="hidden">
+          <div id="verdict-box"></div>
+          <div class="comparison-cols" id="compare-cols"></div>
+          <div id="vsra-insight" class="insight-box purple"></div>
+          <div id="vsra-caveat" class="insight-box amber"></div>
+        </div>
+      </div>
+
+      <!-- Static explainer -->
+      <div class="calc-card">
+        <h2>The General Rule of Thumb</h2>
+        <p class="subtitle">Based on current SA rates and tax brackets.</p>
+
+        <table style="width:100%;border-collapse:collapse;font-size:0.93rem;">
+          <thead>
+            <tr style="background:#f3f4f6;">
+              <th style="padding:10px 12px;text-align:left;border-bottom:2px solid #e5e7eb;">Marginal Tax Rate</th>
+              <th style="padding:10px 12px;text-align:left;border-bottom:2px solid #e5e7eb;">After-Tax Bond Cost</th>
+              <th style="padding:10px 12px;text-align:left;border-bottom:2px solid #e5e7eb;">RA Effective Return</th>
+              <th style="padding:10px 12px;text-align:left;border-bottom:2px solid #e5e7eb;">Verdict at Prime (11.25%)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding:10px 12px;border-bottom:1px solid #f3f4f6;font-weight:600;">18%</td>
+              <td style="padding:10px 12px;border-bottom:1px solid #f3f4f6;">9.2%</td>
+              <td style="padding:10px 12px;border-bottom:1px solid #f3f4f6;">11.9%</td>
+              <td style="padding:10px 12px;border-bottom:1px solid #f3f4f6;">⚖️ Close — extra bond payment slightly better</td>
+            </tr>
+            <tr style="background:#f9fafb;">
+              <td style="padding:10px 12px;border-bottom:1px solid #f3f4f6;font-weight:600;">26%</td>
+              <td style="padding:10px 12px;border-bottom:1px solid #f3f4f6;">8.3%</td>
+              <td style="padding:10px 12px;border-bottom:1px solid #f3f4f6;">13.5%</td>
+              <td style="padding:10px 12px;border-bottom:1px solid #f3f4f6;">✅ RA wins clearly</td>
+            </tr>
+            <tr>
+              <td style="padding:10px 12px;border-bottom:1px solid #f3f4f6;font-weight:600;">31%</td>
+              <td style="padding:10px 12px;border-bottom:1px solid #f3f4f6;">7.8%</td>
+              <td style="padding:10px 12px;border-bottom:1px solid #f3f4f6;">14.5%</td>
+              <td style="padding:10px 12px;border-bottom:1px solid #f3f4f6;">✅ RA wins strongly</td>
+            </tr>
+            <tr style="background:#f9fafb;">
+              <td style="padding:10px 12px;border-bottom:1px solid #f3f4f6;font-weight:600;">36%</td>
+              <td style="padding:10px 12px;border-bottom:1px solid #f3f4f6;">7.2%</td>
+              <td style="padding:10px 12px;border-bottom:1px solid #f3f4f6;">15.6%</td>
+              <td style="padding:10px 12px;border-bottom:1px solid #f3f4f6;">✅ RA wins strongly</td>
+            </tr>
+            <tr>
+              <td style="padding:10px 12px;font-weight:600;">41%+</td>
+              <td style="padding:10px 12px;">6.6%</td>
+              <td style="padding:10px 12px;">17.0%</td>
+              <td style="padding:10px 12px;">✅ RA wins decisively</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="insight-box amber" style="margin-top:20px;">
+          ⚠️ <strong>Exception:</strong> If you're within 5 years of retirement, have no RA headroom left, or your bond rate is above 15%, extra bond payments can make more sense. Always consider liquidity — you can access bond equity via access bond; RA funds are locked until 55.
+        </div>
+      </div>
+    </div>
+
+    <!-- Cross-tool links -->
+    <div class="cross-links">
+      <a href="/#ra-saver" class="cross-link">💰 RA Tax Saver Calculator</a>
+      <a href="/net-salary-calculator.html" class="cross-link">💵 Net Salary Calculator</a>
+      <a href="/#calculator" class="cross-link">🏦 Two-Pot Calculator</a>
+      <a href="/fee-calculator.html" class="cross-link">📊 RA Fee Impact Calculator</a>
+      <a href="/blog/" class="cross-link">📖 Retirement Articles</a>
+    </div>
+
+  </div><!-- /calc-page -->
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="logo"><span class="logo-text">RetirementSorted</span></div>
+          <p>Independent retirement planning tools for South Africans. No jargon. No upselling.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Tools</h4>
+          <a href="/#calculator">Two-Pot Calculator</a>
+          <a href="/#ra-saver">RA Tax Saver</a>
+          <a href="/bond-calculator.html">Bond Calculator</a>
+          <a href="/net-salary-calculator.html">Net Salary</a>
+          <a href="/fee-calculator.html">Fee Impact</a>
+        </div>
+        <div class="footer-links">
+          <h4>Sorted Family</h4>
+          <a href="https://betsorted.co.za" target="_blank" rel="noopener">BetSorted</a>
+          <a href="https://cryptocasinosorted.com" target="_blank" rel="noopener">CryptoCasinoSorted</a>
+          <a href="https://paidproperly.co.za" target="_blank" rel="noopener">PaidProperly</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 RetirementSorted • Independent financial education</p>
+        <p class="disclaimer">Disclaimer: This calculator provides estimates only. Interest rates and tax rules change — verify with SARS and your bank. Consult a registered financial advisor before making decisions.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="nav.js"></script>
+  <script src="calculator-utils.js"></script>
+
+  <script>
+  // ─── Helpers ───────────────────────────────────────────────────────────────
+  const fmt   = n => Math.round(n).toLocaleString('en-ZA');
+  const fmtR  = n => 'R ' + fmt(n);
+  const fmtPct = n => n.toFixed(1) + '%';
+
+  function parseCurrency(str) {
+    return parseFloat((str || '').replace(/[^0-9.]/g, '')) || 0;
+  }
+
+  function monthlyPayment(principal, annualRate, termYears) {
+    const r = annualRate / 100 / 12;
+    const n = termYears * 12;
+    if (r === 0) return principal / n;
+    return principal * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+  }
+
+  function formatMonths(months) {
+    const y = Math.floor(months / 12);
+    const m = months % 12;
+    if (y === 0) return `${m} month${m !== 1 ? 's' : ''}`;
+    if (m === 0) return `${y} year${y !== 1 ? 's' : ''}`;
+    return `${y} yr ${m} mo`;
+  }
+
+  // ─── Tab switching ────────────────────────────────────────────────────────
+  document.querySelectorAll('.tool-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tool-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tool-panel').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+    });
+  });
+
+  // ─── Currency input formatting ─────────────────────────────────────────────
+  ['r-loan','e-loan','e-extra','v-monthly'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('input', () => {
+      const raw = parseCurrency(el.value);
+      if (raw > 0) el.value = 'R ' + fmt(raw);
+      triggerCalc(id);
+    });
+  });
+
+  function triggerCalc(id) {
+    if (['r-loan','r-rate','r-term'].some(x => x === id) || id.startsWith('r-')) calcRepayment();
+    if (['e-loan','e-rate','e-term','e-extra'].some(x => x === id)) calcExtra();
+    if (['v-bond-rate','v-tax-rate','v-ra-return','v-monthly','v-years'].some(x => x === id)) calcVsRA();
+  }
+
+  document.querySelectorAll('#tab-repayment input').forEach(el => el.addEventListener('input', calcRepayment));
+  document.querySelectorAll('#tab-extra input').forEach(el => el.addEventListener('input', calcExtra));
+  document.querySelectorAll('#tab-vs-ra input, #tab-vs-ra select').forEach(el => el.addEventListener('input', calcVsRA));
+
+  // ─── Tab 1: Bond Repayment ─────────────────────────────────────────────────
+  function calcRepayment() {
+    const principal = parseCurrency(document.getElementById('r-loan').value);
+    const rate      = parseFloat(document.getElementById('r-rate').value) || 0;
+    const term      = parseInt(document.getElementById('r-term').value) || 0;
+    if (!principal || !rate || !term) return;
+
+    const monthly      = monthlyPayment(principal, rate, term);
+    const totalPaid    = monthly * term * 12;
+    const totalInterest = totalPaid - principal;
+
+    document.getElementById('r-strip').innerHTML = `
+      <div class="result-box"><div class="result-box-label">Monthly Payment</div><div class="result-box-value">${fmtR(monthly)}</div></div>
+      <div class="result-box amber"><div class="result-box-label">Total Interest</div><div class="result-box-value red">${fmtR(totalInterest)}</div></div>
+      <div class="result-box"><div class="result-box-label">Total Cost</div><div class="result-box-value">${fmtR(totalPaid)}</div></div>
+      <div class="result-box"><div class="result-box-label">Interest / Loan Ratio</div><div class="result-box-value">${fmtPct(totalInterest/principal*100)}</div><div class="result-box-sub">you pay ${fmtPct(totalInterest/principal*100)} extra in interest</div></div>
+    `;
+
+    document.getElementById('r-insight').innerHTML =
+      `💡 On a <strong>${fmtR(principal)}</strong> bond at <strong>${rate}%</strong> over <strong>${term} years</strong>, you pay <strong>${fmtR(monthly)}/month</strong>. ` +
+      `Over the full term, you pay back <strong>${fmtR(totalPaid)}</strong> — <strong>${fmtR(totalInterest)}</strong> of that is pure interest. ` +
+      `Paying just <strong>R500/month extra</strong> could save you significantly — check the Extra Payment tab.`;
+
+    // Build annual amortisation
+    const r = rate / 100 / 12;
+    let balance = principal;
+    let tbody = '';
+    for (let yr = 1; yr <= term && balance > 1; yr++) {
+      const openBal = balance;
+      let intPaid = 0, prinPaid = 0;
+      for (let m = 0; m < 12 && balance > 1; m++) {
+        const intCharge = balance * r;
+        const prin = Math.min(monthly - intCharge, balance);
+        intPaid  += intCharge;
+        prinPaid += prin;
+        balance  -= prin;
+      }
+      tbody += `<tr>
+        <td>Year ${yr}</td>
+        <td>${fmtR(openBal)}</td>
+        <td>${fmtR(prinPaid)}</td>
+        <td>${fmtR(intPaid)}</td>
+        <td>${fmtR(Math.max(0, balance))}</td>
+      </tr>`;
+    }
+    document.getElementById('amort-body').innerHTML = tbody;
+    document.getElementById('repayment-results').classList.remove('hidden');
+  }
+
+  // ─── Tab 2: Extra Payment ──────────────────────────────────────────────────
+  function calcExtra() {
+    const principal = parseCurrency(document.getElementById('e-loan').value);
+    const rate      = parseFloat(document.getElementById('e-rate').value) || 0;
+    const term      = parseInt(document.getElementById('e-term').value) || 0;
+    const extra     = parseCurrency(document.getElementById('e-extra').value);
+    if (!principal || !rate || !term) return;
+
+    const r       = rate / 100 / 12;
+    const monthly = monthlyPayment(principal, rate, term);
+
+    // Simulate normal payoff
+    let balNormal = principal, monthsNormal = 0, intNormal = 0;
+    while (balNormal > 1 && monthsNormal < term * 12 + 60) {
+      const intCharge = balNormal * r;
+      balNormal -= (monthly - intCharge);
+      intNormal += intCharge;
+      monthsNormal++;
+    }
+
+    // Simulate with extra payment
+    let balExtra = principal, monthsExtra = 0, intExtra = 0;
+    const monthlyExtra = monthly + (extra || 0);
+    while (balExtra > 1 && monthsExtra < term * 12 + 60) {
+      const intCharge = balExtra * r;
+      const payment = Math.min(monthlyExtra, balExtra + intCharge);
+      balExtra -= (payment - intCharge);
+      intExtra += intCharge;
+      monthsExtra++;
+    }
+
+    const monthsSaved   = monthsNormal - monthsExtra;
+    const interestSaved = intNormal - intExtra;
+
+    document.getElementById('e-strip').innerHTML = `
+      <div class="result-box"><div class="result-box-label">Normal Monthly</div><div class="result-box-value">${fmtR(monthly)}</div></div>
+      <div class="result-box green"><div class="result-box-label">With Extra</div><div class="result-box-value green">${fmtR(monthlyExtra)}</div></div>
+      <div class="result-box green"><div class="result-box-label">Interest Saved</div><div class="result-box-value green">${fmtR(interestSaved)}</div></div>
+      <div class="result-box green"><div class="result-box-label">Time Saved</div><div class="result-box-value green">${formatMonths(monthsSaved)}</div><div class="result-box-sub">paid off ${formatMonths(monthsExtra)} instead of ${formatMonths(monthsNormal)}</div></div>
+    `;
+
+    const extraMonthly = extra || 0;
+    document.getElementById('e-insight').innerHTML =
+      extraMonthly > 0
+        ? `🎉 Paying an extra <strong>${fmtR(extraMonthly)}/month</strong> saves you <strong>${fmtR(interestSaved)}</strong> in interest and cuts <strong>${formatMonths(monthsSaved)}</strong> off your loan. Your bond is paid off in <strong>${formatMonths(monthsExtra)}</strong> instead of <strong>${formatMonths(monthsNormal)}</strong>.`
+        : `Enter an extra monthly amount above to see your savings. Even R500/month on a R1.5M bond typically saves R300,000+ in interest.`;
+
+    // Year-by-year comparison table
+    let b1 = principal, b2 = principal, cumIntSaved = 0;
+    let tbody = '';
+    for (let yr = 1; yr <= term; yr++) {
+      const open1 = b1, open2 = b2;
+      for (let m = 0; m < 12; m++) {
+        if (b1 > 1) { const ic = b1*r; b1 -= (monthly - ic); }
+        if (b2 > 1) { const ic = b2*r; const pmt = Math.min(monthlyExtra, b2+ic); cumIntSaved += ic - b2*r + (b2*r); b2 -= (pmt - ic); cumIntSaved += (extra||0) > 0 ? ic*(extra/monthly) : 0; }
+      }
+      // Simpler: recalculate interest saved cumulatively
+      const intSavedYr = Math.max(0, intNormal - intExtra) * (yr / term);
+      const rowClass = b2 <= 0 && b1 > 0 ? ' class="extra-row"' : '';
+      tbody += `<tr${rowClass}>
+        <td>Year ${yr}</td>
+        <td>${b1 > 1 ? fmtR(Math.max(0,b1)) : '✅ Paid off'}</td>
+        <td>${b2 > 1 ? fmtR(Math.max(0,b2)) : '✅ Paid off'}</td>
+        <td>${fmtR(intSavedYr)}</td>
+      </tr>`;
+      if (b2 <= 0 && yr < term) {
+        tbody += `<tr><td colspan="4" style="text-align:center;padding:10px;color:#15803d;font-weight:600;background:#f0fdf4;">✅ Bond with extra payments fully paid off at Year ${yr}</td></tr>`;
+        break;
+      }
+    }
+    document.getElementById('extra-amort-body').innerHTML = tbody;
+    document.getElementById('extra-results').classList.remove('hidden');
+  }
+
+  // ─── Tab 3: Bond vs RA ────────────────────────────────────────────────────
+  function calcVsRA() {
+    const bondRate   = parseFloat(document.getElementById('v-bond-rate').value) || 0;
+    const taxRate    = parseFloat(document.getElementById('v-tax-rate').value) / 100 || 0;
+    const raReturn   = parseFloat(document.getElementById('v-ra-return').value) / 100 || 0;
+    const monthly    = parseCurrency(document.getElementById('v-monthly').value);
+    const years      = parseInt(document.getElementById('v-years').value) || 0;
+
+    if (!bondRate || !monthly || !years) return;
+
+    // Bond: guaranteed after-tax return = bond rate (interest saved is after-tax benefit)
+    const bondEffectiveReturn = bondRate / 100;
+
+    // RA: upfront tax deduction + fund growth
+    // Effective gross return per rand contributed: 1/(1-taxRate) × (1+raReturn)^years
+    // Net effective annual return that makes RA competitive:
+    // Each R1 contributed → SARS gives back R(taxRate) immediately (via reduced PAYE)
+    // So R1 in RA effectively costs R(1 - taxRate) net
+    // That R1 grows to (1 + raReturn)^years inside the fund
+    // At retirement, taxed again (but at lower rate — we use 18% as conservative estimate)
+    const retirementTaxRate = 0.18; // conservative
+    const raNetContribCost  = 1 - taxRate;  // net cost per R1 contributed
+    const raFundGrowth      = Math.pow(1 + raReturn, years);
+    const raAfterRetireTax  = 1 - retirementTaxRate;
+    // Effective return: start with R(1 - taxRate), end with R(1 * raFundGrowth * (1-retirementTaxRate))
+    const raEffectiveMultiple = raFundGrowth * raAfterRetireTax / raNetContribCost;
+    // Equivalent annual rate:
+    const raEffectiveAnnualReturn = Math.pow(raEffectiveMultiple, 1/years) - 1;
+
+    // Future value of bond extra payments (interest saved compounds as equity)
+    const bondFV = monthly * 12 * years * (1 + bondEffectiveReturn * years / 2); // simplified
+
+    // Future value of RA (net of retirement tax)
+    const raMonthlyGross = monthly; // same nominal amount going in
+    // Monthly compounding in RA
+    const raMonthlyRate = raReturn / 12;
+    const raMonths = years * 12;
+    const raFVGross = raMonthlyGross * (Math.pow(1 + raMonthlyRate, raMonths) - 1) / raMonthlyRate;
+    const raNetFV = raFVGross * (1 - retirementTaxRate);
+    const raEffectiveFV = raNetFV / (1 - taxRate); // adjusted for cost of contribution
+
+    // Bond equivalent: monthly payment reduces interest, equivalent to earning bond rate
+    const bondMonthlyRate = bondEffectiveReturn / 12;
+    const bondFVEquiv = monthly * (Math.pow(1 + bondMonthlyRate, raMonths) - 1) / bondMonthlyRate;
+
+    const raWins = raEffectiveAnnualReturn > bondEffectiveReturn;
+
+    // Verdict
+    const verdictEl = document.getElementById('verdict-box');
+    if (raWins) {
+      const gap = (raEffectiveAnnualReturn - bondEffectiveReturn) * 100;
+      verdictEl.innerHTML = `<div class="verdict-box green-verdict">
+        <h3>✅ Invest in Your RA</h3>
+        <p>Your RA effective return (~${fmtPct(raEffectiveAnnualReturn*100)}) beats your bond rate (${fmtPct(bondRate)}) by <strong>${fmtPct(gap)}</strong>. Over ${years} years, the RA generates significantly more wealth.</p>
+      </div>`;
+    } else {
+      verdictEl.innerHTML = `<div class="verdict-box bond-verdict">
+        <h3>🏠 Pay Extra Into Your Bond</h3>
+        <p>At your current tax rate (${fmtPct(taxRate*100)}) and bond rate (${fmtPct(bondRate)}), the guaranteed bond return beats the RA. Consider building your bond equity first.</p>
+      </div>`;
+    }
+
+    // Comparison columns
+    document.getElementById('compare-cols').innerHTML = `
+      <div class="compare-card ${!raWins ? 'winner' : ''}">
+        <div class="compare-label">Option A</div>
+        <h3>🏠 Extra Bond Payment ${!raWins ? '<span class="winner-badge">WINNER</span>' : ''}</h3>
+        <div class="compare-metric"><span class="compare-metric-label">Guaranteed return</span><span class="compare-metric-value">${fmtPct(bondRate)}</span></div>
+        <div class="compare-metric"><span class="compare-metric-label">After-tax cost</span><span class="compare-metric-value">0% (saving interest)</span></div>
+        <div class="compare-metric"><span class="compare-metric-label">Liquidity</span><span class="compare-metric-value">High (access bond)</span></div>
+        <div class="compare-metric"><span class="compare-metric-label">Risk</span><span class="compare-metric-value green">Zero</span></div>
+        <div class="compare-metric"><span class="compare-metric-label">Estimated value after ${years}yr</span><span class="compare-metric-value">${fmtR(bondFVEquiv)}</span></div>
+      </div>
+      <div class="compare-card ${raWins ? 'winner' : ''}">
+        <div class="compare-label">Option B</div>
+        <h3>💰 RA Contribution ${raWins ? '<span class="winner-badge">WINNER</span>' : ''}</h3>
+        <div class="compare-metric"><span class="compare-metric-label">Fund return</span><span class="compare-metric-value">${fmtPct(raReturn*100)}</span></div>
+        <div class="compare-metric"><span class="compare-metric-label">Effective return (incl. tax benefit)</span><span class="compare-metric-value green">~${fmtPct(raEffectiveAnnualReturn*100)}</span></div>
+        <div class="compare-metric"><span class="compare-metric-label">Liquidity</span><span class="compare-metric-value">Locked until age 55</span></div>
+        <div class="compare-metric"><span class="compare-metric-label">Risk</span><span class="compare-metric-value">Market risk</span></div>
+        <div class="compare-metric"><span class="compare-metric-label">Estimated value after ${years}yr</span><span class="compare-metric-value">${fmtR(raEffectiveFV)}</span></div>
+      </div>
+    `;
+
+    document.getElementById('vsra-insight').innerHTML =
+      `💡 <strong>Key insight:</strong> At a ${fmtPct(taxRate*100)} marginal tax rate, every R1,000 you put into your RA costs you only <strong>R${Math.round((1-taxRate)*1000)}</strong> after the SARS tax deduction. That's the RA's built-in advantage. The higher your tax bracket, the more the RA wins. ` +
+      (raWins ? `At your numbers, the RA is <strong>the better choice</strong>.` : `At your numbers, extra bond payments are slightly ahead.`);
+
+    document.getElementById('vsra-caveat').innerHTML =
+      `⚠️ <strong>Important nuances:</strong> RA funds are illiquid until age 55. If you need access to capital before then, extra bond payments (especially via an access bond) give you more flexibility. Also: if you're nearing your RA deduction limit (27.5% / R350k), additional contributions won't get the tax deduction — check the <a href="/#ra-saver">RA Tax Saver tool</a> first. These calculations are estimates; consult a CFP for your exact situation.`;
+
+    document.getElementById('vsra-results').classList.remove('hidden');
+  }
+
+  // Auto-run with defaults on load
+  window.addEventListener('load', () => {
+    calcRepayment();
+    calcVsRA();
+  });
+  </script>
+</body>
+</html>

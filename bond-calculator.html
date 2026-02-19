@@ -629,14 +629,20 @@
             <input class="field-input" type="text" id="rvb-bond-repay" placeholder="R 15,000" inputmode="numeric">
           </div>
           <div class="field-group">
-            <label class="field-label" for="rvb-deposit">Deposit / Transfer Costs Paid
-              <span class="field-hint">Initial cash outlay: deposit + transfer duty + bond costs</span>
+            <label class="field-label" for="rvb-deposit">Deposit (Capital)
+              <span class="field-hint">Your deposit only — this becomes equity. Transfer duty &amp; bond reg costs are calculated separately below.</span>
             </label>
             <input class="field-input" type="text" id="rvb-deposit" placeholder="R 150,000" inputmode="numeric">
           </div>
           <div class="field-group">
             <label class="field-label" for="rvb-prop-value">Property Purchase Price</label>
             <input class="field-input" type="text" id="rvb-prop-value" placeholder="R 1,500,000" inputmode="numeric">
+          </div>
+          <div class="field-group" id="rvb-costs-preview" style="display:none;">
+            <label class="field-label">Sunk Costs (Auto-Calculated)
+              <span class="field-hint">These are the buyer's costs that become nothing — they never appear in your equity</span>
+            </label>
+            <div id="rvb-costs-display" style="background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:12px 14px;font-size:0.9rem;color:#92400e;line-height:1.8;"></div>
           </div>
           <div class="field-group">
             <label class="field-label" for="rvb-bond-rate">Bond Interest Rate (% p.a.)
@@ -1175,19 +1181,29 @@
       return 1128600 + (price - 12100000) * 0.13;
     }
     const duty           = transferDuty(propValue);
-    const bondRegCost    = propValue > 0 ? Math.min(25000, propValue * 0.017) : 0; // ~1.7% bond reg costs
-    const totalUpfront   = deposit + duty + bondRegCost;
+    const bondRegCost    = propValue > 0 ? Math.min(25000, propValue * 0.017) : 0;
+    const sunkCosts      = duty + bondRegCost;   // buyer loses this forever
+    const totalUpfront   = deposit + sunkCosts;  // total cash buyer needs on day 1
+
+    // Show costs preview in form
+    if (propValue > 0) {
+      document.getElementById('rvb-costs-preview').style.display = 'block';
+      document.getElementById('rvb-costs-display').innerHTML =
+        `Transfer duty: <strong>${fmtR(duty)}</strong> &nbsp;|&nbsp; Bond reg + attorney: <strong>~${fmtR(bondRegCost)}</strong> &nbsp;|&nbsp; <strong>Total sunk: ${fmtR(sunkCosts)}</strong><br>
+         <span style="font-size:0.85em;">Renter starts with <strong>${fmtR(deposit > 0 ? deposit + sunkCosts : sunkCosts)}</strong> to invest (deposit + these saved costs)</span>`;
+    }
 
     const monthlyRate    = bondRate / 12;
     const totalMonths    = bondTerm * 12;
 
-    // Monthly principal in bond repayment (changes each month but we track balance)
     let bondBalance = propValue - deposit;
     let totalInterestPaid = 0;
 
     // ── Simulate both paths year by year ──────────────────────────────────────
-    let buyingEquity     = deposit; // starts with deposit (transfer costs are sunk)
-    let rentingPortfolio = deposit; // renter invests the deposit amount upfront
+    // Buyer:  deposit → equity (capital), sunk costs → lost forever
+    // Renter: invests deposit AND the sunk costs they don't pay (both are available capital)
+    let buyingEquity     = deposit;
+    let rentingPortfolio = deposit + sunkCosts; // renter has MORE capital from day 1
     let currentRent      = monthlyRent;
     let currentPropValue = propValue;
     let currentBondBal   = bondBalance;
@@ -1268,7 +1284,8 @@
       <div class="result-box blue"><div class="rb-label">Renter Portfolio (yr ${years})</div><div class="rb-value" style="color:#3b82f6;">${fmtR(finalRent)}</div><div class="rb-sub">invested difference</div></div>
       <div class="result-box"><div class="rb-label">Leverage Ratio</div><div class="rb-value">${leverageRatio.toFixed(1)}×</div><div class="rb-sub">property value ÷ deposit</div></div>
       <div class="result-box amber"><div class="rb-label">Year 1 Appreciation on Equity</div><div class="rb-value" style="color:#d97706;">${yr1AppOnEquity.toFixed(1)}%</div><div class="rb-sub">${fmtR(yr1AppGain)} on ${fmtR(deposit)}</div></div>
-      <div class="result-box"><div class="rb-label">Upfront Costs</div><div class="rb-value">${fmtR(totalUpfront)}</div><div class="rb-sub">deposit + transfer + bond reg</div></div>
+      <div class="result-box amber"><div class="rb-label">Sunk Costs (Buyer)</div><div class="rb-value" style="color:#d97706;">${fmtR(sunkCosts)}</div><div class="rb-sub">transfer duty + bond reg — lost forever</div></div>
+      <div class="result-box"><div class="rb-label">Total Buyer Outlay</div><div class="rb-value">${fmtR(totalUpfront)}</div><div class="rb-sub">deposit (equity) + ${fmtR(sunkCosts)} (sunk)</div></div>
       ${breakevenYear ? `<div class="result-box green"><div class="rb-label">Buying Breakeven</div><div class="rb-value green">Year ${breakevenYear}</div><div class="rb-sub">when equity overtakes portfolio</div></div>` : `<div class="result-box red"><div class="rb-label">Buying Breakeven</div><div class="rb-value red">Not in ${years}yr</div><div class="rb-sub">renting stays ahead</div></div>`}
     `;
 
@@ -1279,7 +1296,9 @@
         <h3>🏠 Buy the Property ${buyWins ? '<span class="winner-badge">WINNER</span>' : ''}</h3>
         <div class="compare-metric"><span class="compare-metric-label">Monthly cost (bond)</span><span class="compare-metric-value">${fmtR(bondRepay)}</span></div>
         <div class="compare-metric"><span class="compare-metric-label">Monthly ownership costs</span><span class="compare-metric-value">${fmtR(monthlyOwnerCosts)}</span></div>
-        <div class="compare-metric"><span class="compare-metric-label">Total upfront</span><span class="compare-metric-value">${fmtR(totalUpfront)}</span></div>
+        <div class="compare-metric"><span class="compare-metric-label">Deposit → equity</span><span class="compare-metric-value green">${fmtR(deposit)}</span></div>
+        <div class="compare-metric"><span class="compare-metric-label">Transfer duty</span><span class="compare-metric-value" style="color:#d97706;">−${fmtR(duty)} (sunk)</span></div>
+        <div class="compare-metric"><span class="compare-metric-label">Bond reg costs</span><span class="compare-metric-value" style="color:#d97706;">−${fmtR(bondRegCost)} (sunk)</span></div>
         <div class="compare-metric"><span class="compare-metric-label">Leverage</span><span class="compare-metric-value green">${leverageRatio.toFixed(1)}× on appreciation</span></div>
         <div class="compare-metric"><span class="compare-metric-label">Property value after ${years}yr</span><span class="compare-metric-value">${fmtR(snapshots[years-1].propValue)}</span></div>
         <div class="compare-metric"><span class="compare-metric-label">Remaining bond</span><span class="compare-metric-value">${fmtR(snapshots[years-1].bondBal)}</span></div>
@@ -1292,8 +1311,9 @@
         <div class="compare-metric"><span class="compare-metric-label">Monthly rent (yr ${years})</span><span class="compare-metric-value">${fmtR(monthlyRent * Math.pow(1+rentInflation, years))}</span></div>
         <div class="compare-metric"><span class="compare-metric-label">Monthly surplus invested</span><span class="compare-metric-value">${fmtR(monthlySurplus)}</span></div>
         <div class="compare-metric"><span class="compare-metric-label">Deposit invested upfront</span><span class="compare-metric-value">${fmtR(deposit)}</span></div>
+        <div class="compare-metric"><span class="compare-metric-label">Transfer costs saved &amp; invested</span><span class="compare-metric-value green">+${fmtR(sunkCosts)}</span></div>
+        <div class="compare-metric"><span class="compare-metric-label">Total invested from day 1</span><span class="compare-metric-value green" style="font-weight:700;">${fmtR(deposit + sunkCosts)}</span></div>
         <div class="compare-metric"><span class="compare-metric-label">Investment return</span><span class="compare-metric-value">${fmtPct(investReturn*100)} p.a.</span></div>
-        <div class="compare-metric"><span class="compare-metric-label">No upfront transfer costs</span><span class="compare-metric-value green">Save ${fmtR(duty + bondRegCost)}</span></div>
         <div class="compare-metric" style="border-top:2px solid #e5e7eb;margin-top:8px;padding-top:12px;"><span class="compare-metric-label"><strong>Portfolio value</strong></span><span class="compare-metric-value" style="color:#3b82f6;font-size:1.2rem;"><strong>${fmtR(finalRent)}</strong></span></div>
       </div>
     `;
@@ -1330,8 +1350,8 @@
 
     // ── Insights ──────────────────────────────────────────────────────────────
     document.getElementById('rvb-insight').innerHTML = buyWins
-      ? `💡 <strong>Why buying wins:</strong> Your ${leverageRatio.toFixed(1)}× leverage means ${fmtPct(appreciation*100)} appreciation on ${fmtR(propValue)} earns <strong>${fmtR(yr1AppGain)}/year on your ${fmtR(deposit)} deposit</strong> — a ${yr1AppOnEquity.toFixed(1)}% return on equity just from appreciation. The renter can't replicate this without leverage. Bond repayment is also fixed while rent rises ${fmtPct(rentInflation*100)} every year, steadily widening the gap.`
-      : `💡 <strong>Why renting wins here:</strong> The monthly surplus invested at ${fmtPct(investReturn*100)} compounds faster than the leveraged appreciation in this scenario. Try adjusting the appreciation rate or comparison period — buying typically wins over longer horizons or in higher-appreciation areas.`;
+      ? `💡 <strong>Why buying wins:</strong> Your ${leverageRatio.toFixed(1)}× leverage means ${fmtPct(appreciation*100)} appreciation on ${fmtR(propValue)} earns <strong>${fmtR(yr1AppGain)}/year on your ${fmtR(deposit)} deposit</strong> — a ${yr1AppOnEquity.toFixed(1)}% return on equity from appreciation alone. Note: the renter starts with <strong>${fmtR(deposit + sunkCosts)}</strong> invested (deposit + the ${fmtR(sunkCosts)} in transfer costs they don't pay) — buying still comes out ahead because leverage dominates over time.`
+      : `💡 <strong>Why renting wins here:</strong> The renter starts with <strong>${fmtR(deposit + sunkCosts)}</strong> invested (deposit + ${fmtR(sunkCosts)} in transfer costs saved) at ${fmtPct(investReturn*100)} p.a. That head start plus compound returns beats the leveraged appreciation in this scenario. Try a higher appreciation rate or longer period — buying typically wins over 15+ years.`;
 
     document.getElementById('rvb-caveat').innerHTML =
       `⚠️ <strong>Not included in this model:</strong> Rental income (if investment property), capital gains tax on property sale (typically 40% inclusion rate for individuals), detailed transfer duty breakdown, sectional title levies, and inflation on all costs. Property appreciation can be negative in some markets and periods. This is a planning tool — speak to a property finance specialist before committing.`;

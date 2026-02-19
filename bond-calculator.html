@@ -237,11 +237,39 @@
     /* Bond vs RA */
     .comparison-cols {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
       margin: 24px 0;
     }
-    @media(max-width:600px) { .comparison-cols { grid-template-columns: 1fr; } }
+    @media(max-width:800px) { .comparison-cols { grid-template-columns: 1fr; } }
+
+    .leverage-badge {
+      display: inline-block;
+      background: #f0fdf4;
+      border: 1px solid #86efac;
+      color: #15803d;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 99px;
+      margin-top: 6px;
+    }
+    .equity-grow-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 10px;
+      margin: 16px 0;
+    }
+    .equity-cell {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+      font-size: 0.85rem;
+    }
+    .equity-cell strong { display: block; font-size: 1.1rem; color: #1b4332; }
+    .equity-cell.highlight { background: #f0fdf4; border-color: #86efac; }
 
     .compare-card {
       border-radius: 12px;
@@ -450,10 +478,10 @@
     <div class="tool-panel" id="tab-vs-ra">
       <div class="calc-card">
         <h2>Pay Off Bond vs Invest in RA</h2>
-        <p class="subtitle">The most asked retirement question in South Africa — finally answered with your actual numbers.</p>
+        <p class="subtitle">The most asked retirement question in South Africa — now with property leverage and appreciation factored in.</p>
 
         <div class="insight-box blue" style="margin-bottom:24px;">
-          <strong>How this works:</strong> Every extra rand you put into your bond earns a guaranteed return equal to your bond interest rate. Every extra rand in your RA grows at the fund return rate <em>plus</em> the immediate tax deduction at your marginal rate. We compare both over your chosen time horizon.
+          <strong>How this works:</strong> We compare <strong>three paths</strong> for your extra monthly money. The key insight most calculators miss: your property appreciates on its <em>full value</em>, not just your equity — that's leverage working for you. A R1.5M property appreciating at 6% generates R90k/year on your R300k equity, a 30% return on equity from appreciation alone.
         </div>
 
         <div class="field-grid">
@@ -481,18 +509,41 @@
             <input class="field-input rate" type="number" id="v-ra-return" placeholder="10" step="0.5" value="10">
           </div>
           <div class="field-group">
-            <label class="field-label" for="v-monthly">Monthly Amount to Compare</label>
+            <label class="field-label" for="v-monthly">Monthly Extra Amount to Compare</label>
             <input class="field-input" type="text" id="v-monthly" placeholder="R 1,000" inputmode="numeric">
           </div>
           <div class="field-group">
             <label class="field-label" for="v-years">Comparison Period (years)</label>
             <input class="field-input rate" type="number" id="v-years" placeholder="20" min="1" max="40" value="20">
           </div>
+          <div class="field-group">
+            <label class="field-label" for="v-prop-value">
+              Property Current Market Value
+              <span class="field-hint">Appreciation is calculated on this full value (leverage)</span>
+            </label>
+            <input class="field-input" type="text" id="v-prop-value" placeholder="R 1,500,000" inputmode="numeric">
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="v-equity">
+              Your Current Equity
+              <span class="field-hint">Property value minus outstanding bond balance</span>
+            </label>
+            <input class="field-input" type="text" id="v-equity" placeholder="R 300,000" inputmode="numeric">
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="v-appreciation">
+              Expected Property Appreciation (% p.a.)
+              <span class="field-hint">SA long-run avg ≈ 5–7% • Cape Town ≈ 7–9%</span>
+            </label>
+            <input class="field-input rate" type="number" id="v-appreciation" placeholder="6" step="0.5" value="6">
+          </div>
         </div>
 
         <div id="vsra-results" class="hidden">
           <div id="verdict-box"></div>
+          <div id="leverage-strip" style="margin:16px 0;"></div>
           <div class="comparison-cols" id="compare-cols"></div>
+          <div id="equity-growth-section" style="margin-top:24px;"></div>
           <div id="vsra-insight" class="insight-box purple"></div>
           <div id="vsra-caveat" class="insight-box amber"></div>
         </div>
@@ -631,7 +682,7 @@
   });
 
   // ─── Currency input formatting ─────────────────────────────────────────────
-  ['r-loan','e-loan','e-extra','v-monthly'].forEach(id => {
+  ['r-loan','e-loan','e-extra','v-monthly','v-prop-value','v-equity'].forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
     el.addEventListener('input', () => {
@@ -644,7 +695,7 @@
   function triggerCalc(id) {
     if (['r-loan','r-rate','r-term'].some(x => x === id) || id.startsWith('r-')) calcRepayment();
     if (['e-loan','e-rate','e-term','e-extra'].some(x => x === id)) calcExtra();
-    if (['v-bond-rate','v-tax-rate','v-ra-return','v-monthly','v-years'].some(x => x === id)) calcVsRA();
+    if (['v-bond-rate','v-tax-rate','v-ra-return','v-monthly','v-years','v-prop-value','v-equity','v-appreciation'].some(x => x === id)) calcVsRA();
   }
 
   document.querySelectorAll('#tab-repayment input').forEach(el => el.addEventListener('input', calcRepayment));
@@ -774,96 +825,191 @@
     document.getElementById('extra-results').classList.remove('hidden');
   }
 
-  // ─── Tab 3: Bond vs RA ────────────────────────────────────────────────────
+  // ─── Tab 3: Bond vs RA (with leverage + appreciation) ────────────────────
   function calcVsRA() {
-    const bondRate   = parseFloat(document.getElementById('v-bond-rate').value) || 0;
-    const taxRate    = parseFloat(document.getElementById('v-tax-rate').value) / 100 || 0;
-    const raReturn   = parseFloat(document.getElementById('v-ra-return').value) / 100 || 0;
-    const monthly    = parseCurrency(document.getElementById('v-monthly').value);
-    const years      = parseInt(document.getElementById('v-years').value) || 0;
+    const bondRate      = parseFloat(document.getElementById('v-bond-rate').value) || 0;
+    const taxRate       = parseFloat(document.getElementById('v-tax-rate').value) / 100 || 0;
+    const raReturn      = parseFloat(document.getElementById('v-ra-return').value) / 100 || 0;
+    const monthly       = parseCurrency(document.getElementById('v-monthly').value);
+    const years         = parseInt(document.getElementById('v-years').value) || 0;
+    const propValue     = parseCurrency(document.getElementById('v-prop-value').value);
+    const equityNow     = parseCurrency(document.getElementById('v-equity').value);
+    const appreciation  = (parseFloat(document.getElementById('v-appreciation').value) || 0) / 100;
 
     if (!bondRate || !monthly || !years) return;
 
-    // Bond: guaranteed after-tax return = bond rate (interest saved is after-tax benefit)
-    const bondEffectiveReturn = bondRate / 100;
-
-    // RA: upfront tax deduction + fund growth
-    // Effective gross return per rand contributed: 1/(1-taxRate) × (1+raReturn)^years
-    // Net effective annual return that makes RA competitive:
-    // Each R1 contributed → SARS gives back R(taxRate) immediately (via reduced PAYE)
-    // So R1 in RA effectively costs R(1 - taxRate) net
-    // That R1 grows to (1 + raReturn)^years inside the fund
-    // At retirement, taxed again (but at lower rate — we use 18% as conservative estimate)
-    const retirementTaxRate = 0.18; // conservative
-    const raNetContribCost  = 1 - taxRate;  // net cost per R1 contributed
-    const raFundGrowth      = Math.pow(1 + raReturn, years);
-    const raAfterRetireTax  = 1 - retirementTaxRate;
-    // Effective return: start with R(1 - taxRate), end with R(1 * raFundGrowth * (1-retirementTaxRate))
-    const raEffectiveMultiple = raFundGrowth * raAfterRetireTax / raNetContribCost;
-    // Equivalent annual rate:
-    const raEffectiveAnnualReturn = Math.pow(raEffectiveMultiple, 1/years) - 1;
-
-    // Future value of bond extra payments (interest saved compounds as equity)
-    const bondFV = monthly * 12 * years * (1 + bondEffectiveReturn * years / 2); // simplified
-
-    // Future value of RA (net of retirement tax)
-    const raMonthlyGross = monthly; // same nominal amount going in
-    // Monthly compounding in RA
-    const raMonthlyRate = raReturn / 12;
     const raMonths = years * 12;
-    const raFVGross = raMonthlyGross * (Math.pow(1 + raMonthlyRate, raMonths) - 1) / raMonthlyRate;
-    const raNetFV = raFVGross * (1 - retirementTaxRate);
-    const raEffectiveFV = raNetFV / (1 - taxRate); // adjusted for cost of contribution
 
-    // Bond equivalent: monthly payment reduces interest, equivalent to earning bond rate
-    const bondMonthlyRate = bondEffectiveReturn / 12;
-    const bondFVEquiv = monthly * (Math.pow(1 + bondMonthlyRate, raMonths) - 1) / bondMonthlyRate;
+    // ── Option A: Bond interest saving only ──────────────────────────────────
+    const bondMonthlyRate = (bondRate / 100) / 12;
+    const bondFVInterest = monthly * (Math.pow(1 + bondMonthlyRate, raMonths) - 1) / bondMonthlyRate;
 
-    const raWins = raEffectiveAnnualReturn > bondEffectiveReturn;
+    // ── Option B: Bond + leveraged property appreciation ─────────────────────
+    // Property appreciates on full value. As bond is paid down, equity grows two ways:
+    // (1) principal repayment + extra payments, (2) property appreciation
+    // We model the equity growth from appreciation alone (it's independent of extra payments)
+    const hasPropData = propValue > 0 && equityNow > 0;
+    let leverageRatio = 0, yr1AppReturn = 0, propFV = 0, equityFV = 0, combinedFV = 0;
 
-    // Verdict
+    if (hasPropData) {
+      leverageRatio = propValue / equityNow;
+      // Year-1 appreciation return on equity
+      yr1AppReturn = (propValue * appreciation) / equityNow * 100;
+
+      // Simulate over years: property appreciates, bond balance reduces (standard repayment)
+      // Equity at end = property value at end - remaining bond balance
+      const propFVEnd = propValue * Math.pow(1 + appreciation, years);
+      // Remaining bond balance after paying normal repayments (simplified — assume outstanding = equityNow already paid portion)
+      const outstandingBond = propValue - equityNow;
+      let bondBalance = outstandingBond;
+      const normalMonthlyRate = (bondRate / 100) / 12;
+      // Current monthly repayment for outstanding balance over remaining term (assume 20yr)
+      const remainingTerm = 20;
+      const normalMonthly = bondBalance > 0
+        ? bondBalance * normalMonthlyRate * Math.pow(1+normalMonthlyRate, remainingTerm*12) / (Math.pow(1+normalMonthlyRate, remainingTerm*12)-1)
+        : 0;
+
+      for (let m = 0; m < raMonths && bondBalance > 0; m++) {
+        const ic = bondBalance * normalMonthlyRate;
+        bondBalance -= Math.max(0, normalMonthly - ic);
+      }
+      const remainingBond = Math.max(0, bondBalance);
+      equityFV = propFVEnd - remainingBond;
+      // Extra equity from extra payments (they also earn the bond rate)
+      const extraEquityContrib = bondFVInterest;
+      combinedFV = equityFV + extraEquityContrib;
+      propFV = propFVEnd;
+    }
+
+    // ── Option C: RA ─────────────────────────────────────────────────────────
+    const retirementTaxRate   = 0.18;
+    const raNetContribCost    = 1 - taxRate;
+    const raEffectiveMultiple = Math.pow(1 + raReturn, years) * (1 - retirementTaxRate) / raNetContribCost;
+    const raEffectiveAnnualReturn = Math.pow(raEffectiveMultiple, 1/years) - 1;
+    const raMonthlyRate = raReturn / 12;
+    const raFVGross  = monthly * (Math.pow(1 + raMonthlyRate, raMonths) - 1) / raMonthlyRate;
+    const raEffectiveFV = raFVGross * (1 - retirementTaxRate) / (1 - taxRate);
+
+    // ── Determine winner ──────────────────────────────────────────────────────
+    const bestFV = hasPropData
+      ? Math.max(bondFVInterest, combinedFV, raEffectiveFV)
+      : Math.max(bondFVInterest, raEffectiveFV);
+    const raWinsVsBond = raEffectiveAnnualReturn > (bondRate / 100);
+    const propWinsAll  = hasPropData && combinedFV >= raEffectiveFV && combinedFV >= bondFVInterest;
+    const raWinsAll    = raEffectiveFV >= (hasPropData ? combinedFV : bondFVInterest);
+
+    // ── Leverage strip ────────────────────────────────────────────────────────
+    if (hasPropData) {
+      document.getElementById('leverage-strip').innerHTML = `
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;padding:16px;background:#f0fdf4;border-radius:10px;border:1px solid #86efac;">
+          <div style="text-align:center;">
+            <div style="font-size:0.78rem;color:#6b7280;font-weight:600;text-transform:uppercase;margin-bottom:4px;">Leverage Ratio</div>
+            <div style="font-size:1.6rem;font-weight:800;color:#1b4332;">${leverageRatio.toFixed(1)}×</div>
+            <div style="font-size:0.78rem;color:#6b7280;">${fmtR(propValue)} property / ${fmtR(equityNow)} equity</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-size:0.78rem;color:#6b7280;font-weight:600;text-transform:uppercase;margin-bottom:4px;">Year 1 Appreciation</div>
+            <div style="font-size:1.6rem;font-weight:800;color:#1b4332;">${fmtR(propValue * appreciation)}</div>
+            <div style="font-size:0.78rem;color:#6b7280;">${appreciation*100}% × ${fmtR(propValue)} full value</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-size:0.78rem;color:#6b7280;font-weight:600;text-transform:uppercase;margin-bottom:4px;">Return on Equity (yr 1)</div>
+            <div style="font-size:1.6rem;font-weight:800;color:#15803d;">${yr1AppReturn.toFixed(1)}%</div>
+            <div style="font-size:0.78rem;color:#6b7280;">appreciation ÷ your equity</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-size:0.78rem;color:#6b7280;font-weight:600;text-transform:uppercase;margin-bottom:4px;">Property Value in ${years}yr</div>
+            <div style="font-size:1.6rem;font-weight:800;color:#1b4332;">${fmtR(propFV)}</div>
+            <div style="font-size:0.78rem;color:#6b7280;">at ${appreciation*100}% p.a.</div>
+          </div>
+        </div>
+      `;
+    } else {
+      document.getElementById('leverage-strip').innerHTML = '';
+    }
+
+    // ── Verdict ───────────────────────────────────────────────────────────────
     const verdictEl = document.getElementById('verdict-box');
-    if (raWins) {
-      const gap = (raEffectiveAnnualReturn - bondEffectiveReturn) * 100;
+    if (propWinsAll) {
       verdictEl.innerHTML = `<div class="verdict-box green-verdict">
-        <h3>✅ Invest in Your RA</h3>
-        <p>Your RA effective return (~${fmtPct(raEffectiveAnnualReturn*100)}) beats your bond rate (${fmtPct(bondRate)}) by <strong>${fmtPct(gap)}</strong>. Over ${years} years, the RA generates significantly more wealth.</p>
+        <h3>🏠 Property (Bond + Appreciation) Wins</h3>
+        <p>With leverage, your property strategy generates the highest effective return. A ${fmtPct(appreciation*100)} appreciation on ${fmtR(propValue)} gives you a <strong>${yr1AppReturn.toFixed(1)}% return on your equity in year 1 alone</strong>, stacking on top of interest saved. After ${years} years: estimated equity of <strong>${fmtR(combinedFV)}</strong>.</p>
+      </div>`;
+    } else if (raWinsAll) {
+      verdictEl.innerHTML = `<div class="verdict-box green-verdict">
+        <h3>💰 RA Contribution Wins</h3>
+        <p>Even accounting for property leverage, the RA's effective return (~${fmtPct(raEffectiveAnnualReturn*100)} after tax deduction and fund growth) comes out ahead over ${years} years. Estimated RA value: <strong>${fmtR(raEffectiveFV)}</strong>.</p>
       </div>`;
     } else {
-      verdictEl.innerHTML = `<div class="verdict-box bond-verdict">
-        <h3>🏠 Pay Extra Into Your Bond</h3>
-        <p>At your current tax rate (${fmtPct(taxRate*100)}) and bond rate (${fmtPct(bondRate)}), the guaranteed bond return beats the RA. Consider building your bond equity first.</p>
+      verdictEl.innerHTML = `<div class="verdict-box amber-verdict">
+        <h3>⚖️ It's Close — Context Matters</h3>
+        <p>The difference between your best options is small. Liquidity, risk tolerance, and time to retirement should guide your choice. Consider splitting the extra payment between bond and RA.</p>
       </div>`;
     }
 
-    // Comparison columns
+    // ── Comparison columns ────────────────────────────────────────────────────
+    const winA = !hasPropData && bondFVInterest >= raEffectiveFV;
+    const winB = propWinsAll;
+    const winC = raWinsAll && !propWinsAll;
+
     document.getElementById('compare-cols').innerHTML = `
-      <div class="compare-card ${!raWins ? 'winner' : ''}">
+      <div class="compare-card ${winA ? 'winner' : ''}">
         <div class="compare-label">Option A</div>
-        <h3>🏠 Extra Bond Payment ${!raWins ? '<span class="winner-badge">WINNER</span>' : ''}</h3>
+        <h3>🏠 Bond (Interest Only) ${winA ? '<span class="winner-badge">WINNER</span>' : ''}</h3>
         <div class="compare-metric"><span class="compare-metric-label">Guaranteed return</span><span class="compare-metric-value">${fmtPct(bondRate)}</span></div>
-        <div class="compare-metric"><span class="compare-metric-label">After-tax cost</span><span class="compare-metric-value">0% (saving interest)</span></div>
-        <div class="compare-metric"><span class="compare-metric-label">Liquidity</span><span class="compare-metric-value">High (access bond)</span></div>
         <div class="compare-metric"><span class="compare-metric-label">Risk</span><span class="compare-metric-value green">Zero</span></div>
-        <div class="compare-metric"><span class="compare-metric-label">Estimated value after ${years}yr</span><span class="compare-metric-value">${fmtR(bondFVEquiv)}</span></div>
+        <div class="compare-metric"><span class="compare-metric-label">Liquidity</span><span class="compare-metric-value">High (access bond)</span></div>
+        <div class="compare-metric"><span class="compare-metric-label">Property appreciation</span><span class="compare-metric-value">Not included</span></div>
+        <div class="compare-metric"><span class="compare-metric-label">Value after ${years}yr</span><span class="compare-metric-value">${fmtR(bondFVInterest)}</span></div>
       </div>
-      <div class="compare-card ${raWins ? 'winner' : ''}">
+      ${hasPropData ? `
+      <div class="compare-card ${winB ? 'winner' : ''}">
         <div class="compare-label">Option B</div>
-        <h3>💰 RA Contribution ${raWins ? '<span class="winner-badge">WINNER</span>' : ''}</h3>
+        <h3>🏠📈 Bond + Appreciation ${winB ? '<span class="winner-badge">WINNER</span>' : ''}</h3>
+        <div class="compare-metric"><span class="compare-metric-label">Bond return (guaranteed)</span><span class="compare-metric-value">${fmtPct(bondRate)}</span></div>
+        <div class="compare-metric"><span class="compare-metric-label">Year 1 return on equity</span><span class="compare-metric-value green">${yr1AppReturn.toFixed(1)}% (leveraged)</span></div>
+        <div class="compare-metric"><span class="compare-metric-label">Leverage ratio</span><span class="compare-metric-value">${leverageRatio.toFixed(1)}×</span></div>
+        <div class="compare-metric"><span class="compare-metric-label">Risk</span><span class="compare-metric-value">Low (property)</span></div>
+        <div class="compare-metric"><span class="compare-metric-label">Equity after ${years}yr</span><span class="compare-metric-value green">${fmtR(combinedFV)}</span></div>
+      </div>` : ''}
+      <div class="compare-card ${winC ? 'winner' : ''}">
+        <div class="compare-label">Option ${hasPropData ? 'C' : 'B'}</div>
+        <h3>💰 RA Contribution ${winC ? '<span class="winner-badge">WINNER</span>' : ''}</h3>
         <div class="compare-metric"><span class="compare-metric-label">Fund return</span><span class="compare-metric-value">${fmtPct(raReturn*100)}</span></div>
-        <div class="compare-metric"><span class="compare-metric-label">Effective return (incl. tax benefit)</span><span class="compare-metric-value green">~${fmtPct(raEffectiveAnnualReturn*100)}</span></div>
-        <div class="compare-metric"><span class="compare-metric-label">Liquidity</span><span class="compare-metric-value">Locked until age 55</span></div>
+        <div class="compare-metric"><span class="compare-metric-label">Effective return (incl. tax)</span><span class="compare-metric-value green">~${fmtPct(raEffectiveAnnualReturn*100)}</span></div>
+        <div class="compare-metric"><span class="compare-metric-label">Liquidity</span><span class="compare-metric-value">Locked until 55</span></div>
         <div class="compare-metric"><span class="compare-metric-label">Risk</span><span class="compare-metric-value">Market risk</span></div>
-        <div class="compare-metric"><span class="compare-metric-label">Estimated value after ${years}yr</span><span class="compare-metric-value">${fmtR(raEffectiveFV)}</span></div>
+        <div class="compare-metric"><span class="compare-metric-label">Value after ${years}yr</span><span class="compare-metric-value">${fmtR(raEffectiveFV)}</span></div>
       </div>
     `;
 
-    document.getElementById('vsra-insight').innerHTML =
-      `💡 <strong>Key insight:</strong> At a ${fmtPct(taxRate*100)} marginal tax rate, every R1,000 you put into your RA costs you only <strong>R${Math.round((1-taxRate)*1000)}</strong> after the SARS tax deduction. That's the RA's built-in advantage. The higher your tax bracket, the more the RA wins. ` +
-      (raWins ? `At your numbers, the RA is <strong>the better choice</strong>.` : `At your numbers, extra bond payments are slightly ahead.`);
+    // ── Equity growth milestone table ─────────────────────────────────────────
+    if (hasPropData) {
+      const milestones = [5, 10, 15, 20].filter(y => y <= years);
+      const cells = milestones.map(y => {
+        const pv = propValue * Math.pow(1 + appreciation, y);
+        const eq = equityNow + (propValue * appreciation * y); // simplified linear equity growth
+        return `<div class="equity-cell ${y === years ? 'highlight' : ''}">
+          <div style="color:#6b7280;font-size:0.75rem;font-weight:600;text-transform:uppercase;">Year ${y}</div>
+          <strong>${fmtR(pv)}</strong>
+          <div style="font-size:0.78rem;color:#6b7280;margin-top:2px;">property value</div>
+        </div>`;
+      }).join('');
+      document.getElementById('equity-growth-section').innerHTML = `
+        <h4 style="font-weight:700;color:#1b4332;margin-bottom:10px;">📈 Property Value Growth (${appreciation*100}% p.a.)</h4>
+        <div class="equity-grow-strip">${cells}</div>
+      `;
+    } else {
+      document.getElementById('equity-growth-section').innerHTML = '';
+    }
+
+    // ── Insights ──────────────────────────────────────────────────────────────
+    document.getElementById('vsra-insight').innerHTML = hasPropData
+      ? `💡 <strong>The leverage effect:</strong> Your ${leverageRatio.toFixed(1)}× leverage means property appreciating at ${appreciation*100}% delivers a <strong>${yr1AppReturn.toFixed(1)}% return on your equity</strong> in year 1 — before counting the interest you save. This is why property is so powerful as a wealth-building vehicle, especially in the early years when leverage is highest. As you pay the bond down, leverage decreases but equity compounds.`
+      : `💡 <strong>Add property details</strong> above to see the full leverage + appreciation comparison. The interest-saving return of ${fmtPct(bondRate)} is just part of the story.`;
 
     document.getElementById('vsra-caveat').innerHTML =
-      `⚠️ <strong>Important nuances:</strong> RA funds are illiquid until age 55. If you need access to capital before then, extra bond payments (especially via an access bond) give you more flexibility. Also: if you're nearing your RA deduction limit (27.5% / R350k), additional contributions won't get the tax deduction — check the <a href="/#ra-saver">RA Tax Saver tool</a> first. These calculations are estimates; consult a CFP for your exact situation.`;
+      `⚠️ <strong>Important nuances:</strong> Property appreciation figures are estimates — SA averages 5–7% long-run but varies by location and market conditions. Property returns also include costs (rates, maintenance, insurance ≈ 1–2% p.a.) not reflected here. RA funds are illiquid until 55. If you're near your RA deduction limit (27.5% / R350k), extra RA contributions won't get the tax break — check the <a href="/#ra-saver">RA Tax Saver</a>. These are estimates; consult a CFP for personalised advice.`;
 
     document.getElementById('vsra-results').classList.remove('hidden');
   }

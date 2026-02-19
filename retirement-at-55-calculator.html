@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="South Africa retirement at 55 calculator: see your tax-free lump sum, what tax you'll pay, estimated monthly annuity income, and how much you need to maximise the R550,000 tax-free allowance.">
+  <link rel="canonical" href="https://retirementsorted.co.za/retirement-at-55-calculator.html">
+  <title>Retirement at 55 Calculator South Africa — Lump Sum, Tax & Annuity Income | RetirementSorted</title>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z9ENF0SQS9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z9ENF0SQS9');
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Retirement at 55 Calculator South Africa",
+    "applicationCategory": "FinanceApplication",
+    "url": "https://retirementsorted.co.za/retirement-at-55-calculator.html",
+    "description": "Calculate your retirement lump sum, tax, annuity income, and how much you need to take the full R550,000 tax-free at retirement in South Africa.",
+    "operatingSystem": "Any",
+    "isAccessibleForFree": true,
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "ZAR" }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How much can I withdraw tax-free at retirement in South Africa?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The first R550,000 of your retirement lump sum is tax-free (as of 2026). This is a lifetime allowance — any prior withdrawals from retirement funds (including two-pot savings pot withdrawals, resignation payouts, or retrenchment benefits) reduce this R550,000 limit."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How much do I need in my retirement fund to take the full R550,000 tax-free?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "For a retirement annuity or pension fund, you can only take 1/3 as a lump sum at retirement. To access the full R550,000 tax-free, your fund needs to be at least R1,650,000 (R550,000 ÷ 1/3 = R1,650,000)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do two-pot withdrawals affect my tax-free retirement allowance?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Two-pot savings pot withdrawals count against your lifetime R550,000 tax-free retirement allowance. If you withdrew R50,000 from your two-pot over the years, only R500,000 of your retirement lump sum will be tax-free."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the 1/3 rule at retirement in South Africa?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "For retirement annuities and pension funds, you can only take a maximum of one-third of your total fund as a cash lump sum at retirement (age 55+). The remaining two-thirds must be used to purchase a living annuity or guaranteed annuity that pays you a monthly income."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is a living annuity drawdown rate in South Africa?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A living annuity allows you to draw between 2.5% and 17.5% of your remaining fund value per year as income. A sustainable rate is generally considered to be 4–5% to avoid running out of money. At 5% on R1,100,000, you would receive approximately R4,583 per month."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%232d6a4f' width='100' height='100' rx='20'/><text x='50' y='70' font-size='55' text-anchor='middle' fill='white'>🎯</text></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    .page-hero {
+      background: linear-gradient(135deg, #1b4332 0%, #2d6a4f 100%);
+      color: white;
+      padding: 60px 20px;
+      text-align: center;
+    }
+    .page-hero h1 { font-size: 2.3rem; font-weight: 900; margin-bottom: 12px; line-height: 1.2; }
+    .page-hero p  { font-size: 1.05rem; opacity: 0.9; max-width: 580px; margin: 0 auto 16px; }
+    .hero-badges  { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+    .hero-badge   { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); padding: 5px 14px; border-radius: 99px; font-size: 0.85rem; font-weight: 600; }
+
+    .calc-page { max-width: 960px; margin: 0 auto; padding: 40px 20px; }
+
+    .calc-card {
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      margin-bottom: 28px;
+    }
+    .calc-card h2 { font-size: 1.4rem; font-weight: 700; color: #1b4332; margin-bottom: 6px; }
+    .calc-card .subtitle { color: #6b7280; font-size: 0.95rem; margin-bottom: 28px; line-height: 1.5; }
+
+    .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media(max-width:600px) { .field-grid { grid-template-columns: 1fr; } }
+
+    .field-group { margin-bottom: 4px; }
+    .field-label { display: block; font-weight: 600; font-size: 0.9rem; color: #374151; margin-bottom: 6px; }
+    .field-hint  { font-weight: 400; color: #9ca3af; font-size: 0.82rem; display: block; margin-top: 2px; }
+    .field-input {
+      width: 100%;
+      padding: 11px 14px;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+    .field-input:focus { outline: none; border-color: #2d6a4f; box-shadow: 0 0 0 3px rgba(45,106,79,0.1); }
+    .field-input.narrow { max-width: 160px; }
+
+    /* Results */
+    .results-section { margin-top: 32px; }
+
+    .result-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .result-box { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; padding: 16px; }
+    .result-box.green  { background: #f0fdf4; border-color: #86efac; }
+    .result-box.red    { background: #fef2f2; border-color: #fca5a5; }
+    .result-box.amber  { background: #fffbeb; border-color: #fcd34d; }
+    .result-box.blue   { background: #eff6ff; border-color: #93c5fd; }
+    .result-box.purple { background: #f5f3ff; border-color: #c4b5fd; }
+    .rb-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280; font-weight: 600; margin-bottom: 6px; }
+    .rb-value { font-size: 1.55rem; font-weight: 800; color: #1f2937; line-height: 1.1; }
+    .rb-value.green  { color: #15803d; }
+    .rb-value.red    { color: #dc2626; }
+    .rb-value.purple { color: #6d28d9; }
+    .rb-sub   { font-size: 0.78rem; color: #6b7280; margin-top: 4px; line-height: 1.4; }
+
+    .insight-box {
+      border-radius: 10px; padding: 16px 20px; margin: 16px 0;
+      font-size: 0.93rem; line-height: 1.65;
+    }
+    .insight-box.blue   { background: #eff6ff; border-left: 4px solid #3b82f6; color: #1e40af; }
+    .insight-box.green  { background: #f0fdf4; border-left: 4px solid #22c55e; color: #15803d; }
+    .insight-box.amber  { background: #fffbeb; border-left: 4px solid #f59e0b; color: #92400e; }
+    .insight-box.red    { background: #fef2f2; border-left: 4px solid #ef4444; color: #991b1b; }
+    .insight-box.purple { background: #f5f3ff; border-left: 4px solid #8b5cf6; color: #5b21b6; }
+
+    /* Annuity income table */
+    .annuity-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .annuity-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+    }
+    .annuity-card.recommended { border-color: #22c55e; background: #f0fdf4; }
+    .annuity-rate { font-size: 0.8rem; font-weight: 700; color: #6b7280; text-transform: uppercase; margin-bottom: 6px; }
+    .annuity-monthly { font-size: 1.5rem; font-weight: 800; color: #1f2937; }
+    .annuity-annual  { font-size: 0.85rem; color: #6b7280; margin-top: 4px; }
+    .annuity-label   { font-size: 0.75rem; margin-top: 6px; }
+    .annuity-label.safe     { color: #15803d; font-weight: 600; }
+    .annuity-label.caution  { color: #d97706; font-weight: 600; }
+    .annuity-label.risky    { color: #dc2626; font-weight: 600; }
+
+    /* Lifetime allowance tracker */
+    .allowance-bar-wrap { margin: 16px 0; }
+    .allowance-bar-label { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 6px; }
+    .allowance-bar-track { height: 12px; background: #e5e7eb; border-radius: 99px; overflow: hidden; }
+    .allowance-bar-fill  { height: 100%; border-radius: 99px; transition: width 0.4s; }
+    .allowance-bar-fill.green  { background: #22c55e; }
+    .allowance-bar-fill.amber  { background: #f59e0b; }
+    .allowance-bar-fill.red    { background: #ef4444; }
+
+    /* Target calculator */
+    .target-box {
+      background: linear-gradient(135deg, #1b4332, #2d6a4f);
+      color: white;
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin: 20px 0;
+      text-align: center;
+    }
+    .target-box h3 { font-size: 1.1rem; font-weight: 700; opacity: 0.85; margin-bottom: 6px; }
+    .target-amount { font-size: 2.8rem; font-weight: 900; margin-bottom: 6px; }
+    .target-sub { font-size: 0.9rem; opacity: 0.8; }
+
+    /* Tax breakdown */
+    .tax-breakdown { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 16px 0; }
+    .tax-breakdown th { background: #f3f4f6; color: #374151; padding: 9px 12px; text-align: left; font-weight: 600; }
+    .tax-breakdown td { padding: 9px 12px; border-bottom: 1px solid #f3f4f6; }
+    .tax-breakdown tr:last-child td { border-bottom: none; font-weight: 700; }
+    .tax-breakdown .tax-free-row td { color: #15803d; background: #f0fdf4; }
+    .tax-breakdown .taxable-row td  { color: #dc2626; background: #fef2f2; }
+
+    .cta-strip {
+      background: #1b4332; color: white; border-radius: 12px;
+      padding: 24px 28px; display: flex; align-items: center;
+      justify-content: space-between; gap: 20px; margin-top: 28px;
+    }
+    .cta-strip h3 { font-weight: 700; font-size: 1rem; }
+    .cta-strip p  { font-size: 0.88rem; opacity: 0.85; margin-top: 4px; }
+    .cta-btn {
+      background: #40916c; color: white; padding: 11px 22px;
+      border-radius: 8px; font-weight: 700; text-decoration: none;
+      white-space: nowrap; flex-shrink: 0; font-size: 0.95rem;
+    }
+    .cta-btn:hover { background: #52b788; color: white; }
+    @media(max-width:600px) { .cta-strip { flex-direction: column; text-align: center; } }
+
+    .cross-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+    .cross-link {
+      background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px;
+      padding: 10px 14px; text-decoration: none; color: #374151;
+      font-weight: 600; font-size: 0.88rem; transition: all 0.2s;
+    }
+    .cross-link:hover { background: #f0fdf4; border-color: #86efac; color: #15803d; }
+
+    .hidden { display: none; }
+    .section-divider { border: none; border-top: 2px solid #f3f4f6; margin: 28px 0; }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="/" class="logo">RetirementSorted</a>
+        <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation">
+          <span></span><span></span><span></span>
+        </button>
+        <nav class="nav" id="primary-nav">
+          <a href="/#calculator">Two-Pot</a>
+          <a href="/#ra-saver" style="color:#15803d;font-weight:600;">💰 RA Saver</a>
+          <a href="bond-calculator.html">🏠 Bond</a>
+          <a href="retirement-at-55-calculator.html" style="color:#15803d;font-weight:600;">🎯 Retire at 55</a>
+          <a href="net-salary-calculator.html">Salary</a>
+          <a href="fee-calculator.html">Fees</a>
+          <a href="/blog/">Articles</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div>
+      <h1>🎯 Retirement at 55 Calculator</h1>
+      <p>See your tax-free lump sum, what tax you'll owe, your estimated monthly annuity income — and exactly how much you need to maximise the R550,000 tax-free allowance.</p>
+      <div class="hero-badges">
+        <span class="hero-badge">🇿🇦 SA rules 2026</span>
+        <span class="hero-badge">R550k lifetime allowance</span>
+        <span class="hero-badge">1/3 rule explained</span>
+        <span class="hero-badge">Two-pot impact included</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="calc-page">
+
+    <!-- ── MAIN CALCULATOR ─────────────────────────────────────────────── -->
+    <div class="calc-card">
+      <h2>Your Retirement Breakdown</h2>
+      <p class="subtitle">Enter your details below. All calculations update automatically.</p>
+
+      <div class="field-grid">
+        <div class="field-group">
+          <label class="field-label" for="fund-value">
+            Total Retirement Fund Value
+            <span class="field-hint">Combined value of all your RAs, pension, provident funds</span>
+          </label>
+          <input class="field-input" type="text" id="fund-value" placeholder="R 1,650,000" inputmode="numeric">
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="fund-type">
+            Fund Type
+            <span class="field-hint">Affects the lump sum percentage you can take</span>
+          </label>
+          <select class="field-input" id="fund-type">
+            <option value="ra_pension">Retirement Annuity / Pension Fund (max 1/3 lump sum)</option>
+            <option value="provident_post">Provident Fund — post-2021 contributions (max 1/3)</option>
+            <option value="provident_pre">Provident Fund — pre-2021 vested balance (up to 100%)</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="prior-withdrawals">
+            Prior Retirement Fund Withdrawals (lifetime total)
+            <span class="field-hint">Resignation payouts, retrenchment, pre-two-pot withdrawals</span>
+          </label>
+          <input class="field-input" type="text" id="prior-withdrawals" placeholder="R 0" inputmode="numeric">
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="twopot-withdrawals">
+            Two-Pot Savings Pot Withdrawals (total to date)
+            <span class="field-hint">All savings pot withdrawals since Sep 2024 — these eat into your R550k allowance</span>
+          </label>
+          <input class="field-input" type="text" id="twopot-withdrawals" placeholder="R 0" inputmode="numeric">
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="lump-pct">
+            Lump Sum % You Want to Take
+            <span class="field-hint">RA/Pension: 0–33.3% • Provident (pre-2021): 0–100%</span>
+          </label>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <input type="range" id="lump-pct-slider" min="0" max="33.3" step="0.1" value="33.3" style="flex:1;accent-color:#2d6a4f;">
+            <input class="field-input narrow" type="number" id="lump-pct" min="0" max="100" step="0.1" value="33.3">
+            <span style="font-weight:600;color:#2d6a4f;">%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- RESULTS -->
+      <div id="results" class="results-section hidden">
+
+        <!-- Key numbers strip -->
+        <div class="result-strip" id="key-strip"></div>
+
+        <!-- Lifetime allowance bar -->
+        <div class="allowance-bar-wrap" id="allowance-bar-section">
+          <div class="allowance-bar-label">
+            <span id="allowance-used-label">R0 used of R550,000 lifetime allowance</span>
+            <span id="allowance-remaining-label" style="font-weight:700;color:#15803d;"></span>
+          </div>
+          <div class="allowance-bar-track">
+            <div class="allowance-bar-fill" id="allowance-bar-fill" style="width:0%"></div>
+          </div>
+        </div>
+
+        <!-- Main insight -->
+        <div id="main-insight" class="insight-box blue"></div>
+
+        <hr class="section-divider">
+
+        <!-- Tax breakdown -->
+        <h3 style="font-size:1.1rem;font-weight:700;color:#1b4332;margin-bottom:12px;">📊 Lump Sum Tax Breakdown</h3>
+        <table class="tax-breakdown" id="tax-table"></table>
+
+        <div id="tax-insight" class="insight-box amber"></div>
+
+        <hr class="section-divider">
+
+        <!-- Annuity income -->
+        <h3 style="font-size:1.1rem;font-weight:700;color:#1b4332;margin-bottom:4px;">📅 Estimated Monthly Annuity Income</h3>
+        <p style="color:#6b7280;font-size:0.9rem;margin-bottom:16px;">Based on your remaining <span id="annuity-fund-label">2/3</span> going into a living annuity at various drawdown rates.</p>
+        <div class="annuity-grid" id="annuity-grid"></div>
+        <div class="insight-box purple" id="annuity-insight"></div>
+
+        <hr class="section-divider">
+
+        <!-- Target box -->
+        <div id="target-box-section"></div>
+
+        <!-- Two-pot warning -->
+        <div id="twopot-warning" class="hidden"></div>
+
+      </div>
+    </div>
+
+    <!-- ── RULES EXPLAINER ─────────────────────────────────────────────── -->
+    <div class="calc-card">
+      <h2>The Rules, Simply Explained</h2>
+      <p class="subtitle">Everything your financial advisor charges to explain — in plain English.</p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;margin-bottom:24px;">
+        <div style="border:1px solid #e5e7eb;border-radius:10px;padding:20px;">
+          <div style="font-size:1.5rem;margin-bottom:8px;">1️⃣</div>
+          <h4 style="font-weight:700;color:#1b4332;margin-bottom:6px;">The 1/3 Rule</h4>
+          <p style="font-size:0.9rem;color:#6b7280;line-height:1.6;">For RAs and pension funds, you can only take a maximum of <strong>1/3 as a cash lump sum</strong>. The remaining 2/3 must buy an annuity that pays monthly income.</p>
+        </div>
+        <div style="border:1px solid #e5e7eb;border-radius:10px;padding:20px;">
+          <div style="font-size:1.5rem;margin-bottom:8px;">💰</div>
+          <h4 style="font-weight:700;color:#1b4332;margin-bottom:6px;">R550,000 Tax-Free</h4>
+          <p style="font-size:0.9rem;color:#6b7280;line-height:1.6;">The first <strong>R550,000 of your retirement lump sum is tax-free</strong> (2026). Above that: 18%, 27%, 36% in brackets. This is a <em>lifetime allowance</em>, not per withdrawal.</p>
+        </div>
+        <div style="border:1px solid #e5e7eb;border-radius:10px;padding:20px;">
+          <div style="font-size:1.5rem;margin-bottom:8px;">⚠️</div>
+          <h4 style="font-weight:700;color:#1b4332;margin-bottom:6px;">Lifetime Allowance</h4>
+          <p style="font-size:0.9rem;color:#6b7280;line-height:1.6;">Prior withdrawals eat into your R550k — including two-pot, resignation payouts, and retrenchment benefits. SARS tracks this across your whole working life.</p>
+        </div>
+        <div style="border:1px solid #e5e7eb;border-radius:10px;padding:20px;">
+          <div style="font-size:1.5rem;margin-bottom:8px;">📋</div>
+          <h4 style="font-weight:700;color:#1b4332;margin-bottom:6px;">Provident Fund Exception</h4>
+          <p style="font-size:0.9rem;color:#6b7280;line-height:1.6;">Provident fund balances accumulated <em>before March 2021</em> are vested — you can take up to 100% as a lump sum. Only new contributions follow the 1/3 rule.</p>
+        </div>
+        <div style="border:1px solid #e5e7eb;border-radius:10px;padding:20px;">
+          <div style="font-size:1.5rem;margin-bottom:8px;">📈</div>
+          <h4 style="font-weight:700;color:#1b4332;margin-bottom:6px;">Living Annuity Drawdown</h4>
+          <p style="font-size:0.9rem;color:#6b7280;line-height:1.6;">SARS allows 2.5%–17.5% annual drawdown. A <strong>sustainable rate is 4–5%</strong>. Drawing more than 6–7% risks depleting funds before you die.</p>
+        </div>
+        <div style="border:1px solid #e5e7eb;border-radius:10px;padding:20px;">
+          <div style="font-size:1.5rem;margin-bottom:8px;">🔢</div>
+          <h4 style="font-weight:700;color:#1b4332;margin-bottom:6px;">The Magic Number</h4>
+          <p style="font-size:0.9rem;color:#6b7280;line-height:1.6;">To take the full <strong>R550,000 tax-free</strong>, your RA/pension fund needs to be at least <strong>R1,650,000</strong> (since R550k is exactly 1/3 of R1.65M).</p>
+        </div>
+      </div>
+
+      <!-- Lump sum tax table -->
+      <h3 style="font-size:1rem;font-weight:700;color:#1b4332;margin-bottom:12px;">Retirement Lump Sum Tax Table (2026)</h3>
+      <table style="width:100%;border-collapse:collapse;font-size:0.9rem;">
+        <thead>
+          <tr style="background:#1b4332;color:white;">
+            <th style="padding:10px 14px;text-align:left;">Lump Sum Amount</th>
+            <th style="padding:10px 14px;text-align:left;">Rate</th>
+            <th style="padding:10px 14px;text-align:left;">Tax Payable</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background:#f0fdf4;">
+            <td style="padding:9px 14px;border-bottom:1px solid #e5e7eb;font-weight:600;color:#15803d;">R0 – R550,000</td>
+            <td style="padding:9px 14px;border-bottom:1px solid #e5e7eb;font-weight:700;color:#15803d;">0%</td>
+            <td style="padding:9px 14px;border-bottom:1px solid #e5e7eb;color:#15803d;">Tax-free</td>
+          </tr>
+          <tr>
+            <td style="padding:9px 14px;border-bottom:1px solid #e5e7eb;">R550,001 – R770,000</td>
+            <td style="padding:9px 14px;border-bottom:1px solid #e5e7eb;">18%</td>
+            <td style="padding:9px 14px;border-bottom:1px solid #e5e7eb;">Max R39,600</td>
+          </tr>
+          <tr style="background:#f9fafb;">
+            <td style="padding:9px 14px;border-bottom:1px solid #e5e7eb;">R770,001 – R1,155,000</td>
+            <td style="padding:9px 14px;border-bottom:1px solid #e5e7eb;">27%</td>
+            <td style="padding:9px 14px;border-bottom:1px solid #e5e7eb;">Max R103,950 + R39,600</td>
+          </tr>
+          <tr>
+            <td style="padding:9px 14px;">R1,155,001+</td>
+            <td style="padding:9px 14px;">36%</td>
+            <td style="padding:9px 14px;">R143,550 + 36% on balance</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- FAQ -->
+    <div class="calc-card">
+      <h2>Frequently Asked Questions</h2>
+      <div style="display:grid;gap:20px;margin-top:8px;">
+        <div>
+          <h4 style="font-weight:700;color:#1b4332;margin-bottom:6px;">Does taking a smaller lump sum mean more monthly income?</h4>
+          <p style="color:#6b7280;font-size:0.9rem;line-height:1.6;">Yes. Taking a smaller lump sum leaves more in your annuity, which increases your monthly income. The calculator shows this trade-off — adjust the lump sum percentage to see how your monthly income changes.</p>
+        </div>
+        <div>
+          <h4 style="font-weight:700;color:#1b4332;margin-bottom:6px;">Can I take 0% as a lump sum and put everything into an annuity?</h4>
+          <p style="color:#6b7280;font-size:0.9rem;line-height:1.6;">Yes — and this can be a smart choice if you need maximum monthly income and have other accessible savings for emergencies. The full fund goes into an annuity and generates more monthly income.</p>
+        </div>
+        <div>
+          <h4 style="font-weight:700;color:#1b4332;margin-bottom:6px;">What if my lifetime allowance is already used up?</h4>
+          <p style="color:#6b7280;font-size:0.9rem;line-height:1.6;">If you've already withdrawn R550,000 or more from retirement funds over your lifetime (resignations, retrenchments, two-pot), your entire retirement lump sum will be taxed. The first bracket is 18%, then 27%, then 36%. SARS tracks this via IRP5 records.</p>
+        </div>
+        <div>
+          <h4 style="font-weight:700;color:#1b4332;margin-bottom:6px;">Is annuity income taxed?</h4>
+          <p style="color:#6b7280;font-size:0.9rem;line-height:1.6;">Yes — living annuity income is taxed as regular income using SARS's marginal rate table. However, most retirees fall into the 0% or 18% bracket because they have no salary income. The primary rebate (R17,235) also reduces their tax bill significantly.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cross-links">
+      <a href="/#calculator" class="cross-link">🏦 Two-Pot Calculator</a>
+      <a href="/#ra-saver" class="cross-link">💰 RA Tax Saver</a>
+      <a href="/bond-calculator.html" class="cross-link">🏠 Bond Calculator</a>
+      <a href="/net-salary-calculator.html" class="cross-link">💵 Net Salary Calculator</a>
+      <a href="/fee-calculator.html" class="cross-link">📊 Fee Impact Calculator</a>
+      <a href="/blog/" class="cross-link">📖 Retirement Articles</a>
+    </div>
+
+  </div><!-- /calc-page -->
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="logo"><span class="logo-text">RetirementSorted</span></div>
+          <p>Independent retirement planning tools for South Africans. No jargon. No upselling.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Tools</h4>
+          <a href="/#calculator">Two-Pot Calculator</a>
+          <a href="/#ra-saver">RA Tax Saver</a>
+          <a href="/bond-calculator.html">Bond Calculator</a>
+          <a href="/retirement-at-55-calculator.html">Retire at 55</a>
+          <a href="/net-salary-calculator.html">Net Salary</a>
+        </div>
+        <div class="footer-links">
+          <h4>Sorted Family</h4>
+          <a href="https://betsorted.co.za" target="_blank" rel="noopener">BetSorted</a>
+          <a href="https://cryptocasinosorted.com" target="_blank" rel="noopener">CryptoCasinoSorted</a>
+          <a href="https://paidproperly.co.za" target="_blank" rel="noopener">PaidProperly</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 RetirementSorted • Independent financial education</p>
+        <p class="disclaimer">Disclaimer: Estimates only. Tax rules change — verify with SARS and a registered financial advisor before making retirement decisions.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="nav.js"></script>
+
+  <script>
+  // ─── Constants ──────────────────────────────────────────────────────────────
+  const LIFETIME_ALLOWANCE = 550000;
+  const LUMP_SUM_TAX = [
+    { min: 0,       max: 550000,  rate: 0,    base: 0      },
+    { min: 550001,  max: 770000,  rate: 0.18, base: 0      },
+    { min: 770001,  max: 1155000, rate: 0.27, base: 39600  },
+    { min: 1155001, max: Infinity,rate: 0.36, base: 143550 }
+  ];
+  const DRAWDOWN_RATES = [
+    { rate: 0.025, label: '2.5%', safety: 'safe',    note: 'Very conservative' },
+    { rate: 0.04,  label: '4%',   safety: 'safe',    note: '✅ Recommended minimum' },
+    { rate: 0.05,  label: '5%',   safety: 'safe',    note: '✅ Sustainable' },
+    { rate: 0.065, label: '6.5%', safety: 'caution', note: '⚠️ Caution zone' },
+    { rate: 0.10,  label: '10%',  safety: 'risky',   note: '🔴 Risk of depletion' },
+  ];
+
+  const fmt  = n => Math.round(n).toLocaleString('en-ZA');
+  const fmtR = n => 'R ' + fmt(n);
+
+  function parseCur(id) {
+    return parseFloat((document.getElementById(id).value || '').replace(/[^0-9.]/g, '')) || 0;
+  }
+  function formatCurInput(el) {
+    const raw = parseFloat(el.value.replace(/[^0-9.]/g, '')) || 0;
+    if (raw > 0) el.value = 'R ' + fmt(raw);
+  }
+
+  function calcLumpSumTax(lumpSum, allowanceUsed) {
+    // Effective taxable amount = lumpSum - remaining lifetime allowance
+    const remainingAllowance = Math.max(0, LIFETIME_ALLOWANCE - allowanceUsed);
+    const taxable = Math.max(0, lumpSum - remainingAllowance);
+    if (taxable <= 0) return { tax: 0, taxFreeAmount: lumpSum, taxableAmount: 0, effectiveRate: 0 };
+
+    // Apply tax table to taxable portion
+    let tax = 0;
+    // The taxable amount is taxed starting from the first bracket above the allowance
+    // i.e. it's taxed at 18% from R0 of the taxable portion
+    if (taxable <= 220000) {           // 550k-770k range = 220k at 18%
+      tax = taxable * 0.18;
+    } else if (taxable <= 605000) {    // up to 770k+385k = 1155k
+      tax = 220000 * 0.18 + (taxable - 220000) * 0.27;
+    } else {
+      tax = 220000 * 0.18 + 385000 * 0.27 + (taxable - 605000) * 0.36;
+    }
+
+    return {
+      tax,
+      taxFreeAmount: remainingAllowance > 0 ? Math.min(lumpSum, remainingAllowance) : 0,
+      taxableAmount: taxable,
+      effectiveRate: tax / lumpSum * 100
+    };
+  }
+
+  // ─── Main calculation ───────────────────────────────────────────────────────
+  function calculate() {
+    const fundValue      = parseCur('fund-value');
+    const fundType       = document.getElementById('fund-type').value;
+    const priorWithdrawn = parseCur('prior-withdrawals');
+    const twopotWithdrawn = parseCur('twopot-withdrawals');
+    const lumpPct        = parseFloat(document.getElementById('lump-pct').value) || 0;
+
+    if (!fundValue) return;
+
+    const totalPrior        = priorWithdrawn + twopotWithdrawn;
+    const remainingAllowance = Math.max(0, LIFETIME_ALLOWANCE - totalPrior);
+    const allowanceUsedPct  = Math.min(100, (totalPrior / LIFETIME_ALLOWANCE) * 100);
+
+    // Max lump sum % based on fund type
+    const maxLumpPct = (fundType === 'provident_pre') ? 100 : 33.3;
+    const effectivePct = Math.min(lumpPct, maxLumpPct);
+
+    const lumpSum   = fundValue * (effectivePct / 100);
+    const annuityFund = fundValue - lumpSum;
+
+    const taxCalc = calcLumpSumTax(lumpSum, totalPrior);
+    const netLumpSum = lumpSum - taxCalc.tax;
+
+    // ── Key strip ──────────────────────────────────────────────────────────
+    document.getElementById('key-strip').innerHTML = `
+      <div class="result-box ${taxCalc.tax === 0 ? 'green' : ''}">
+        <div class="rb-label">Lump Sum</div>
+        <div class="rb-value">${fmtR(lumpSum)}</div>
+        <div class="rb-sub">${effectivePct.toFixed(1)}% of fund</div>
+      </div>
+      <div class="result-box ${taxCalc.tax === 0 ? 'green' : 'red'}">
+        <div class="rb-label">Tax on Lump Sum</div>
+        <div class="rb-value ${taxCalc.tax === 0 ? 'green' : 'red'}">${taxCalc.tax === 0 ? 'R 0 🎉' : fmtR(taxCalc.tax)}</div>
+        <div class="rb-sub">${taxCalc.effectiveRate.toFixed(1)}% effective rate</div>
+      </div>
+      <div class="result-box green">
+        <div class="rb-label">Net Cash to You</div>
+        <div class="rb-value green">${fmtR(netLumpSum)}</div>
+        <div class="rb-sub">after SARS</div>
+      </div>
+      <div class="result-box blue">
+        <div class="rb-label">Into Annuity</div>
+        <div class="rb-value purple">${fmtR(annuityFund)}</div>
+        <div class="rb-sub">${(100 - effectivePct).toFixed(1)}% generates monthly income</div>
+      </div>
+      <div class="result-box ${remainingAllowance >= lumpSum ? 'green' : 'amber'}">
+        <div class="rb-label">Allowance Remaining</div>
+        <div class="rb-value ${remainingAllowance > 0 ? 'green' : 'red'}">${fmtR(remainingAllowance)}</div>
+        <div class="rb-sub">of R550,000 lifetime limit</div>
+      </div>
+    `;
+
+    // ── Allowance bar ──────────────────────────────────────────────────────
+    const barFill = document.getElementById('allowance-bar-fill');
+    barFill.style.width = allowanceUsedPct + '%';
+    barFill.className = 'allowance-bar-fill ' + (allowanceUsedPct < 50 ? 'green' : allowanceUsedPct < 85 ? 'amber' : 'red');
+    document.getElementById('allowance-used-label').textContent =
+      `${fmtR(totalPrior)} used of R550,000 lifetime allowance`;
+    document.getElementById('allowance-remaining-label').textContent =
+      remainingAllowance > 0 ? `R ${fmt(remainingAllowance)} remaining` : '❌ Fully used';
+
+    // ── Main insight ───────────────────────────────────────────────────────
+    let insightClass = 'blue', insightText = '';
+    if (taxCalc.tax === 0 && lumpSum > 0) {
+      insightClass = 'green';
+      insightText = `🎉 <strong>Your entire lump sum of ${fmtR(lumpSum)} is tax-free</strong> — it falls within your remaining R${fmt(remainingAllowance)} lifetime allowance. You'll receive every rand of your lump sum with nothing going to SARS.`;
+    } else if (taxCalc.taxFreeAmount > 0 && taxCalc.tax > 0) {
+      insightText = `Your first <strong>${fmtR(taxCalc.taxFreeAmount)}</strong> is tax-free (remaining lifetime allowance), but the remaining <strong>${fmtR(taxCalc.taxableAmount)}</strong> is taxable. You'll pay <strong>${fmtR(taxCalc.tax)}</strong> in tax and receive <strong>${fmtR(netLumpSum)}</strong> net.`;
+    } else if (totalPrior >= LIFETIME_ALLOWANCE) {
+      insightClass = 'red';
+      insightText = `⚠️ <strong>Your lifetime R550,000 allowance has been fully used</strong> by prior withdrawals (${fmtR(totalPrior)} total). Your entire lump sum will be taxed — consider taking a smaller lump sum and maximising the annuity instead.`;
+    } else {
+      insightText = `Enter your fund details to see your full retirement breakdown.`;
+    }
+    document.getElementById('main-insight').className = `insight-box ${insightClass}`;
+    document.getElementById('main-insight').innerHTML = insightText;
+
+    // ── Tax breakdown table ────────────────────────────────────────────────
+    document.getElementById('tax-table').innerHTML = `
+      <thead><tr><th>Component</th><th>Amount</th><th>Tax</th></tr></thead>
+      <tbody>
+        <tr class="tax-free-row">
+          <td>Tax-free portion (lifetime allowance)</td>
+          <td>${fmtR(Math.min(lumpSum, remainingAllowance))}</td>
+          <td>R 0</td>
+        </tr>
+        ${taxCalc.taxableAmount > 0 ? `
+        <tr class="taxable-row">
+          <td>Taxable portion</td>
+          <td>${fmtR(taxCalc.taxableAmount)}</td>
+          <td>${fmtR(taxCalc.tax)}</td>
+        </tr>` : ''}
+        <tr>
+          <td><strong>Total lump sum</strong></td>
+          <td><strong>${fmtR(lumpSum)}</strong></td>
+          <td><strong>${fmtR(taxCalc.tax)}</strong></td>
+        </tr>
+        <tr style="background:#f0fdf4;">
+          <td><strong>Net cash received</strong></td>
+          <td colspan="2"><strong style="color:#15803d;font-size:1.05rem;">${fmtR(netLumpSum)}</strong></td>
+        </tr>
+      </tbody>
+    `;
+
+    if (taxCalc.tax > 0) {
+      document.getElementById('tax-insight').innerHTML =
+        `💡 <strong>Tip:</strong> Taking a smaller lump sum (e.g. ${(effectivePct * 0.5).toFixed(1)}%) could keep you within your lifetime allowance and eliminate the tax entirely. Adjust the slider to find your tax-free sweet spot.`;
+    } else {
+      document.getElementById('tax-insight').className = 'insight-box green';
+      document.getElementById('tax-insight').innerHTML =
+        `✅ <strong>No tax due</strong> on this lump sum. Your withdrawal is fully covered by your remaining R${fmt(remainingAllowance)} lifetime allowance.`;
+    }
+
+    // ── Annuity income ─────────────────────────────────────────────────────
+    document.getElementById('annuity-fund-label').textContent = fmtR(annuityFund);
+    document.getElementById('annuity-grid').innerHTML = DRAWDOWN_RATES.map(d => {
+      const annual  = annuityFund * d.rate;
+      const monthly = annual / 12;
+      const isRec   = d.rate === 0.05;
+      return `<div class="annuity-card ${isRec ? 'recommended' : ''}">
+        <div class="annuity-rate">${d.label} drawdown${isRec ? ' ⭐' : ''}</div>
+        <div class="annuity-monthly">${fmtR(monthly)}</div>
+        <div class="annuity-annual">${fmtR(annual)}/year</div>
+        <div class="annuity-label ${d.safety}">${d.note}</div>
+      </div>`;
+    }).join('');
+
+    const recMonthly = annuityFund * 0.05 / 12;
+    document.getElementById('annuity-insight').innerHTML =
+      `💡 At a sustainable 5% drawdown, your <strong>${fmtR(annuityFund)}</strong> annuity fund generates <strong>${fmtR(recMonthly)}/month</strong> in income. Plus your SARS Old Age Rebate (R17,235/year) means the first ~R141,000 of annual income is tax-free for those over 65.`;
+
+    // ── Target box ─────────────────────────────────────────────────────────
+    const targetFund = (remainingAllowance / (effectivePct / 100));
+    document.getElementById('target-box-section').innerHTML =
+      remainingAllowance > 0 && remainingAllowance < LIFETIME_ALLOWANCE || remainingAllowance === LIFETIME_ALLOWANCE
+        ? `<div class="target-box">
+            <h3>To take the full ${fmtR(remainingAllowance)} tax-free at ${effectivePct.toFixed(1)}% lump sum, your fund needs to be:</h3>
+            <div class="target-amount">${fmtR(remainingAllowance / (effectivePct / 100))}</div>
+            <div class="target-sub">Current fund: ${fmtR(fundValue)} • Gap: ${fundValue < targetFund ? fmtR(targetFund - fundValue) + ' to go' : '✅ You\'re there'}</div>
+          </div>`
+        : '';
+
+    // ── Two-pot warning ────────────────────────────────────────────────────
+    if (twopotWithdrawn > 0) {
+      document.getElementById('twopot-warning').className = 'insight-box red';
+      document.getElementById('twopot-warning').innerHTML =
+        `⚠️ <strong>Two-pot impact:</strong> Your ${fmtR(twopotWithdrawn)} in savings pot withdrawals has permanently reduced your lifetime tax-free allowance. At retirement, only ${fmtR(Math.max(0, LIFETIME_ALLOWANCE - totalPrior))} of your lump sum will be tax-free instead of the full R550,000.`;
+    } else {
+      document.getElementById('twopot-warning').className = 'hidden';
+    }
+
+    document.getElementById('results').classList.remove('hidden');
+  }
+
+  // ─── Currency inputs ──────────────────────────────────────────────────────
+  ['fund-value','prior-withdrawals','twopot-withdrawals'].forEach(id => {
+    document.getElementById(id).addEventListener('input', function() {
+      formatCurInput(this);
+      calculate();
+    });
+  });
+
+  document.getElementById('fund-type').addEventListener('change', () => {
+    const isPre = document.getElementById('fund-type').value === 'provident_pre';
+    document.getElementById('lump-pct-slider').max = isPre ? 100 : 33.3;
+    document.getElementById('lump-pct').max = isPre ? 100 : 33.3;
+    if (!isPre && parseFloat(document.getElementById('lump-pct').value) > 33.3) {
+      document.getElementById('lump-pct').value = 33.3;
+      document.getElementById('lump-pct-slider').value = 33.3;
+    }
+    calculate();
+  });
+
+  // Slider ↔ input sync
+  document.getElementById('lump-pct-slider').addEventListener('input', function() {
+    document.getElementById('lump-pct').value = parseFloat(this.value).toFixed(1);
+    calculate();
+  });
+  document.getElementById('lump-pct').addEventListener('input', function() {
+    document.getElementById('lump-pct-slider').value = this.value;
+    calculate();
+  });
+
+  // Auto-run with defaults
+  window.addEventListener('load', () => {
+    document.getElementById('fund-value').value = 'R 1,650,000';
+    calculate();
+  });
+  </script>
+</body>
+</html>

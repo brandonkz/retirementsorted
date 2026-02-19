@@ -204,10 +204,11 @@
     .result-box.green { background: #f0fdf4; border-color: #86efac; }
     .result-box.amber { background: #fffbeb; border-color: #fcd34d; }
     .result-box.red   { background: #fef2f2; border-color: #fca5a5; }
-    .result-box-label { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280; font-weight: 600; margin-bottom: 6px; }
-    .result-box-value { font-size: 1.6rem; font-weight: 800; color: #1f2937; line-height: 1.1; }
-    .result-box-value.green { color: #15803d; }
-    .result-box-value.red   { color: #dc2626; }
+    .result-box-label, .rb-label { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280; font-weight: 600; margin-bottom: 6px; }
+    .result-box-value, .rb-value { font-size: 1.6rem; font-weight: 800; color: #1f2937; line-height: 1.1; }
+    .result-box-value.green, .rb-value.green { color: #15803d; }
+    .result-box-value.red,   .rb-value.red   { color: #dc2626; }
+    .result-box-sub, .rb-sub { font-size: 0.78rem; color: #6b7280; margin-top: 4px; line-height: 1.4; }
     .result-box-sub   { font-size: 0.8rem; color: #6b7280; margin-top: 4px; }
 
     .insight-box {
@@ -379,6 +380,7 @@
       <button class="tool-tab active" data-tab="repayment">🏠 Bond Repayment</button>
       <button class="tool-tab" data-tab="extra">💸 Extra Payment</button>
       <button class="tool-tab" data-tab="vs-ra">🏠 Property vs RA</button>
+      <button class="tool-tab" data-tab="rent-vs-buy">🏘️ Rent vs Buy</button>
     </div>
 
     <!-- ══ TAB 1: BOND REPAYMENT ══════════════════════════════════════════ -->
@@ -599,6 +601,126 @@
 
         <div class="insight-box amber" style="margin-top:20px;">
           ⚠️ <strong>Exception:</strong> If you're within 5 years of retirement, have no RA headroom left, or your bond rate is above 15%, extra bond payments can make more sense. Always consider liquidity — you can access bond equity via access bond; RA funds are locked until 55.
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ TAB 4: RENT VS BUY ════════════════════════════════════════════ -->
+    <div class="tool-panel" id="tab-rent-vs-buy">
+      <div class="calc-card">
+        <h2>🏘️ Rent vs Buy Calculator</h2>
+        <p class="subtitle">Should you rent and invest the difference, or buy and build equity? The full South African picture — leverage, appreciation, opportunity cost and all.</p>
+
+        <div class="insight-box blue" style="margin-bottom:24px;">
+          <strong>The key debate:</strong> Buying builds equity through principal repayment <em>and</em> leveraged appreciation. Renting frees up cash to invest elsewhere. The calculator shows which path builds more wealth over your time horizon — and by how much.
+        </div>
+
+        <div class="field-grid">
+          <div class="field-group">
+            <label class="field-label" for="rvb-rent">Monthly Rent (or Equivalent)
+              <span class="field-hint">What you pay now, or would pay for an equivalent property</span>
+            </label>
+            <input class="field-input" type="text" id="rvb-rent" placeholder="R 12,000" inputmode="numeric">
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="rvb-bond-repay">Monthly Bond Repayment
+              <span class="field-hint">Use the Bond Repayment tab above to calculate this</span>
+            </label>
+            <input class="field-input" type="text" id="rvb-bond-repay" placeholder="R 15,000" inputmode="numeric">
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="rvb-deposit">Deposit / Transfer Costs Paid
+              <span class="field-hint">Initial cash outlay: deposit + transfer duty + bond costs</span>
+            </label>
+            <input class="field-input" type="text" id="rvb-deposit" placeholder="R 150,000" inputmode="numeric">
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="rvb-prop-value">Property Purchase Price</label>
+            <input class="field-input" type="text" id="rvb-prop-value" placeholder="R 1,500,000" inputmode="numeric">
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="rvb-bond-rate">Bond Interest Rate (% p.a.)
+              <span class="prime-link" onclick="document.getElementById('rvb-bond-rate').value='11.25';calcRentVsBuy()">Use prime</span>
+            </label>
+            <input class="field-input rate" type="number" id="rvb-bond-rate" placeholder="11.25" step="0.05" value="11.25">
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="rvb-bond-term">Bond Term (years)</label>
+            <input class="field-input rate" type="number" id="rvb-bond-term" placeholder="20" min="5" max="30" value="20">
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="rvb-appreciation">Property Appreciation (% p.a.)
+              <span class="field-hint">SA long-run avg 5–7%</span>
+            </label>
+            <input class="field-input rate" type="number" id="rvb-appreciation" placeholder="6" step="0.5" value="6">
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="rvb-invest-return">Investment Return if Renting (% p.a.)
+              <span class="field-hint">What you'd earn investing the difference (ETF/RA)</span>
+            </label>
+            <input class="field-input rate" type="number" id="rvb-invest-return" placeholder="10" step="0.5" value="10">
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="rvb-rent-inflation">Annual Rent Increase (% p.a.)
+              <span class="field-hint">SA average ≈ 5–6%</span>
+            </label>
+            <input class="field-input rate" type="number" id="rvb-rent-inflation" placeholder="5.5" step="0.5" value="5.5">
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="rvb-years">Comparison Period (years)</label>
+            <input class="field-input rate" type="number" id="rvb-years" placeholder="20" min="1" max="30" value="20">
+          </div>
+        </div>
+
+        <div id="rvb-results" class="hidden">
+          <!-- Verdict -->
+          <div id="rvb-verdict" style="margin:24px 0;"></div>
+
+          <!-- Key numbers -->
+          <div class="result-strip" id="rvb-strip" style="grid-template-columns:repeat(auto-fill,minmax(160px,1fr));"></div>
+
+          <!-- Side-by-side comparison -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:24px 0;" id="rvb-cols"></div>
+
+          <!-- Year by year snapshot -->
+          <div id="rvb-timeline" style="margin-top:20px;"></div>
+
+          <!-- Insights -->
+          <div id="rvb-insight" class="insight-box green" style="margin-top:16px;"></div>
+          <div id="rvb-caveat" class="insight-box amber" style="margin-top:12px;"></div>
+        </div>
+      </div>
+
+      <!-- The rent trap explainer -->
+      <div class="calc-card">
+        <h2>The "Throwing Money Away on Rent" Debate</h2>
+        <p class="subtitle">The full picture — because both sides have a point.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+          <div style="border:1px solid #e5e7eb;border-radius:10px;padding:20px;">
+            <h4 style="color:#15803d;font-weight:700;margin-bottom:10px;">✅ Case For Buying</h4>
+            <ul style="color:#6b7280;font-size:0.9rem;line-height:1.8;padding-left:16px;">
+              <li>Leverage amplifies appreciation returns</li>
+              <li>Forced savings via principal repayment</li>
+              <li>Bond repayment is fixed; rent keeps rising</li>
+              <li>Asset owned outright after bond ends</li>
+              <li>No landlord risk (eviction, sale)</li>
+              <li>Access bond gives you liquidity</li>
+            </ul>
+          </div>
+          <div style="border:1px solid #e5e7eb;border-radius:10px;padding:20px;">
+            <h4 style="color:#3b82f6;font-weight:700;margin-bottom:10px;">✅ Case For Renting</h4>
+            <ul style="color:#6b7280;font-size:0.9rem;line-height:1.8;padding-left:16px;">
+              <li>Flexibility to move / emigrate</li>
+              <li>Lower monthly outlay (often)</li>
+              <li>No transfer duties, rates, maintenance</li>
+              <li>Invest the difference at market returns</li>
+              <li>No concentration risk in one property</li>
+              <li>Better in declining property markets</li>
+            </ul>
+          </div>
+        </div>
+        <div class="insight-box blue" style="margin-top:20px;">
+          💡 <strong>SA-specific context:</strong> Transfer duty alone on a R1.5M property is R42,000. Bond registration adds ~R25,000. These upfront costs mean buying only wins if you stay for 4+ years. The calculator accounts for this — watch the "breakeven year" line.
         </div>
       </div>
     </div>
@@ -1012,6 +1134,209 @@
       `⚠️ <strong>Important nuances:</strong> Property appreciation figures are estimates — SA averages 5–7% long-run but varies by location and market conditions. Property returns also include costs (rates, maintenance, insurance ≈ 1–2% p.a.) not reflected here. RA funds are illiquid until 55. If you're near your RA deduction limit (27.5% / R350k), extra RA contributions won't get the tax break — check the <a href="/#ra-saver">RA Tax Saver</a>. These are estimates; consult a CFP for personalised advice.`;
 
     document.getElementById('vsra-results').classList.remove('hidden');
+  }
+
+  // ─── Tab 4: Rent vs Buy ───────────────────────────────────────────────────
+  ['rvb-rent','rvb-bond-repay','rvb-deposit','rvb-prop-value'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', () => { formatCurrInput(el); calcRentVsBuy(); });
+  });
+  ['rvb-bond-rate','rvb-bond-term','rvb-appreciation','rvb-invest-return','rvb-rent-inflation','rvb-years']
+    .forEach(id => { const el = document.getElementById(id); if (el) el.addEventListener('input', calcRentVsBuy); });
+
+  function formatCurrInput(el) {
+    const raw = parseCurrency(el.value);
+    if (raw > 0) el.value = 'R ' + fmt(raw);
+  }
+
+  function calcRentVsBuy() {
+    const monthlyRent    = parseCurrency(document.getElementById('rvb-rent').value);
+    const bondRepay      = parseCurrency(document.getElementById('rvb-bond-repay').value);
+    const deposit        = parseCurrency(document.getElementById('rvb-deposit').value);
+    const propValue      = parseCurrency(document.getElementById('rvb-prop-value').value);
+    const bondRate       = (parseFloat(document.getElementById('rvb-bond-rate').value) || 0) / 100;
+    const bondTerm       = parseInt(document.getElementById('rvb-bond-term').value) || 20;
+    const appreciation   = (parseFloat(document.getElementById('rvb-appreciation').value) || 0) / 100;
+    const investReturn   = (parseFloat(document.getElementById('rvb-invest-return').value) || 0) / 100;
+    const rentInflation  = (parseFloat(document.getElementById('rvb-rent-inflation').value) || 0) / 100;
+    const years          = parseInt(document.getElementById('rvb-years').value) || 0;
+
+    if (!monthlyRent || !bondRepay || !propValue || !years) return;
+
+    // Ongoing costs of ownership (rates, maintenance, insurance) ≈ 1.5% of property value p.a.
+    const ongoingCostRate = 0.015;
+    // Transfer duty approximation for SA (simplified 2026 table)
+    function transferDuty(price) {
+      if (price <= 1100000) return 0;
+      if (price <= 1512500) return (price - 1100000) * 0.03;
+      if (price <= 2117500) return 12375 + (price - 1512500) * 0.06;
+      if (price <= 2722500) return 48675 + (price - 2117500) * 0.08;
+      if (price <= 12100000) return 97075 + (price - 2722500) * 0.11;
+      return 1128600 + (price - 12100000) * 0.13;
+    }
+    const duty           = transferDuty(propValue);
+    const bondRegCost    = propValue > 0 ? Math.min(25000, propValue * 0.017) : 0; // ~1.7% bond reg costs
+    const totalUpfront   = deposit + duty + bondRegCost;
+
+    const monthlyRate    = bondRate / 12;
+    const totalMonths    = bondTerm * 12;
+
+    // Monthly principal in bond repayment (changes each month but we track balance)
+    let bondBalance = propValue - deposit;
+    let totalInterestPaid = 0;
+
+    // ── Simulate both paths year by year ──────────────────────────────────────
+    let buyingEquity     = deposit; // starts with deposit (transfer costs are sunk)
+    let rentingPortfolio = deposit; // renter invests the deposit amount upfront
+    let currentRent      = monthlyRent;
+    let currentPropValue = propValue;
+    let currentBondBal   = bondBalance;
+
+    const monthlyInvestRate = investReturn / 12;
+    const monthlyAppRate    = appreciation / 12;
+
+    // Renter's monthly surplus = bond repayment - rent (if bond > rent, renter invests the diff)
+    // Also: renter doesn't pay ongoing costs (landlord does); buyer does
+    const monthlyOwnerCosts = (propValue * ongoingCostRate) / 12;
+
+    const snapshots = [];
+
+    for (let yr = 1; yr <= years; yr++) {
+      for (let m = 0; m < 12; m++) {
+        // Buyer: pay bond, property appreciates
+        if (currentBondBal > 1) {
+          const interest = currentBondBal * monthlyRate;
+          const principal = Math.min(bondRepay - interest, currentBondBal);
+          currentBondBal  -= principal;
+          totalInterestPaid += interest;
+        }
+        currentPropValue *= (1 + monthlyAppRate);
+
+        // Renter: pay rent (increases annually), invest surplus
+        // Surplus = (bond repayment + owner costs) - rent
+        const buyerMonthlyCost = bondRepay + monthlyOwnerCosts;
+        const surplus = Math.max(0, buyerMonthlyCost - currentRent);
+        rentingPortfolio = rentingPortfolio * (1 + monthlyInvestRate) + surplus;
+      }
+
+      // Annual rent increase
+      currentRent *= (1 + rentInflation);
+
+      // Buyer equity
+      buyingEquity = Math.max(0, currentPropValue - currentBondBal);
+
+      snapshots.push({
+        year: yr,
+        buyEquity: buyingEquity,
+        rentPortfolio: rentingPortfolio,
+        propValue: currentPropValue,
+        bondBal: Math.max(0, currentBondBal)
+      });
+    }
+
+    const finalBuy  = buyingEquity;
+    const finalRent = rentingPortfolio;
+    const buyWins   = finalBuy > finalRent;
+    const gap       = Math.abs(finalBuy - finalRent);
+
+    // Breakeven year (when buying equity first exceeds renting portfolio)
+    let breakevenYear = null;
+    for (const s of snapshots) {
+      if (s.buyEquity >= s.rentPortfolio) { breakevenYear = s.year; break; }
+    }
+
+    // Year 1 leverage metrics
+    const leverageRatio  = propValue / deposit;
+    const yr1AppGain     = propValue * appreciation;
+    const yr1AppOnEquity = (yr1AppGain / deposit) * 100;
+    const monthlySurplus = Math.max(0, (bondRepay + monthlyOwnerCosts) - monthlyRent);
+
+    // ── Verdict ───────────────────────────────────────────────────────────────
+    document.getElementById('rvb-verdict').innerHTML = buyWins
+      ? `<div class="verdict-box green-verdict">
+          <h3>🏠 Buying Wins by ${fmtR(gap)} after ${years} years</h3>
+          <p>Property equity of <strong>${fmtR(finalBuy)}</strong> beats the renter's investment portfolio of <strong>${fmtR(finalRent)}</strong>. ${breakevenYear ? `Buying pulls ahead at <strong>Year ${breakevenYear}</strong>.` : 'Buying leads from early on.'}</p>
+        </div>`
+      : `<div class="verdict-box bond-verdict">
+          <h3>🏘️ Renting + Investing Wins by ${fmtR(gap)} after ${years} years</h3>
+          <p>The renter's investment portfolio of <strong>${fmtR(finalRent)}</strong> beats the buyer's property equity of <strong>${fmtR(finalBuy)}</strong> over ${years} years. ${!breakevenYear ? 'Buying never pulls ahead in this period.' : ''}</p>
+        </div>`;
+
+    // ── Key strip ──────────────────────────────────────────────────────────────
+    document.getElementById('rvb-strip').innerHTML = `
+      <div class="result-box green"><div class="rb-label">Buyer Equity (yr ${years})</div><div class="rb-value green">${fmtR(finalBuy)}</div><div class="rb-sub">property value minus bond</div></div>
+      <div class="result-box blue"><div class="rb-label">Renter Portfolio (yr ${years})</div><div class="rb-value" style="color:#3b82f6;">${fmtR(finalRent)}</div><div class="rb-sub">invested difference</div></div>
+      <div class="result-box"><div class="rb-label">Leverage Ratio</div><div class="rb-value">${leverageRatio.toFixed(1)}×</div><div class="rb-sub">property value ÷ deposit</div></div>
+      <div class="result-box amber"><div class="rb-label">Year 1 Appreciation on Equity</div><div class="rb-value" style="color:#d97706;">${yr1AppOnEquity.toFixed(1)}%</div><div class="rb-sub">${fmtR(yr1AppGain)} on ${fmtR(deposit)}</div></div>
+      <div class="result-box"><div class="rb-label">Upfront Costs</div><div class="rb-value">${fmtR(totalUpfront)}</div><div class="rb-sub">deposit + transfer + bond reg</div></div>
+      ${breakevenYear ? `<div class="result-box green"><div class="rb-label">Buying Breakeven</div><div class="rb-value green">Year ${breakevenYear}</div><div class="rb-sub">when equity overtakes portfolio</div></div>` : `<div class="result-box red"><div class="rb-label">Buying Breakeven</div><div class="rb-value red">Not in ${years}yr</div><div class="rb-sub">renting stays ahead</div></div>`}
+    `;
+
+    // ── Side-by-side ──────────────────────────────────────────────────────────
+    document.getElementById('rvb-cols').innerHTML = `
+      <div class="compare-card ${buyWins ? 'winner' : ''}">
+        <div class="compare-label">Buying</div>
+        <h3>🏠 Buy the Property ${buyWins ? '<span class="winner-badge">WINNER</span>' : ''}</h3>
+        <div class="compare-metric"><span class="compare-metric-label">Monthly cost (bond)</span><span class="compare-metric-value">${fmtR(bondRepay)}</span></div>
+        <div class="compare-metric"><span class="compare-metric-label">Monthly ownership costs</span><span class="compare-metric-value">${fmtR(monthlyOwnerCosts)}</span></div>
+        <div class="compare-metric"><span class="compare-metric-label">Total upfront</span><span class="compare-metric-value">${fmtR(totalUpfront)}</span></div>
+        <div class="compare-metric"><span class="compare-metric-label">Leverage</span><span class="compare-metric-value green">${leverageRatio.toFixed(1)}× on appreciation</span></div>
+        <div class="compare-metric"><span class="compare-metric-label">Property value after ${years}yr</span><span class="compare-metric-value">${fmtR(snapshots[years-1].propValue)}</span></div>
+        <div class="compare-metric"><span class="compare-metric-label">Remaining bond</span><span class="compare-metric-value">${fmtR(snapshots[years-1].bondBal)}</span></div>
+        <div class="compare-metric" style="border-top:2px solid #e5e7eb;margin-top:8px;padding-top:12px;"><span class="compare-metric-label"><strong>Net equity</strong></span><span class="compare-metric-value green" style="font-size:1.2rem;"><strong>${fmtR(finalBuy)}</strong></span></div>
+      </div>
+      <div class="compare-card ${!buyWins ? 'winner' : ''}">
+        <div class="compare-label">Renting + Investing</div>
+        <h3>🏘️ Rent &amp; Invest ${!buyWins ? '<span class="winner-badge">WINNER</span>' : ''}</h3>
+        <div class="compare-metric"><span class="compare-metric-label">Monthly rent (yr 1)</span><span class="compare-metric-value">${fmtR(monthlyRent)}</span></div>
+        <div class="compare-metric"><span class="compare-metric-label">Monthly rent (yr ${years})</span><span class="compare-metric-value">${fmtR(monthlyRent * Math.pow(1+rentInflation, years))}</span></div>
+        <div class="compare-metric"><span class="compare-metric-label">Monthly surplus invested</span><span class="compare-metric-value">${fmtR(monthlySurplus)}</span></div>
+        <div class="compare-metric"><span class="compare-metric-label">Deposit invested upfront</span><span class="compare-metric-value">${fmtR(deposit)}</span></div>
+        <div class="compare-metric"><span class="compare-metric-label">Investment return</span><span class="compare-metric-value">${fmtPct(investReturn*100)} p.a.</span></div>
+        <div class="compare-metric"><span class="compare-metric-label">No upfront transfer costs</span><span class="compare-metric-value green">Save ${fmtR(duty + bondRegCost)}</span></div>
+        <div class="compare-metric" style="border-top:2px solid #e5e7eb;margin-top:8px;padding-top:12px;"><span class="compare-metric-label"><strong>Portfolio value</strong></span><span class="compare-metric-value" style="color:#3b82f6;font-size:1.2rem;"><strong>${fmtR(finalRent)}</strong></span></div>
+      </div>
+    `;
+
+    // ── Timeline ──────────────────────────────────────────────────────────────
+    const milestones = snapshots.filter(s => s.year % 5 === 0 || s.year === years || s.year === breakevenYear).slice(0, 6);
+    document.getElementById('rvb-timeline').innerHTML = `
+      <h4 style="font-weight:700;color:#1b4332;margin-bottom:10px;">📅 Year-by-Year Snapshot</h4>
+      <div style="overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;font-size:0.88rem;">
+          <thead><tr style="background:#1b4332;color:white;">
+            <th style="padding:9px 12px;text-align:left;">Year</th>
+            <th style="padding:9px 12px;text-align:right;">Property Value</th>
+            <th style="padding:9px 12px;text-align:right;">Bond Balance</th>
+            <th style="padding:9px 12px;text-align:right;">🏠 Equity</th>
+            <th style="padding:9px 12px;text-align:right;">🏘️ Portfolio</th>
+            <th style="padding:9px 12px;text-align:right;">Difference</th>
+          </tr></thead>
+          <tbody>${milestones.map(s => {
+            const diff = s.buyEquity - s.rentPortfolio;
+            const isBE = s.year === breakevenYear;
+            return `<tr style="${isBE ? 'background:#f0fdf4;' : s.year % 2 === 0 ? 'background:#f9fafb;' : ''}">
+              <td style="padding:9px 12px;font-weight:${isBE ? '700' : '400'};">${isBE ? '⭐ ' : ''}Year ${s.year}</td>
+              <td style="padding:9px 12px;text-align:right;">${fmtR(s.propValue)}</td>
+              <td style="padding:9px 12px;text-align:right;">${fmtR(s.bondBal)}</td>
+              <td style="padding:9px 12px;text-align:right;font-weight:600;color:#15803d;">${fmtR(s.buyEquity)}</td>
+              <td style="padding:9px 12px;text-align:right;font-weight:600;color:#3b82f6;">${fmtR(s.rentPortfolio)}</td>
+              <td style="padding:9px 12px;text-align:right;font-weight:700;color:${diff >= 0 ? '#15803d' : '#dc2626'};">${diff >= 0 ? '+' : ''}${fmtR(diff)}</td>
+            </tr>`;
+          }).join('')}</tbody>
+        </table>
+      </div>
+    `;
+
+    // ── Insights ──────────────────────────────────────────────────────────────
+    document.getElementById('rvb-insight').innerHTML = buyWins
+      ? `💡 <strong>Why buying wins:</strong> Your ${leverageRatio.toFixed(1)}× leverage means ${fmtPct(appreciation*100)} appreciation on ${fmtR(propValue)} earns <strong>${fmtR(yr1AppGain)}/year on your ${fmtR(deposit)} deposit</strong> — a ${yr1AppOnEquity.toFixed(1)}% return on equity just from appreciation. The renter can't replicate this without leverage. Bond repayment is also fixed while rent rises ${fmtPct(rentInflation*100)} every year, steadily widening the gap.`
+      : `💡 <strong>Why renting wins here:</strong> The monthly surplus invested at ${fmtPct(investReturn*100)} compounds faster than the leveraged appreciation in this scenario. Try adjusting the appreciation rate or comparison period — buying typically wins over longer horizons or in higher-appreciation areas.`;
+
+    document.getElementById('rvb-caveat').innerHTML =
+      `⚠️ <strong>Not included in this model:</strong> Rental income (if investment property), capital gains tax on property sale (typically 40% inclusion rate for individuals), detailed transfer duty breakdown, sectional title levies, and inflation on all costs. Property appreciation can be negative in some markets and periods. This is a planning tool — speak to a property finance specialist before committing.`;
+
+    document.getElementById('rvb-results').classList.remove('hidden');
   }
 
   // Auto-run with defaults on load

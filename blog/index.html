@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Retirement Insights Blog | RetirementSorted</title>
-    <meta name="description" content="Clear, practical guidance on South African retirement planning and the two-pot system.">
-    <link rel="stylesheet" href="../style.css">
+    <title>Blog - RetirementSorted | SA Retirement Planning Insights</title>
+    <meta name="description" content="Expert retirement planning advice for South Africans. Two-pot system, tax strategies, and practical retirement income planning.">
+    <link rel="stylesheet" href="../../style.css">
     <link rel="canonical" href="https://retirementsorted.co.za/blog/">
     
     <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8RPC987YL8"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXX"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', 'G-8RPC987YL8');
+        gtag('config', 'G-XXXXXXXXX');
     </script>
 </head>
 <body>
@@ -23,13 +23,13 @@
             margin: 0;
             padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: #fafafa;
         }
 
         .blog-nav {
             background: white;
             border-bottom: 1px solid #e5e7eb;
             padding: 1rem 0;
+            width: 100%;
         }
 
         .blog-nav-inner {
@@ -45,19 +45,20 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            text-decoration: none;
+            text-decoration: none !important;
             color: #111;
             font-size: 1.1rem;
             font-weight: 600;
         }
 
         .blog-logo:hover {
-            color: #10b981;
+            color: #059669;
         }
 
-        .blog-icon {
-            color: #10b981;
+        .blog-check {
+            color: #059669;
             font-size: 1.3rem;
+            line-height: 1;
         }
 
         .blog-nav-links {
@@ -67,241 +68,164 @@
         }
 
         .blog-nav-links a {
-            text-decoration: none;
+            text-decoration: none !important;
             color: #666;
             font-weight: 400;
+            font-size: 1rem;
             transition: color 0.2s;
         }
 
         .blog-nav-links a:hover {
-            color: #10b981;
+            color: #059669;
         }
 
         .blog-nav-links a.active {
-            color: #10b981;
+            color: #059669;
             font-weight: 500;
-        }
-
-        .blog-header {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
-            padding: 4rem 1.5rem;
-            text-align: center;
-        }
-
-        .blog-header h1 {
-            font-size: 2.5rem;
-            margin: 0 0 1rem 0;
-            font-weight: 700;
-        }
-
-        .blog-header p {
-            font-size: 1.2rem;
-            margin: 0;
-            opacity: 0.9;
-        }
-
-        .blog-container {
-            max-width: 1200px;
-            margin: 3rem auto;
-            padding: 0 1.5rem;
-        }
-
-        .blog-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 2rem;
-        }
-
-        .blog-card {
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            transition: transform 0.2s, box-shadow 0.2s;
-            text-decoration: none;
-            color: inherit;
-            display: block;
-        }
-
-        .blog-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-        }
-
-        .blog-card-content {
-            padding: 1.5rem;
-        }
-
-        .blog-card-title {
-            font-size: 1.4rem;
-            font-weight: 600;
-            margin: 0 0 0.75rem 0;
-            color: #111;
-        }
-
-        .blog-card-excerpt {
-            color: #666;
-            line-height: 1.6;
-            margin: 0 0 1rem 0;
-        }
-
-        .blog-card-meta {
-            color: #999;
-            font-size: 0.9rem;
-        }
-
-        @media (max-width: 768px) {
-            .blog-header h1 {
-                font-size: 2rem;
-            }
-
-            .blog-grid {
-                grid-template-columns: 1fr;
-            }
         }
     </style>
 
     <nav class="blog-nav">
         <div class="blog-nav-inner">
-            <a href="../index.html" class="blog-logo">
-                <span class="blog-icon">🏦</span>
+            <a href="../../" class="blog-logo">
+                <span class="blog-check">✓</span>
                 <span>RetirementSorted</span>
             </a>
             <div class="blog-nav-links">
-                <a href="../index.html">Calculator</a>
-                <a href="index.html" class="active">Blog</a>
+                <a href="../../">Calculator</a>
+                <a href="./" class="active">Blog</a>
             </div>
         </div>
     </nav>
 
-    <div class="blog-header">
-        <h1>Retirement Insights</h1>
-        <p>Clear, practical guidance on retirement planning in South Africa</p>
-    </div>
+    <main>
+        <section class="hero">
+            <h1>Retirement Planning Insights</h1>
+            <p class="hero-subtitle">Practical advice for South Africans navigating retirement, two-pot, and tax strategies</p>
+        </section>
 
-    <div class="blog-container">
-        <div class="blog-grid">
-            <a href="two-pot-year-2-withdrawal-guide-2026.html" class="blog-card">
-                <div class="blog-card-content">
-                    <h2 class="blog-card-title">Two-Pot Year 2: Should You Withdraw Again in 2026/27?</h2>
-                    <p class="blog-card-excerpt">GEPF has reopened withdrawals for the new tax year. But 80% of people who withdrew last year plan to do it again — here's why that's a problem and what repeat withdrawals actually cost your retirement.</p>
-                    <div class="blog-card-meta">March 12, 2026 • 9 min read</div>
-                </div>
-            </a>
+        <section class="blog-list">
+            <article class="blog-card">
+                <div class="blog-date">March 16, 2026</div>
+                <h2><a href="./two-pot-retirement-should-you-withdraw.html">Two-Pot Retirement: Should You Withdraw?</a></h2>
+                <p>Thinking about withdrawing from your two-pot retirement fund? Here's the tax hit, long-term cost, and when it actually makes sense to take the money out.</p>
+                <a href="./two-pot-retirement-should-you-withdraw.html" class="read-more">Read more →</a>
+            </article>
 
-            <a href="new-tax-year-investment-strategy-2026.html" class="blog-card">
-                <div class="blog-card-content">
-                    <h2 class="blog-card-title">New Tax Year 2026/27: Your Retirement & Savings Action Plan</h2>
-                    <p class="blog-card-excerpt">TFSA limit jumps to R46,000, retirement deduction cap hits R430,000, offshore allowance doubles. Here's your month-by-month plan to take full advantage of the new tax year.</p>
-                    <div class="blog-card-meta">March 12, 2026 • 10 min read</div>
-                </div>
-            </a>
+            <article class="blog-card">
+                <div class="blog-date">March 12, 2026</div>
+                <h2><a href="./2026-03-12-budget-2026-retirement-changes-south-africa.md">Budget 2026: Retirement Changes for South Africans</a></h2>
+                <p>Budget 2026 retirement changes - contribution limits, tax thresholds, and what it means for your retirement planning.</p>
+                <a href="./2026-03-12-budget-2026-retirement-changes-south-africa.md" class="read-more">Read more →</a>
+            </article>
+        </section>
+    </main>
 
-            <a href="4-percent-rule-south-africa-retirement.html" class="blog-card">
-                <div class="blog-card-content">
-                    <h2 class="blog-card-title">The 4% Rule for South African Retirees: How Much Do You Really Need?</h2>
-                    <p class="blog-card-excerpt">The 4% rule says you can retire on 25x your annual expenses. But does it work in South Africa with high inflation, load shedding, and rand volatility? Here's what the numbers actually say.</p>
-                    <div class="blog-card-meta">March 10, 2026 • 8 min read</div>
-                </div>
-            </a>
-
-            <a href="2026-budget-retirement-savings-changes.html" class="blog-card">
-                <div class="blog-card-content">
-                    <h2 class="blog-card-title">2026 Budget: New Retirement & Savings Limits That Could Save You Thousands</h2>
-                    <p class="blog-card-excerpt">TFSA limit jumps to R46,000, retirement deduction cap hits R430,000, offshore allowance doubles to R2M. The most saver-friendly budget in years — here's exactly what changed and how to take advantage.</p>
-                    <div class="blog-card-meta">March 5, 2026 • 9 min read</div>
-                </div>
-            </a>
-
-            <a href="fire-retire-early-south-africa-2026.html" class="blog-card">
-                <div class="blog-card-content">
-                    <h2 class="blog-card-title">FIRE in South Africa: Can You Actually Retire Early in 2026?</h2>
-                    <p class="blog-card-excerpt">The 4% rule adjusted for rand inflation, realistic FIRE numbers for SA lifestyles, Coast FIRE targets by age, and a practical roadmap using RAs, TFSAs, and discretionary accounts.</p>
-                    <div class="blog-card-meta">March 5, 2026 • 11 min read</div>
-                </div>
-            </a>
-
-            <a href="maximize-retirement-tax-deductions-south-africa-2026.html" class="blog-card">
-                <div class="blog-card-content">
-                    <h2 class="blog-card-title">How to Maximize Your Retirement Tax Deductions in South Africa (2026 Guide)</h2>
-                    <p class="blog-card-excerpt">New for 2026: R430,000 retirement contribution cap. Learn how to maximize your tax deductions with pension funds, retirement annuities, and provident funds. Save thousands in tax while building wealth.</p>
-                    <div class="blog-card-meta">March 2, 2026 • 7 min read</div>
-                </div>
-            </a>
-
-            <a href="how-much-to-retire-south-africa-2026.html" class="blog-card">
-                <div class="blog-card-content">
-                    <h2 class="blog-card-title">How Much Do You Need to Retire in South Africa in 2026?</h2>
-                    <p class="blog-card-excerpt">Realistic retirement numbers by lifestyle level, age-based savings benchmarks, and practical catch-up strategies if you're behind. No fluff—just the numbers that matter.</p>
-                    <div class="blog-card-meta">February 26, 2026 • 11 min read</div>
-                </div>
-            </a>
-
-            <a href="retirement-age-changes-south-africa-2026.html" class="blog-card">
-                <div class="blog-card-content">
-                    <h2 class="blog-card-title">Retirement Age Changes in South Africa 2026: What's Actually Happening</h2>
-                    <p class="blog-card-excerpt">Social media says the retirement age is going to 67 or even 70. Most of it is wrong. Here's what's actually changing, what's staying the same, and what it means for you.</p>
-                    <div class="blog-card-meta">February 26, 2026 • 10 min read</div>
-                </div>
-            </a>
-
-            <a href="retirement-annuity-vs-pension-fund-south-africa.html" class="blog-card">
-                <div class="blog-card-content">
-                    <h2 class="blog-card-title">Retirement Annuity vs Pension Fund: Which is Better for You?</h2>
-                    <p class="blog-card-excerpt">Should you stick with your company pension fund or open an RA? Compare tax benefits, flexibility, fees, and control. Find out which option maximizes your retirement savings.</p>
-                    <div class="blog-card-meta">February 23, 2026 • 12 min read</div>
-                </div>
-            </a>
-
-            <a href="living-annuity-vs-life-annuity-south-africa.html" class="blog-card">
-                <div class="blog-card-content">
-                    <h2 class="blog-card-title">Living Annuity vs Life Annuity: Which is Better for You?</h2>
-                    <p class="blog-card-excerpt">One gives you control but carries risk. The other guarantees income but locks you in forever. Complete comparison to help you choose the right retirement income option for your situation.</p>
-                    <div class="blog-card-meta">February 16, 2026 • 10 min read</div>
-                </div>
-            </a>
-
-            <a href="cape-town-airbnb-tax-increase-what-you-need-to-know.html" class="blog-card">
-                <div class="blog-card-content">
-                    <h2 class="blog-card-title">Cape Town's Airbnb Tax Increase: What Property Owners Need to Know</h2>
-                    <p class="blog-card-excerpt">Cape Town is reclassifying short-term rentals as commercial properties - meaning 135% higher rates. Here's what changes, who's affected, and what your options actually are.</p>
-                    <div class="blog-card-meta">February 12, 2026 • 9 min read</div>
-                </div>
-            </a>
-
-            <a href="why-everyone-withdrawing-two-pot-retirement.html" class="blog-card">
-                <div class="blog-card-content">
-                    <h2 class="blog-card-title">Why Is Everyone Withdrawing From Two-Pot?</h2>
-                    <p class="blog-card-excerpt">R35 billion withdrawn in 4 months. Is this a FOMO-driven mistake or smart crisis management? Real talk about the two-pot frenzy and whether you should join it.</p>
-                    <div class="blog-card-meta">February 12, 2026 • 7 min read</div>
-                </div>
-            </a>
-
-            <a href="two-pot-tax-calculator-how-much-sars-takes.html" class="blog-card">
-                <div class="blog-card-content">
-                    <h2 class="blog-card-title">How Much Tax Does SARS Take From Your Withdrawal?</h2>
-                    <p class="blog-card-excerpt">Real examples showing what people at different salary levels actually pay. R20k/month vs R80k/month - see the tax differences with real numbers.</p>
-                    <div class="blog-card-meta">February 12, 2026 • 5 min read</div>
-                </div>
-            </a>
-
-            <a href="i-withdrew-two-pot-retirement-what-happened.html" class="blog-card">
-                <div class="blog-card-content">
-                    <h2 class="blog-card-title">I Withdrew From My Two-Pot - Here's What Happened</h2>
-                    <p class="blog-card-excerpt">Real experience withdrawing R15,000. Timeline, tax hit, and whether it was worth it. No theory - just what actually happened from application to payout.</p>
-                    <div class="blog-card-meta">February 12, 2026 • 6 min read</div>
-                </div>
-            </a>
-
-            <a href="should-you-withdraw-two-pot-retirement.html" class="blog-card">
-                <div class="blog-card-content">
-                    <h2 class="blog-card-title">Should You Withdraw from Your Two-Pot Retirement?</h2>
-                    <p class="blog-card-excerpt">The new two-pot system lets you access your retirement savings early. But should you? Here's what you need to know before making that decision.</p>
-                    <div class="blog-card-meta">February 10, 2026 • 9 min read</div>
-                </div>
-            </a>
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2026 RetirementSorted. Retirement planning for South Africans.</p>
+            <p><a href="../../">Calculator</a> | <a href="./">Blog</a></p>
         </div>
-    </div>
+    </footer>
+
+    <style>
+        .hero {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 4rem 1.5rem 2rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 0 0 1rem 0;
+            color: #111;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin: 0;
+        }
+
+        .blog-list {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .blog-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+
+        .blog-date {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .blog-card h2 {
+            margin: 0.5rem 0;
+            font-size: 1.5rem;
+        }
+
+        .blog-card h2 a {
+            color: #059669;
+            text-decoration: none;
+        }
+
+        .blog-card h2 a:hover {
+            color: #047857;
+        }
+
+        .blog-card p {
+            color: #444;
+            line-height: 1.6;
+            margin: 1rem 0;
+        }
+
+        .read-more {
+            color: #059669;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .read-more:hover {
+            color: #047857;
+        }
+
+        footer {
+            background: #1f2937;
+            color: white;
+            padding: 3rem 0;
+            margin-top: 4rem;
+            text-align: center;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+        }
+
+        footer a:hover {
+            border-bottom-color: white;
+        }
+
+        .footer-content p {
+            margin: 0.5rem 0;
+        }
+    </style>
 </body>
 </html>

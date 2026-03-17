@@ -690,8 +690,10 @@
     }
 
     function calculate() {
-      // Get all inputs
-      const age = parseInt(document.getElementById('age').value) || 35;
+      try {
+        console.log('Calculate function called');
+        // Get all inputs
+        const age = parseInt(document.getElementById('age').value) || 35;
       const dependents = parseInt(document.getElementById('dependents').value) || 0;
       const youngestAge = parseInt(document.getElementById('youngestAge').value) || 0;
       const income = parseFloat(document.getElementById('income').value) || 0;
@@ -1213,6 +1215,10 @@
       });
 
       showSection(7);
+      } catch(e) {
+        console.error('Calculate error:', e);
+        alert('Error calculating: ' + e.message);
+      }
     }
 
     // Auto-save to localStorage

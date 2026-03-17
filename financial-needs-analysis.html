@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Free financial needs analysis tool for South Africans. Calculate your insurance gap, retirement savings needed, and get personalized recommendations.">
+  <link rel="canonical" href="https://retirementsorted.co.za/financial-needs-analysis.html">
+  <meta name="keywords" content="financial needs analysis, FNA calculator, life insurance calculator, retirement planning south africa, insurance gap analysis, financial planning SA">
+  <title>Free Financial Needs Analysis (FNA) Calculator | RetirementSorted</title>
+  
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z9ENF0SQS9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z9ENF0SQS9');
+  </script>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #059669;
+      --primary-dark: #047857;
+      --bg: #f9fafb;
+      --card: #ffffff;
+      --text: #111827;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+      --danger: #dc2626;
+      --warning: #f59e0b;
+      --success: #10b981;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .header {
+      text-align: center;
+      padding: 40px 20px;
+      background: var(--card);
+      border-bottom: 3px solid var(--primary);
+      margin-bottom: 30px;
+    }
+
+    .header h1 {
+      font-size: 2rem;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    .progress-bar {
+      height: 8px;
+      background: var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 30px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--primary);
+      width: 14%;
+      transition: width 0.3s ease;
+    }
+
+    .step-indicator {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 30px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+
+    h3 {
+      font-size: 1.2rem;
+      margin: 20px 0 10px;
+      color: var(--text);
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      margin-bottom: 25px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    input[type="number"],
+    input[type="text"],
+    select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+    }
+
+    input:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .input-group {
+      position: relative;
+    }
+
+    .input-prefix {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .input-group input {
+      padding-left: 28px;
+    }
+
+    .radio-group {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .radio-option {
+      flex: 1;
+      min-width: 120px;
+    }
+
+    .radio-option input[type="radio"] {
+      display: none;
+    }
+
+    .radio-option label {
+      display: block;
+      padding: 12px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .radio-option input:checked + label {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 15px;
+      margin-top: 30px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 14px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-secondary {
+      background: var(--border);
+      color: var(--text);
+    }
+
+    .btn-secondary:hover {
+      background: #d1d5db;
+    }
+
+    .result-card {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      padding: 30px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    .result-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin: 10px 0;
+    }
+
+    .result-label {
+      opacity: 0.9;
+      font-size: 1.1rem;
+    }
+
+    .insight-box {
+      background: #fef3c7;
+      border-left: 4px solid var(--warning);
+      padding: 15px;
+      border-radius: 6px;
+      margin: 15px 0;
+    }
+
+    .insight-box.danger {
+      background: #fee2e2;
+      border-left-color: var(--danger);
+    }
+
+    .insight-box.success {
+      background: #d1fae5;
+      border-left-color: var(--success);
+    }
+
+    .gap-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .gap-item:last-child {
+      border-bottom: none;
+    }
+
+    .gap-label {
+      font-weight: 500;
+    }
+
+    .gap-amount {
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .gap-amount.negative {
+      color: var(--danger);
+    }
+
+    @media (max-width: 640px) {
+      .header h1 {
+        font-size: 1.5rem;
+      }
+
+      .btn-group {
+        flex-direction: column;
+      }
+
+      .result-value {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>💼 Financial Needs Analysis</h1>
+    <p>Get a complete picture of your financial health in 5 minutes</p>
+  </div>
+
+  <div class="container">
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressBar"></div>
+    </div>
+    <div class="step-indicator" id="stepIndicator">Step 1 of 7</div>
+
+    <!-- Section 1: Personal Info -->
+    <div class="section active" id="section1">
+      <div class="card">
+        <h2>Personal Information</h2>
+        <p class="subtitle">Let's start with the basics</p>
+
+        <div class="form-group">
+          <label>Your age</label>
+          <input type="number" id="age" placeholder="35" min="18" max="100">
+        </div>
+
+        <div class="form-group">
+          <label>Marital status</label>
+          <div class="radio-group">
+            <div class="radio-option">
+              <input type="radio" name="marital" value="single" id="single">
+              <label for="single">Single</label>
+            </div>
+            <div class="radio-option">
+              <input type="radio" name="marital" value="married" id="married" checked>
+              <label for="married">Married</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Number of dependents</label>
+          <input type="number" id="dependents" placeholder="2" min="0" max="10" value="0">
+        </div>
+
+        <div class="form-group">
+          <label>Youngest dependent's age (optional)</label>
+          <input type="number" id="youngestAge" placeholder="5" min="0" max="25">
+        </div>
+
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="nextSection()">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Income & Expenses -->
+    <div class="section" id="section2">
+      <div class="card">
+        <h2>Income & Expenses</h2>
+        <p class="subtitle">Your current financial situation</p>
+
+        <div class="form-group">
+          <label>Monthly gross income</label>
+          <div class="input-group">
+            <span class="input-prefix">R</span>
+            <input type="number" id="income" placeholder="50000" min="0">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Spouse's monthly income (if applicable)</label>
+          <div class="input-group">
+            <span class="input-prefix">R</span>
+            <input type="number" id="spouseIncome" placeholder="40000" min="0" value="0">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Total monthly expenses</label>
+          <div class="input-group">
+            <span class="input-prefix">R</span>
+            <input type="number" id="expenses" placeholder="35000" min="0">
+          </div>
+        </div>
+
+        <div class="btn-group">
+          <button class="btn btn-secondary" onclick="prevSection()">← Back</button>
+          <button class="btn btn-primary" onclick="nextSection()">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 3: Assets & Debts -->
+    <div class="section" id="section3">
+      <div class="card">
+        <h2>Assets & Debts</h2>
+        <p class="subtitle">What you own and what you owe</p>
+
+        <h3>Assets</h3>
+        
+        <div class="form-group">
+          <label>Emergency fund / Cash savings</label>
+          <div class="input-group">
+            <span class="input-prefix">R</span>
+            <input type="number" id="emergencyFund" placeholder="50000" min="0" value="0">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Retirement savings (RA, pension, provident)</label>
+          <div class="input-group">
+            <span class="input-prefix">R</span>
+            <input type="number" id="retirementSavings" placeholder="500000" min="0" value="0">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Property value (primary residence)</label>
+          <div class="input-group">
+            <span class="input-prefix">R</span>
+            <input type="number" id="propertyValue" placeholder="2000000" min="0" value="0">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Other investments (TFSA, unit trusts, shares)</label>
+          <div class="input-group">
+            <span class="input-prefix">R</span>
+            <input type="number" id="investments" placeholder="200000" min="0" value="0">
+          </div>
+        </div>
+
+        <h3>Debts</h3>
+
+        <div class="form-group">
+          <label>Home loan outstanding</label>
+          <div class="input-group">
+            <span class="input-prefix">R</span>
+            <input type="number" id="homeLoan" placeholder="1500000" min="0" value="0">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Other debt (car, credit cards, personal loans)</label>
+          <div class="input-group">
+            <span class="input-prefix">R</span>
+            <input type="number" id="otherDebt" placeholder="300000" min="0" value="0">
+          </div>
+        </div>
+
+        <div class="btn-group">
+          <button class="btn btn-secondary" onclick="prevSection()">← Back</button>
+          <button class="btn btn-primary" onclick="nextSection()">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 4: Current Insurance -->
+    <div class="section" id="section4">
+      <div class="card">
+        <h2>Current Insurance Cover</h2>
+        <p class="subtitle">What protection do you already have?</p>
+
+        <div class="form-group">
+          <label>Life insurance cover</label>
+          <div class="input-group">
+            <span class="input-prefix">R</span>
+            <input type="number" id="lifeCover" placeholder="2000000" min="0" value="0">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Disability / Income protection (monthly benefit)</label>
+          <div class="input-group">
+            <span class="input-prefix">R</span>
+            <input type="number" id="disabilityCover" placeholder="30000" min="0" value="0">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Critical illness / Severe illness cover</label>
+          <div class="input-group">
+            <span class="input-prefix">R</span>
+            <input type="number" id="criticalCover" placeholder="500000" min="0" value="0">
+          </div>
+        </div>
+
+        <div class="btn-group">
+          <button class="btn btn-secondary" onclick="prevSection()">← Back</button>
+          <button class="btn btn-primary" onclick="nextSection()">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 5: Retirement Goals -->
+    <div class="section" id="section5">
+      <div class="card">
+        <h2>Retirement Planning</h2>
+        <p class="subtitle">When and how do you want to retire?</p>
+
+        <div class="form-group">
+          <label>Planned retirement age</label>
+          <input type="number" id="retirementAge" placeholder="65" min="50" max="75" value="65">
+        </div>
+
+        <div class="form-group">
+          <label>Desired monthly retirement income (today's Rands)</label>
+          <div class="input-group">
+            <span class="input-prefix">R</span>
+            <input type="number" id="retirementIncome" placeholder="40000" min="0">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Monthly contributions to retirement (RA, pension)</label>
+          <div class="input-group">
+            <span class="input-prefix">R</span>
+            <input type="number" id="retirementContribution" placeholder="5000" min="0" value="0">
+          </div>
+        </div>
+
+        <div class="btn-group">
+          <button class="btn btn-secondary" onclick="prevSection()">← Back</button>
+          <button class="btn btn-primary" onclick="nextSection()">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 6: Estate Planning -->
+    <div class="section" id="section6">
+      <div class="card">
+        <h2>Estate Planning</h2>
+        <p class="subtitle">Protecting your loved ones</p>
+
+        <div class="form-group">
+          <label>Do you have a valid will?</label>
+          <div class="radio-group">
+            <div class="radio-option">
+              <input type="radio" name="will" value="yes" id="willYes">
+              <label for="willYes">Yes</label>
+            </div>
+            <div class="radio-option">
+              <input type="radio" name="will" value="no" id="willNo" checked>
+              <label for="willNo">No</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Have you nominated beneficiaries on all policies?</label>
+          <div class="radio-group">
+            <div class="radio-option">
+              <input type="radio" name="beneficiaries" value="yes" id="benYes">
+              <label for="benYes">Yes</label>
+            </div>
+            <div class="radio-option">
+              <input type="radio" name="beneficiaries" value="no" id="benNo" checked>
+              <label for="benNo">No</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-group">
+          <button class="btn btn-secondary" onclick="prevSection()">← Back</button>
+          <button class="btn btn-primary" onclick="calculate()">Calculate My Needs →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 7: Results -->
+    <div class="section" id="section7">
+      <div class="result-card">
+        <div class="result-label">Your Life Insurance Need</div>
+        <div class="result-value" id="lifeNeed">R 0</div>
+      </div>
+
+      <div class="card">
+        <h2>Insurance Gap Analysis</h2>
+        <div id="insuranceGaps"></div>
+      </div>
+
+      <div class="card">
+        <h2>Retirement Readiness</h2>
+        <div id="retirementGaps"></div>
+      </div>
+
+      <div class="card">
+        <h2>Emergency Fund</h2>
+        <div id="emergencyGaps"></div>
+      </div>
+
+      <div class="card">
+        <h2>Recommendations</h2>
+        <div id="recommendations"></div>
+      </div>
+
+      <div class="card">
+        <h2>Next Steps</h2>
+        <p style="margin-bottom: 15px;">Want personalized advice from a certified financial planner?</p>
+        <button class="btn btn-primary" onclick="window.location.href='mailto:info@retirementsorted.co.za?subject=FNA%20Consultation%20Request'">📧 Request a Free Consultation</button>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-secondary" onclick="restart()">Start Over</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentSection = 1;
+    const totalSections = 7;
+
+    function updateProgress() {
+      const progress = (currentSection / totalSections) * 100;
+      document.getElementById('progressBar').style.width = progress + '%';
+      document.getElementById('stepIndicator').textContent = `Step ${currentSection} of ${totalSections}`;
+      
+      // Track progress in GA
+      gtag('event', 'fna_step_' + currentSection, {
+        event_category: 'FNA',
+        event_label: 'Step ' + currentSection
+      });
+    }
+
+    function showSection(n) {
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.getElementById('section' + n).classList.add('active');
+      currentSection = n;
+      updateProgress();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function nextSection() {
+      if (currentSection < totalSections) {
+        showSection(currentSection + 1);
+      }
+    }
+
+    function prevSection() {
+      if (currentSection > 1) {
+        showSection(currentSection - 1);
+      }
+    }
+
+    function restart() {
+      showSection(1);
+      document.querySelectorAll('input[type="number"]').forEach(i => i.value = '');
+      document.getElementById('married').checked = true;
+      document.getElementById('willNo').checked = true;
+      document.getElementById('benNo').checked = true;
+    }
+
+    function formatRand(num) {
+      return 'R ' + Math.round(num).toLocaleString('en-ZA');
+    }
+
+    function calculate() {
+      // Get all inputs
+      const age = parseInt(document.getElementById('age').value) || 35;
+      const dependents = parseInt(document.getElementById('dependents').value) || 0;
+      const youngestAge = parseInt(document.getElementById('youngestAge').value) || 0;
+      const income = parseFloat(document.getElementById('income').value) || 0;
+      const spouseIncome = parseFloat(document.getElementById('spouseIncome').value) || 0;
+      const expenses = parseFloat(document.getElementById('expenses').value) || 0;
+      const emergencyFund = parseFloat(document.getElementById('emergencyFund').value) || 0;
+      const retirementSavings = parseFloat(document.getElementById('retirementSavings').value) || 0;
+      const propertyValue = parseFloat(document.getElementById('propertyValue').value) || 0;
+      const investments = parseFloat(document.getElementById('investments').value) || 0;
+      const homeLoan = parseFloat(document.getElementById('homeLoan').value) || 0;
+      const otherDebt = parseFloat(document.getElementById('otherDebt').value) || 0;
+      const lifeCover = parseFloat(document.getElementById('lifeCover').value) || 0;
+      const disabilityCover = parseFloat(document.getElementById('disabilityCover').value) || 0;
+      const criticalCover = parseFloat(document.getElementById('criticalCover').value) || 0;
+      const retirementAge = parseInt(document.getElementById('retirementAge').value) || 65;
+      const retirementIncome = parseFloat(document.getElementById('retirementIncome').value) || 0;
+      const retirementContribution = parseFloat(document.getElementById('retirementContribution').value) || 0;
+
+      // Life Insurance Need Calculation
+      // Capital needed = (Income replacement × years) + Debt settlement + Education fund + Final expenses
+      const yearsToProvide = dependents > 0 ? Math.max(0, 22 - youngestAge) : 10;
+      const incomeReplacement = income * 12 * yearsToProvide * 0.75; // 75% of income
+      const debtSettlement = homeLoan + otherDebt;
+      const educationFund = dependents * 500000; // R500k per child for tertiary
+      const finalExpenses = 100000; // Funeral & estate costs
+      
+      const totalLifeNeed = incomeReplacement + debtSettlement + educationFund + finalExpenses;
+      const lifeGap = totalLifeNeed - lifeCover;
+
+      // Disability / Income Protection
+      const disabilityNeed = income * 0.75; // 75% of income
+      const disabilityGap = disabilityNeed - disabilityCover;
+
+      // Critical Illness
+      const criticalNeed = income * 12 * 3; // 3 years of income
+      const criticalGap = criticalNeed - criticalCover;
+
+      // Emergency Fund (3-6 months expenses)
+      const emergencyNeed = expenses * 6;
+      const emergencyGap = emergencyNeed - emergencyFund;
+
+      // Retirement Capital Needed
+      // Using 25x rule (4% withdrawal rate)
+      const retirementCapitalNeed = retirementIncome * 12 * 25;
+      const yearsToRetirement = retirementAge - age;
+      const futureValue = retirementSavings * Math.pow(1.08, yearsToRetirement); // 8% growth
+      const futureContributions = retirementContribution * 12 * ((Math.pow(1.08, yearsToRetirement) - 1) / 0.08);
+      const projectedRetirement = futureValue + futureContributions;
+      const retirementGap = retirementCapitalNeed - projectedRetirement;
+      const monthlyGapFill = retirementGap > 0 ? (retirementGap / ((Math.pow(1.08, yearsToRetirement) - 1) / 0.08)) / 12 : 0;
+
+      // Display Results
+      document.getElementById('lifeNeed').textContent = formatRand(totalLifeNeed);
+
+      // Insurance Gaps
+      let insuranceHTML = '';
+      
+      insuranceHTML += `<div class="gap-item">
+        <span class="gap-label">Life insurance needed</span>
+        <span class="gap-amount">${formatRand(totalLifeNeed)}</span>
+      </div>`;
+      
+      insuranceHTML += `<div class="gap-item">
+        <span class="gap-label">Current life cover</span>
+        <span class="gap-amount">${formatRand(lifeCover)}</span>
+      </div>`;
+      
+      insuranceHTML += `<div class="gap-item">
+        <span class="gap-label"><strong>Life insurance gap</strong></span>
+        <span class="gap-amount ${lifeGap > 0 ? 'negative' : ''}">${formatRand(lifeGap)}</span>
+      </div>`;
+
+      if (lifeGap > 100000) {
+        insuranceHTML += `<div class="insight-box danger">
+          ⚠️ <strong>Critical gap:</strong> You're under-insured by ${formatRand(lifeGap)}. Your family could struggle financially if something happens to you.
+        </div>`;
+      } else if (lifeGap < 0) {
+        insuranceHTML += `<div class="insight-box success">
+          ✅ You're adequately covered for life insurance. Well done!
+        </div>`;
+      }
+
+      insuranceHTML += `<hr style="margin: 20px 0">`;
+
+      insuranceHTML += `<div class="gap-item">
+        <span class="gap-label">Income protection needed</span>
+        <span class="gap-amount">${formatRand(disabilityNeed)}/month</span>
+      </div>`;
+      
+      insuranceHTML += `<div class="gap-item">
+        <span class="gap-label">Current disability cover</span>
+        <span class="gap-amount">${formatRand(disabilityCover)}/month</span>
+      </div>`;
+      
+      insuranceHTML += `<div class="gap-item">
+        <span class="gap-label"><strong>Disability gap</strong></span>
+        <span class="gap-amount ${disabilityGap > 0 ? 'negative' : ''}">${formatRand(disabilityGap)}/month</span>
+      </div>`;
+
+      if (disabilityGap > 5000) {
+        insuranceHTML += `<div class="insight-box danger">
+          ⚠️ If you become disabled, you'll be short ${formatRand(disabilityGap)} per month to maintain your lifestyle.
+        </div>`;
+      }
+
+      insuranceHTML += `<hr style="margin: 20px 0">`;
+
+      insuranceHTML += `<div class="gap-item">
+        <span class="gap-label">Critical illness recommended</span>
+        <span class="gap-amount">${formatRand(criticalNeed)}</span>
+      </div>`;
+      
+      insuranceHTML += `<div class="gap-item">
+        <span class="gap-label">Current critical illness cover</span>
+        <span class="gap-amount">${formatRand(criticalCover)}</span>
+      </div>`;
+
+      document.getElementById('insuranceGaps').innerHTML = insuranceHTML;
+
+      // Retirement Gaps
+      let retirementHTML = '';
+      
+      retirementHTML += `<div class="gap-item">
+        <span class="gap-label">Capital needed at retirement</span>
+        <span class="gap-amount">${formatRand(retirementCapitalNeed)}</span>
+      </div>`;
+      
+      retirementHTML += `<div class="gap-item">
+        <span class="gap-label">Projected savings at ${retirementAge}</span>
+        <span class="gap-amount">${formatRand(projectedRetirement)}</span>
+      </div>`;
+      
+      retirementHTML += `<div class="gap-item">
+        <span class="gap-label"><strong>Retirement gap</strong></span>
+        <span class="gap-amount ${retirementGap > 0 ? 'negative' : ''}">${formatRand(retirementGap)}</span>
+      </div>`;
+
+      if (retirementGap > 100000) {
+        retirementHTML += `<div class="insight-box danger">
+          ⚠️ <strong>You're on track to fall short by ${formatRand(retirementGap)} at retirement.</strong><br>
+          To close this gap, you need to increase your monthly contributions by <strong>${formatRand(monthlyGapFill)}/month</strong>.
+        </div>`;
+      } else if (retirementGap < 0) {
+        retirementHTML += `<div class="insight-box success">
+          ✅ You're on track to exceed your retirement goal by ${formatRand(Math.abs(retirementGap))}. Excellent!
+        </div>`;
+      }
+
+      document.getElementById('retirementGaps').innerHTML = retirementHTML;
+
+      // Emergency Fund
+      let emergencyHTML = '';
+      
+      emergencyHTML += `<div class="gap-item">
+        <span class="gap-label">Recommended emergency fund</span>
+        <span class="gap-amount">${formatRand(emergencyNeed)}</span>
+      </div>`;
+      
+      emergencyHTML += `<div class="gap-item">
+        <span class="gap-label">Current emergency fund</span>
+        <span class="gap-amount">${formatRand(emergencyFund)}</span>
+      </div>`;
+      
+      emergencyHTML += `<div class="gap-item">
+        <span class="gap-label"><strong>Emergency fund gap</strong></span>
+        <span class="gap-amount ${emergencyGap > 0 ? 'negative' : ''}">${formatRand(emergencyGap)}</span>
+      </div>`;
+
+      if (emergencyGap > 10000) {
+        emergencyHTML += `<div class="insight-box">
+          💡 Aim to save ${formatRand(emergencyGap)} in an accessible savings account for emergencies.
+        </div>`;
+      } else {
+        emergencyHTML += `<div class="insight-box success">
+          ✅ Your emergency fund is adequate. Keep it liquid and accessible.
+        </div>`;
+      }
+
+      document.getElementById('emergencyGaps').innerHTML = emergencyHTML;
+
+      // Recommendations
+      let recommendations = '';
+      const hasWill = document.querySelector('input[name="will"]:checked').value === 'yes';
+      const hasBeneficiaries = document.querySelector('input[name="beneficiaries"]:checked').value === 'yes';
+
+      if (!hasWill) {
+        recommendations += `<div class="insight-box danger">
+          📋 <strong>Urgent:</strong> You don't have a valid will. Without one, the state decides who gets your assets and who looks after your children.
+        </div>`;
+      }
+
+      if (!hasBeneficiaries) {
+        recommendations += `<div class="insight-box danger">
+          👨‍👩‍👧‍👦 <strong>Important:</strong> Nominate beneficiaries on all policies to avoid delays and executor fees.
+        </div>`;
+      }
+
+      if (retirementContribution / income < 0.1) {
+        recommendations += `<div class="insight-box">
+          💰 You're saving ${((retirementContribution / income) * 100).toFixed(1)}% of your income for retirement. Aim for at least 15% to retire comfortably.
+        </div>`;
+      }
+
+      const netWorth = emergencyFund + retirementSavings + propertyValue + investments - homeLoan - otherDebt;
+      recommendations += `<div class="insight-box">
+        📊 Your current net worth is <strong>${formatRand(netWorth)}</strong>.
+      </div>`;
+
+      if (otherDebt > income * 3) {
+        recommendations += `<div class="insight-box danger">
+          💳 Your non-mortgage debt is high (${(otherDebt / (income * 12) * 100).toFixed(0)}% of annual income). Focus on paying this down before increasing investments.
+        </div>`;
+      }
+
+      document.getElementById('recommendations').innerHTML = recommendations;
+
+      // Track completion
+      gtag('event', 'fna_completed', {
+        event_category: 'FNA',
+        life_gap: lifeGap,
+        retirement_gap: retirementGap
+      });
+
+      showSection(7);
+    }
+
+    // Auto-save to localStorage
+    setInterval(() => {
+      const data = {};
+      document.querySelectorAll('input[type="number"], input[type="text"]').forEach(input => {
+        data[input.id] = input.value;
+      });
+      document.querySelectorAll('input[type="radio"]:checked').forEach(input => {
+        data[input.name] = input.value;
+      });
+      localStorage.setItem('fnaData', JSON.stringify(data));
+    }, 5000);
+
+    // Restore from localStorage on load
+    window.addEventListener('load', () => {
+      const saved = localStorage.getItem('fnaData');
+      if (saved) {
+        const data = JSON.parse(saved);
+        Object.keys(data).forEach(key => {
+          const input = document.getElementById(key) || document.querySelector(`input[name="${key}"][value="${data[key]}"]`);
+          if (input) {
+            if (input.type === 'radio') {
+              input.checked = true;
+            } else {
+              input.value = data[key];
+            }
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

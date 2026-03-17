@@ -812,9 +812,12 @@
       const projectedRetirement = futureRetirementSavings + futureContributions + futureInvestments;
       const projectedRetirementWithProperty = projectedRetirement + downsizeRelease;
       
-      const retirementGap = retirementCapitalNeed - projectedRetirement;
-      const retirementGapWithProperty = retirementCapitalNeed - projectedRetirementWithProperty;
-      const monthlyGapFill = retirementGap > 0 ? (retirementGap / ((Math.pow(1 + realInvestmentGrowth, yearsToRetirement) - 1) / realInvestmentGrowth)) / 12 : 0;
+      // Calculate total assets including property equity
+      const totalProjectedAssets = projectedRetirement + propertyEquity;
+      
+      // Gap analysis WITH property included
+      const totalRetirementGap = retirementCapitalNeed - totalProjectedAssets;
+      const monthlyGapFill = totalRetirementGap > 0 ? (totalRetirementGap / ((Math.pow(1 + realInvestmentGrowth, yearsToRetirement) - 1) / realInvestmentGrowth)) / 12 : 0;
       
       // Adjusted Life Insurance Need (accounting for growing assets)
       // Your family could liquidate property equity if needed
@@ -826,12 +829,17 @@
       const currentMonthlyInvestment = retirementContribution;
       const neededMonthlyInvestment = currentMonthlyInvestment + monthlyGapFill;
       
-      if (retirementGap > 0) {
-        document.getElementById('monthlyNeed').textContent = formatRand(neededMonthlyInvestment);
-        document.getElementById('investmentSubtext').textContent = `To retire on ${formatRand(retirementIncome)}/month, invest ${formatRand(neededMonthlyInvestment)}/month until age ${retirementAge}`;
+      if (totalRetirementGap > 0) {
+        if (monthlyGapFill > 1000) {
+          document.getElementById('monthlyNeed').textContent = formatRand(neededMonthlyInvestment);
+          document.getElementById('investmentSubtext').textContent = `Increase to ${formatRand(neededMonthlyInvestment)}/month (+ ${formatRand(monthlyGapFill)} more) until age ${retirementAge}. All amounts in today's money.`;
+        } else {
+          document.getElementById('monthlyNeed').textContent = formatRand(currentMonthlyInvestment);
+          document.getElementById('investmentSubtext').textContent = `Almost there! Your property equity covers most of the gap. Keep investing ${formatRand(currentMonthlyInvestment)}/month.`;
+        }
       } else {
-        document.getElementById('monthlyNeed').textContent = formatRand(currentMonthlyInvestment);
-        document.getElementById('investmentSubtext').textContent = `You're on track! Keep investing ${formatRand(currentMonthlyInvestment)}/month`;
+        document.getElementById('monthlyNeed').textContent = '✅ On Track!';
+        document.getElementById('investmentSubtext').textContent = `Your current ${formatRand(currentMonthlyInvestment)}/month + property growth will exceed your ${formatRand(retirementIncome)}/month goal.`;
       }
       
       // Retirement Plan
@@ -853,7 +861,7 @@
       }
       
       planHTML += `<div class="gap-item">
-        <span class="gap-label">Capital needed (25x annual income)</span>
+        <span class="gap-label">Capital needed at retirement (today's rands)</span>
         <span class="gap-amount">${formatRand(retirementCapitalNeed)}</span>
       </div>`;
       
@@ -870,41 +878,43 @@
       </div>`;
       
       planHTML += `<div class="gap-item">
-        <span class="gap-label">Projected investments at ${retirementAge}</span>
+        <span class="gap-label">Projected investments at ${retirementAge} (today's rands)</span>
         <span class="gap-amount">${formatRand(projectedRetirement)}</span>
       </div>`;
       
-      const totalAssets = propertyEquity + futureInvestments + projectedRetirement;
-      
       planHTML += `<div class="gap-item">
-        <span class="gap-label">+ Property equity</span>
+        <span class="gap-label">+ Property equity (today's rands)</span>
         <span class="gap-amount">${formatRand(propertyEquity)}</span>
       </div>`;
       
       planHTML += `<div class="gap-item">
-        <span class="gap-label"><strong>Total projected wealth</strong></span>
-        <span class="gap-amount" style="font-size: 1.2rem; color: var(--success)">${formatRand(totalAssets)}</span>
+        <span class="gap-label"><strong>= Total projected wealth (today's purchasing power)</strong></span>
+        <span class="gap-amount" style="font-size: 1.2rem; color: var(--success)">${formatRand(totalProjectedAssets)}</span>
       </div>`;
 
-      const totalGap = retirementCapitalNeed - totalAssets;
-
-      if (totalGap > 0) {
+      if (totalRetirementGap > 0) {
         planHTML += `<div class="gap-item">
           <span class="gap-label"><strong>Shortfall</strong></span>
-          <span class="gap-amount negative">${formatRand(totalGap)}</span>
+          <span class="gap-amount negative">${formatRand(totalRetirementGap)}</span>
         </div>`;
         
-        planHTML += `<div class="insight-box danger">
-          ⚠️ Including property, you'll still be short by ${formatRand(totalGap)}. <strong>Increase your monthly investment by ${formatRand(monthlyGapFill)}</strong> to hit your goal.
-        </div>`;
+        if (monthlyGapFill > 1000) {
+          planHTML += `<div class="insight-box danger">
+            ⚠️ To close the gap, <strong>increase your monthly investment by ${formatRand(monthlyGapFill)}</strong> (from ${formatRand(currentMonthlyInvestment)} to ${formatRand(neededMonthlyInvestment)}).
+          </div>`;
+        } else {
+          planHTML += `<div class="insight-box success">
+            💡 You're close! Your property equity covers most of the gap. Keep investing ${formatRand(currentMonthlyInvestment)}/month.
+          </div>`;
+        }
       } else {
         planHTML += `<div class="gap-item">
-          <span class="gap-label"><strong>Surplus</strong></span>
-          <span class="gap-amount">${formatRand(Math.abs(totalGap))}</span>
+          <span class="gap-label"><strong>Surplus (today's rands)</strong></span>
+          <span class="gap-amount">${formatRand(Math.abs(totalRetirementGap))}</span>
         </div>`;
         
         planHTML += `<div class="insight-box success">
-          ✅ You're on track to exceed your goal by ${formatRand(Math.abs(totalGap))}! Your property equity is a huge contributor.
+          ✅ You're on track to exceed your goal by ${formatRand(Math.abs(totalRetirementGap))}! Your property equity is a huge contributor.
         </div>`;
       }
 

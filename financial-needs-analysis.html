@@ -1068,46 +1068,7 @@
 
       document.getElementById('insuranceGaps').innerHTML = insuranceHTML;
 
-      // Retirement Gaps
-      let retirementHTML = '';
-      
-      retirementHTML += `<div class="gap-item">
-        <span class="gap-label">Capital needed at retirement</span>
-        <span class="gap-amount">${formatRand(retirementCapitalNeed)}</span>
-      </div>`;
-      
-      retirementHTML += `<div class="gap-item">
-        <span class="gap-label">Projected retirement savings</span>
-        <span class="gap-amount">${formatRand(projectedRetirement)}</span>
-      </div>`;
-      
-      retirementHTML += `<div class="gap-item">
-        <span class="gap-label"><strong>Gap (without property)</strong></span>
-        <span class="gap-amount ${retirementGap > 0 ? 'negative' : ''}">${formatRand(retirementGap)}</span>
-      </div>`;
-
-      if (retirementGap > 100000 && downsizeRelease > 1000000) {
-        retirementHTML += `<div class="insight-box">
-          🏡 <strong>Property rescue plan:</strong> If you downsize and free up ${formatRand(downsizeRelease)}, your retirement gap becomes <strong>${formatRand(retirementGapWithProperty)}</strong>.
-        </div>`;
-        
-        if (retirementGapWithProperty <= 0) {
-          retirementHTML += `<div class="insight-box success">
-            ✅ With downsizing, you'll exceed your retirement goal by ${formatRand(Math.abs(retirementGapWithProperty))}. Your property is your retirement plan!
-          </div>`;
-        }
-      } else if (retirementGap > 100000) {
-        retirementHTML += `<div class="insight-box danger">
-          ⚠️ <strong>You're on track to fall short by ${formatRand(retirementGap)} at retirement.</strong><br>
-          To close this gap, you need to increase your monthly contributions by <strong>${formatRand(monthlyGapFill)}/month</strong>.
-        </div>`;
-      } else if (retirementGap < 0) {
-        retirementHTML += `<div class="insight-box success">
-          ✅ You're on track to exceed your retirement goal by ${formatRand(Math.abs(retirementGap))}. Excellent!
-        </div>`;
-      }
-
-      document.getElementById('retirementGaps').innerHTML = retirementHTML;
+      // Retirement gap analysis now handled in retirementPlan section
 
       // Emergency Fund
       let emergencyHTML = '';

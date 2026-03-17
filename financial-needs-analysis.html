@@ -658,16 +658,31 @@
     }
 
     function showSection(n) {
+      console.log('showSection called with n=', n);
+      const section = document.getElementById('section' + n);
+      if (!section) {
+        console.error('Section not found: section' + n);
+        alert('Section ' + n + ' not found!');
+        return;
+      }
       document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-      document.getElementById('section' + n).classList.add('active');
+      section.classList.add('active');
       currentSection = n;
       updateProgress();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function nextSection() {
-      if (currentSection < totalSections) {
-        showSection(currentSection + 1);
+      try {
+        console.log('nextSection called, current:', currentSection);
+        if (currentSection < totalSections) {
+          showSection(currentSection + 1);
+        } else {
+          console.log('Already at last section');
+        }
+      } catch(e) {
+        console.error('nextSection error:', e);
+        alert('Navigation error: ' + e.message);
       }
     }
 

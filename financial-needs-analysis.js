@@ -203,8 +203,13 @@
       } else {
         // Calculate max affordable income with current trajectory
         const maxMonthlyIncome = (totalProjectedAssets / 25) / 12;
+        // Change the label when showing surplus
+        const resultLabel = document.querySelector('.result-label');
+        if (resultLabel) {
+          resultLabel.innerHTML = '🎉 Maximum Retirement Income (in today\'s money)';
+        }
         document.getElementById('monthlyNeed').textContent = formatRand(maxMonthlyIncome) + '/month';
-        document.getElementById('investmentSubtext').textContent = `That's how much you can afford! Your ${formatRand(currentMonthlyInvestment)}/month investment + property = ${formatRand(maxMonthlyIncome)}/month retirement income (${formatRand(maxMonthlyIncome - adjustedRetirementIncome)} above your ${formatRand(adjustedRetirementIncome)} goal).`;
+        document.getElementById('investmentSubtext').textContent = `That's ${formatRand(maxMonthlyIncome - adjustedRetirementIncome)} MORE than your ${formatRand(adjustedRetirementIncome)} goal. Your current ${formatRand(currentMonthlyInvestment)}/month investment + property equity gets you there. No extra investment needed.`;
       }
       
       // Retirement Plan

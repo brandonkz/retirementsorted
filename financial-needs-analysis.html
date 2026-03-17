@@ -582,24 +582,41 @@
     <!-- Section 7: Results -->
     <div class="section" id="section7">
       <div class="result-card">
-        <div class="result-label">Your Life Insurance Need</div>
-        <div class="result-value" id="lifeNeed">R 0</div>
+        <div class="result-label">💰 Monthly Investment Needed</div>
+        <div class="result-value" id="monthlyNeed">R 0</div>
+        <p style="opacity: 0.9; margin-top: 10px;" id="investmentSubtext"></p>
       </div>
 
       <div class="card">
-        <h2>📈 Your Wealth Projection</h2>
-        <p class="subtitle">What your assets will be worth at retirement</p>
+        <h2>🎯 Your Retirement Goal</h2>
+        <div id="retirementPlan"></div>
+      </div>
+
+      <div class="card">
+        <h2>📊 What If I Invest More?</h2>
+        <p class="subtitle">See how increasing your monthly investment changes your outcome</p>
+        <div style="margin: 20px 0;">
+          <label style="display: block; margin-bottom: 10px;">Extra monthly investment:</label>
+          <input type="range" id="extraInvestment" min="0" max="10000" step="500" value="0" style="width: 100%;">
+          <div style="display: flex; justify-content: space-between; margin-top: 5px; font-size: 0.9rem; color: var(--text-muted);">
+            <span>R 0</span>
+            <span id="extraAmount">R 0</span>
+            <span>R 10,000</span>
+          </div>
+        </div>
+        <div id="extraImpact"></div>
+      </div>
+
+      <div class="card">
+        <h2>📈 Your Wealth Timeline</h2>
+        <p class="subtitle">How your assets grow to retirement (in today's rands)</p>
         <div id="wealthProjection"></div>
       </div>
 
       <div class="card">
-        <h2>Insurance Gap Analysis</h2>
+        <h2>🛡️ Protecting Your Investment Journey</h2>
+        <p class="subtitle">Insurance to protect your family while you build wealth</p>
         <div id="insuranceGaps"></div>
-      </div>
-
-      <div class="card">
-        <h2>Retirement Readiness</h2>
-        <div id="retirementGaps"></div>
       </div>
 
       <div class="card">
@@ -608,7 +625,7 @@
       </div>
 
       <div class="card">
-        <h2>Recommendations</h2>
+        <h2>Action Plan</h2>
         <div id="recommendations"></div>
       </div>
 
@@ -761,7 +778,68 @@
       const adjustedLifeGap = adjustedLifeNeed - lifeCover;
 
       // Display Results
-      document.getElementById('lifeNeed').textContent = formatRand(totalLifeNeed);
+      const currentMonthlyInvestment = retirementContribution;
+      const neededMonthlyInvestment = currentMonthlyInvestment + monthlyGapFill;
+      
+      if (retirementGap > 0) {
+        document.getElementById('monthlyNeed').textContent = formatRand(neededMonthlyInvestment);
+        document.getElementById('investmentSubtext').textContent = `To retire on ${formatRand(retirementIncome)}/month, invest ${formatRand(neededMonthlyInvestment)}/month until age ${retirementAge}`;
+      } else {
+        document.getElementById('monthlyNeed').textContent = formatRand(currentMonthlyInvestment);
+        document.getElementById('investmentSubtext').textContent = `You're on track! Keep investing ${formatRand(currentMonthlyInvestment)}/month`;
+      }
+      
+      // Retirement Plan
+      let planHTML = '';
+      
+      planHTML += `<div class="gap-item">
+        <span class="gap-label">Desired retirement income</span>
+        <span class="gap-amount">${formatRand(retirementIncome)}/month</span>
+      </div>`;
+      
+      planHTML += `<div class="gap-item">
+        <span class="gap-label">Capital needed (25x annual income)</span>
+        <span class="gap-amount">${formatRand(retirementCapitalNeed)}</span>
+      </div>`;
+      
+      planHTML += `<div class="gap-item">
+        <span class="gap-label">Years until retirement</span>
+        <span class="gap-amount">${yearsToRetirement} years</span>
+      </div>`;
+
+      planHTML += `<hr style="margin: 20px 0">`;
+
+      planHTML += `<div class="gap-item">
+        <span class="gap-label">Current monthly investment</span>
+        <span class="gap-amount">${formatRand(currentMonthlyInvestment)}</span>
+      </div>`;
+      
+      planHTML += `<div class="gap-item">
+        <span class="gap-label">Projected wealth at ${retirementAge}</span>
+        <span class="gap-amount">${formatRand(projectedRetirement)}</span>
+      </div>`;
+
+      if (retirementGap > 0) {
+        planHTML += `<div class="gap-item">
+          <span class="gap-label"><strong>Shortfall</strong></span>
+          <span class="gap-amount negative">${formatRand(retirementGap)}</span>
+        </div>`;
+        
+        planHTML += `<div class="insight-box danger">
+          ⚠️ At your current savings rate, you'll fall short by ${formatRand(retirementGap)}. <strong>Increase your monthly investment by ${formatRand(monthlyGapFill)}</strong> to hit your goal.
+        </div>`;
+      } else {
+        planHTML += `<div class="gap-item">
+          <span class="gap-label"><strong>Surplus</strong></span>
+          <span class="gap-amount">${formatRand(Math.abs(retirementGap))}</span>
+        </div>`;
+        
+        planHTML += `<div class="insight-box success">
+          ✅ You're on track to exceed your goal by ${formatRand(Math.abs(retirementGap))}. Keep it up!
+        </div>`;
+      }
+
+      document.getElementById('retirementPlan').innerHTML = planHTML;
 
       // Wealth Projection
       let wealthHTML = '';
@@ -845,8 +923,12 @@
       // Insurance Gaps
       let insuranceHTML = '';
       
+      insuranceHTML += `<div class="insight-box">
+        💡 <strong>Why insurance matters:</strong> You're building ${formatRand(projectedRetirement)} over ${yearsToRetirement} years. If something happens to you, your family needs a safety net while they adjust.
+      </div>`;
+
       insuranceHTML += `<div class="gap-item">
-        <span class="gap-label">Life insurance needed (traditional)</span>
+        <span class="gap-label">Life cover needed (income replacement + debts)</span>
         <span class="gap-amount">${formatRand(totalLifeNeed)}</span>
       </div>`;
       
@@ -1036,10 +1118,42 @@
 
       document.getElementById('recommendations').innerHTML = recommendations;
 
+      // Interactive slider for extra investment
+      const slider = document.getElementById('extraInvestment');
+      const updateSlider = () => {
+        const extra = parseInt(slider.value);
+        document.getElementById('extraAmount').textContent = formatRand(extra);
+        
+        const newMonthly = currentMonthlyInvestment + extra;
+        const newContributions = newMonthly * 12 * ((Math.pow(1 + realInvestmentGrowth, yearsToRetirement) - 1) / realInvestmentGrowth);
+        const newTotal = futureRetirementSavings + newContributions + futureInvestments;
+        const newGap = retirementCapitalNeed - newTotal;
+        
+        const impactHTML = `
+          <div class="gap-item">
+            <span class="gap-label">New monthly investment</span>
+            <span class="gap-amount">${formatRand(newMonthly)}</span>
+          </div>
+          <div class="gap-item">
+            <span class="gap-label">Projected retirement wealth</span>
+            <span class="gap-amount">${formatRand(newTotal)}</span>
+          </div>
+          <div class="gap-item">
+            <span class="gap-label"><strong>${newGap > 0 ? 'Remaining gap' : 'Surplus'}</strong></span>
+            <span class="gap-amount ${newGap > 0 ? 'negative' : ''}">${formatRand(Math.abs(newGap))}</span>
+          </div>
+          ${newGap <= 0 ? '<div class="insight-box success">✅ With this increase, you\'ll hit your retirement goal!</div>' : ''}
+        `;
+        document.getElementById('extraImpact').innerHTML = impactHTML;
+      };
+      
+      slider.addEventListener('input', updateSlider);
+      updateSlider(); // Initialize
+
       // Track completion
       gtag('event', 'fna_completed', {
         event_category: 'FNA',
-        life_gap: lifeGap,
+        life_gap: finalLifeGap,
         retirement_gap: retirementGap
       });
 

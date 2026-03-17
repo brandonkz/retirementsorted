@@ -203,13 +203,27 @@
       } else {
         // Calculate max affordable income with current trajectory
         const maxMonthlyIncome = (totalProjectedAssets / 25) / 12;
+        
+        // Calculate how early they could retire
+        // Work backwards: how many years of investing needed to reach the capital target?
+        const yearsNeeded = Math.log(1 + (retirementCapitalNeed - currentRetirement - futureInvestments - propertyEquity) / (currentMonthlyInvestment * 12) * realInvestmentGrowth) / Math.log(1 + realInvestmentGrowth);
+        const earlyRetireAge = Math.round(age + yearsNeeded);
+        const yearsEarlier = retirementAge - earlyRetireAge;
+        
         // Change the label when showing surplus
         const resultLabel = document.querySelector('.result-label');
         if (resultLabel) {
           resultLabel.innerHTML = '🎉 Maximum Retirement Income (in today\'s money)';
         }
         document.getElementById('monthlyNeed').textContent = formatRand(maxMonthlyIncome) + '/month';
-        document.getElementById('investmentSubtext').textContent = `That's ${formatRand(maxMonthlyIncome - adjustedRetirementIncome)} MORE than your ${formatRand(adjustedRetirementIncome)} goal. Your current ${formatRand(currentMonthlyInvestment)}/month investment + property equity gets you there. No extra investment needed.`;
+        
+        let subtextMsg = `That's ${formatRand(maxMonthlyIncome - adjustedRetirementIncome)} MORE than your ${formatRand(adjustedRetirementIncome)} goal. Your current ${formatRand(currentMonthlyInvestment)}/month investment + property equity gets you there. No extra investment needed.`;
+        
+        if (yearsNeeded > 0 && yearsEarlier > 0 && earlyRetireAge < retirementAge && earlyRetireAge > age) {
+          subtextMsg += ` 💡 <strong>At this rate, you could retire at age ${earlyRetireAge}</strong> (${yearsEarlier} year${yearsEarlier > 1 ? 's' : ''} earlier than ${retirementAge}).`;
+        }
+        
+        document.getElementById('investmentSubtext').innerHTML = subtextMsg;
       }
       
       // Retirement Plan

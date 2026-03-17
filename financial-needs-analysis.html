@@ -792,7 +792,7 @@
       // Only adjust if bond will be paid off DURING retirement (not before)
       let adjustedRetirementIncome = retirementIncome;
       let bondSavings = 0;
-      const bondTerm = 20;
+      // bondTerm already declared above
       
       // If you retire BEFORE bond is paid (e.g., retire in 15 yrs, 20yr bond), you'll save the bond payment in retirement
       if (yearsToRetirement < bondTerm && homeLoan > 0) {
@@ -993,15 +993,15 @@
 
       wealthHTML += `<hr style="margin: 20px 0">`;
 
-      const totalAssets = propertyEquity + futureInvestments + projectedRetirement;
+      const totalWealthAtRetirement = propertyEquity + futureInvestments + projectedRetirement;
       wealthHTML += `<div class="gap-item">
         <span class="gap-label"><strong>Total projected wealth at ${retirementAge}</strong></span>
-        <span class="gap-amount" style="font-size: 1.3rem; color: var(--success)">${formatRand(totalAssets)}</span>
+        <span class="gap-amount" style="font-size: 1.3rem; color: var(--success)">${formatRand(totalWealthAtRetirement)}</span>
       </div>`;
 
-      if (totalAssets > retirementCapitalNeed) {
+      if (totalWealthAtRetirement > retirementCapitalNeed) {
         wealthHTML += `<div class="insight-box success">
-          🎉 <strong>You're on track to be financially independent!</strong> Your projected assets (${formatRand(totalAssets)}) exceed your retirement capital need (${formatRand(retirementCapitalNeed)}).
+          🎉 <strong>You're on track to be financially independent!</strong> Your projected assets (${formatRand(totalWealthAtRetirement)}) exceed your retirement capital need (${formatRand(retirementCapitalNeed)}).
         </div>`;
       }
 

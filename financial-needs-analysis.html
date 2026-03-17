@@ -748,7 +748,22 @@
       
       // Future property value (REAL - today's purchasing power)
       const futurePropertyValue = propertyValue * Math.pow(1 + realPropertyGrowth, yearsToRetirement);
-      const propertyEquity = futurePropertyValue - (homeLoan / Math.pow(1 + inflationRate, yearsToRetirement)); // Loan shrinks in real terms
+      
+      // Mortgage payoff projection
+      // Assume 20-year bond term (standard in SA)
+      const bondTerm = 20;
+      const remainingBondYears = Math.max(0, bondTerm - (yearsToRetirement > bondTerm ? yearsToRetirement - bondTerm : 0));
+      
+      // If retirement is 20+ years away, bond is fully paid off
+      let loanAtRetirement = homeLoan;
+      if (yearsToRetirement >= bondTerm) {
+        loanAtRetirement = 0; // Bond fully paid
+      } else {
+        // Pro-rata reduction (simplified - ignores interest compounding but close enough)
+        loanAtRetirement = homeLoan * (1 - yearsToRetirement / bondTerm);
+      }
+      
+      const propertyEquity = futurePropertyValue - (loanAtRetirement / Math.pow(1 + inflationRate, yearsToRetirement)); // Loan shrinks in real terms
       
       // Downsizing scenario - assume selling property and buying smaller at 40% of future value
       const downsizeRelease = propertyEquity * 0.6; // 60% of equity freed up
@@ -757,7 +772,17 @@
       const futureInvestments = investments * Math.pow(1 + realInvestmentGrowth, yearsToRetirement);
       
       // Retirement Capital Needed (already in today's rands)
-      const retirementCapitalNeed = retirementIncome * 12 * 25;
+      // Adjust retirement income need if bond will be paid off
+      let adjustedRetirementIncome = retirementIncome;
+      let bondSavings = 0;
+      
+      if (yearsToRetirement >= 20 && homeLoan > 0) {
+        // Estimate monthly bond payment (simplified: total loan / 240 months)
+        bondSavings = homeLoan / 240; // Rough monthly payment estimate
+        adjustedRetirementIncome = Math.max(10000, retirementIncome - bondSavings); // Don't go below R10k
+      }
+      
+      const retirementCapitalNeed = adjustedRetirementIncome * 12 * 25;
       
       // Future retirement savings (REAL)
       const futureRetirementSavings = retirementSavings * Math.pow(1 + realInvestmentGrowth, yearsToRetirement);
@@ -793,9 +818,21 @@
       let planHTML = '';
       
       planHTML += `<div class="gap-item">
-        <span class="gap-label">Desired retirement income</span>
+        <span class="gap-label">Desired retirement income (today's Rands)</span>
         <span class="gap-amount">${formatRand(retirementIncome)}/month</span>
       </div>`;
+      
+      if (bondSavings > 0) {
+        planHTML += `<div class="gap-item">
+          <span class="gap-label">Less: Bond payment (will be paid off)</span>
+          <span class="gap-amount" style="color: var(--success)">-${formatRand(bondSavings)}/month</span>
+        </div>`;
+        
+        planHTML += `<div class="gap-item">
+          <span class="gap-label"><strong>Adjusted retirement income needed</strong></span>
+          <span class="gap-amount">${formatRand(adjustedRetirementIncome)}/month</span>
+        </div>`;
+      }
       
       planHTML += `<div class="gap-item">
         <span class="gap-label">Capital needed (25x annual income)</span>
@@ -860,18 +897,36 @@
       </div>`;
       
       wealthHTML += `<div class="gap-item">
-        <span class="gap-label">Home loan outstanding</span>
+        <span class="gap-label">Home loan outstanding (today)</span>
         <span class="gap-amount negative">${formatRand(homeLoan)}</span>
       </div>`;
+      
+      if (yearsToRetirement >= 20) {
+        wealthHTML += `<div class="gap-item">
+          <span class="gap-label">Home loan at retirement</span>
+          <span class="gap-amount" style="color: var(--success)">R 0 (fully paid off)</span>
+        </div>`;
+      } else {
+        wealthHTML += `<div class="gap-item">
+          <span class="gap-label">Home loan at retirement (estimated)</span>
+          <span class="gap-amount negative">${formatRand(loanAtRetirement)}</span>
+        </div>`;
+      }
       
       wealthHTML += `<div class="gap-item">
         <span class="gap-label"><strong>Property equity at retirement</strong></span>
         <span class="gap-amount">${formatRand(propertyEquity)}</span>
       </div>`;
 
-      if (propertyEquity > 5000000) {
+      if (yearsToRetirement >= 20) {
         wealthHTML += `<div class="insight-box success">
-          🏡 <strong>Downsizing opportunity:</strong> If you sell your home and downsize at retirement, you could free up <strong>${formatRand(downsizeRelease)}</strong> to fund your retirement.
+          ✅ <strong>Debt-free at retirement:</strong> Your bond will be fully paid off by age ${retirementAge}. Your property equity: <strong>${formatRand(propertyEquity)}</strong>.
+        </div>`;
+      }
+      
+      if (propertyEquity > 5000000) {
+        wealthHTML += `<div class="insight-box">
+          🏡 <strong>Downsizing option:</strong> You could sell and downsize, freeing up <strong>${formatRand(downsizeRelease)}</strong> for retirement income.
         </div>`;
       }
 

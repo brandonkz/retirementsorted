@@ -587,6 +587,12 @@
       </div>
 
       <div class="card">
+        <h2>📈 Your Wealth Projection</h2>
+        <p class="subtitle">What your assets will be worth at retirement</p>
+        <div id="wealthProjection"></div>
+      </div>
+
+      <div class="card">
         <h2>Insurance Gap Analysis</h2>
         <div id="insuranceGaps"></div>
       </div>
@@ -710,42 +716,163 @@
       const emergencyNeed = expenses * 6;
       const emergencyGap = emergencyNeed - emergencyFund;
 
+      // Asset Growth Projections
+      const yearsToRetirement = retirementAge - age;
+      const propertyGrowthRate = 0.07; // 7% annual property appreciation
+      const investmentGrowthRate = 0.08; // 8% annual investment growth
+      
+      // Future property value
+      const futurePropertyValue = propertyValue * Math.pow(1 + propertyGrowthRate, yearsToRetirement);
+      const propertyEquity = futurePropertyValue - homeLoan; // Assuming loan stays constant (simplified)
+      
+      // Downsizing scenario - assume selling property and buying smaller at 40% of future value
+      const downsizeRelease = propertyEquity * 0.6; // 60% of equity freed up
+      
+      // Future investment portfolio
+      const futureInvestments = investments * Math.pow(1 + investmentGrowthRate, yearsToRetirement);
+      
       // Retirement Capital Needed
       // Using 25x rule (4% withdrawal rate)
       const retirementCapitalNeed = retirementIncome * 12 * 25;
-      const yearsToRetirement = retirementAge - age;
-      const futureValue = retirementSavings * Math.pow(1.08, yearsToRetirement); // 8% growth
+      const futureRetirementSavings = retirementSavings * Math.pow(1.08, yearsToRetirement);
       const futureContributions = retirementContribution * 12 * ((Math.pow(1.08, yearsToRetirement) - 1) / 0.08);
-      const projectedRetirement = futureValue + futureContributions;
+      
+      // Total projected wealth at retirement
+      const projectedRetirement = futureRetirementSavings + futureContributions + futureInvestments;
+      const projectedRetirementWithProperty = projectedRetirement + downsizeRelease;
+      
       const retirementGap = retirementCapitalNeed - projectedRetirement;
+      const retirementGapWithProperty = retirementCapitalNeed - projectedRetirementWithProperty;
       const monthlyGapFill = retirementGap > 0 ? (retirementGap / ((Math.pow(1.08, yearsToRetirement) - 1) / 0.08)) / 12 : 0;
+      
+      // Adjusted Life Insurance Need (accounting for growing assets)
+      // Your family could liquidate property equity if needed
+      const netDebt = debtSettlement - propertyEquity;
+      const adjustedLifeNeed = incomeReplacement + Math.max(0, netDebt) + educationFund + finalExpenses;
+      const adjustedLifeGap = adjustedLifeNeed - lifeCover;
 
       // Display Results
       document.getElementById('lifeNeed').textContent = formatRand(totalLifeNeed);
+
+      // Wealth Projection
+      let wealthHTML = '';
+      
+      wealthHTML += `<div class="gap-item">
+        <span class="gap-label">Property value today</span>
+        <span class="gap-amount">${formatRand(propertyValue)}</span>
+      </div>`;
+      
+      wealthHTML += `<div class="gap-item">
+        <span class="gap-label">Property value at ${retirementAge} (7%/year growth)</span>
+        <span class="gap-amount">${formatRand(futurePropertyValue)}</span>
+      </div>`;
+      
+      wealthHTML += `<div class="gap-item">
+        <span class="gap-label">Home loan outstanding</span>
+        <span class="gap-amount negative">${formatRand(homeLoan)}</span>
+      </div>`;
+      
+      wealthHTML += `<div class="gap-item">
+        <span class="gap-label"><strong>Property equity at retirement</strong></span>
+        <span class="gap-amount">${formatRand(propertyEquity)}</span>
+      </div>`;
+
+      if (propertyEquity > 5000000) {
+        wealthHTML += `<div class="insight-box success">
+          🏡 <strong>Downsizing opportunity:</strong> If you sell your home and downsize at retirement, you could free up <strong>${formatRand(downsizeRelease)}</strong> to fund your retirement.
+        </div>`;
+      }
+
+      wealthHTML += `<hr style="margin: 20px 0">`;
+
+      wealthHTML += `<div class="gap-item">
+        <span class="gap-label">Investments today (TFSA, unit trusts, shares)</span>
+        <span class="gap-amount">${formatRand(investments)}</span>
+      </div>`;
+      
+      wealthHTML += `<div class="gap-item">
+        <span class="gap-label">Projected value at ${retirementAge} (8%/year growth)</span>
+        <span class="gap-amount">${formatRand(futureInvestments)}</span>
+      </div>`;
+
+      wealthHTML += `<hr style="margin: 20px 0">`;
+
+      wealthHTML += `<div class="gap-item">
+        <span class="gap-label">Retirement savings today</span>
+        <span class="gap-amount">${formatRand(retirementSavings)}</span>
+      </div>`;
+      
+      wealthHTML += `<div class="gap-item">
+        <span class="gap-label">+ Future contributions (${formatRand(retirementContribution)}/month)</span>
+        <span class="gap-amount">${formatRand(futureContributions)}</span>
+      </div>`;
+      
+      wealthHTML += `<div class="gap-item">
+        <span class="gap-label"><strong>Total retirement savings at ${retirementAge}</strong></span>
+        <span class="gap-amount">${formatRand(projectedRetirement)}</span>
+      </div>`;
+
+      wealthHTML += `<hr style="margin: 20px 0">`;
+
+      const totalAssets = propertyEquity + futureInvestments + projectedRetirement;
+      wealthHTML += `<div class="gap-item">
+        <span class="gap-label"><strong>Total projected wealth at ${retirementAge}</strong></span>
+        <span class="gap-amount" style="font-size: 1.3rem; color: var(--success)">${formatRand(totalAssets)}</span>
+      </div>`;
+
+      if (totalAssets > retirementCapitalNeed) {
+        wealthHTML += `<div class="insight-box success">
+          🎉 <strong>You're on track to be financially independent!</strong> Your projected assets (${formatRand(totalAssets)}) exceed your retirement capital need (${formatRand(retirementCapitalNeed)}).
+        </div>`;
+      }
+
+      document.getElementById('wealthProjection').innerHTML = wealthHTML;
 
       // Insurance Gaps
       let insuranceHTML = '';
       
       insuranceHTML += `<div class="gap-item">
-        <span class="gap-label">Life insurance needed</span>
+        <span class="gap-label">Life insurance needed (traditional)</span>
         <span class="gap-amount">${formatRand(totalLifeNeed)}</span>
       </div>`;
+      
+      if (propertyEquity > debtSettlement) {
+        insuranceHTML += `<div class="gap-item">
+          <span class="gap-label">Less: Property equity covers debt</span>
+          <span class="gap-amount" style="color: var(--success)">-${formatRand(Math.min(propertyEquity, debtSettlement))}</span>
+        </div>`;
+        
+        insuranceHTML += `<div class="gap-item">
+          <span class="gap-label"><strong>Adjusted life insurance needed</strong></span>
+          <span class="gap-amount">${formatRand(adjustedLifeNeed)}</span>
+        </div>`;
+
+        insuranceHTML += `<div class="insight-box success">
+          💡 Your property equity (${formatRand(propertyEquity)}) can cover most/all of your debts. Your family could sell the property to settle debts and still have ${formatRand(propertyEquity - debtSettlement)} left over.
+        </div>`;
+      } else {
+        insuranceHTML += `<div class="gap-item">
+          <span class="gap-label"><strong>Life insurance needed</strong></span>
+          <span class="gap-amount">${formatRand(totalLifeNeed)}</span>
+        </div>`;
+      }
       
       insuranceHTML += `<div class="gap-item">
         <span class="gap-label">Current life cover</span>
         <span class="gap-amount">${formatRand(lifeCover)}</span>
       </div>`;
       
+      const finalLifeGap = propertyEquity > debtSettlement ? adjustedLifeGap : lifeGap;
       insuranceHTML += `<div class="gap-item">
         <span class="gap-label"><strong>Life insurance gap</strong></span>
-        <span class="gap-amount ${lifeGap > 0 ? 'negative' : ''}">${formatRand(lifeGap)}</span>
+        <span class="gap-amount ${finalLifeGap > 0 ? 'negative' : ''}">${formatRand(finalLifeGap)}</span>
       </div>`;
 
-      if (lifeGap > 100000) {
+      if (finalLifeGap > 100000) {
         insuranceHTML += `<div class="insight-box danger">
-          ⚠️ <strong>Critical gap:</strong> You're under-insured by ${formatRand(lifeGap)}. Your family could struggle financially if something happens to you.
+          ⚠️ <strong>Critical gap:</strong> You're under-insured by ${formatRand(finalLifeGap)}. Your family could struggle financially if something happens to you.
         </div>`;
-      } else if (lifeGap < 0) {
+      } else if (finalLifeGap < 0) {
         insuranceHTML += `<div class="insight-box success">
           ✅ You're adequately covered for life insurance. Well done!
         </div>`;
@@ -797,16 +924,26 @@
       </div>`;
       
       retirementHTML += `<div class="gap-item">
-        <span class="gap-label">Projected savings at ${retirementAge}</span>
+        <span class="gap-label">Projected retirement savings</span>
         <span class="gap-amount">${formatRand(projectedRetirement)}</span>
       </div>`;
       
       retirementHTML += `<div class="gap-item">
-        <span class="gap-label"><strong>Retirement gap</strong></span>
+        <span class="gap-label"><strong>Gap (without property)</strong></span>
         <span class="gap-amount ${retirementGap > 0 ? 'negative' : ''}">${formatRand(retirementGap)}</span>
       </div>`;
 
-      if (retirementGap > 100000) {
+      if (retirementGap > 100000 && downsizeRelease > 1000000) {
+        retirementHTML += `<div class="insight-box">
+          🏡 <strong>Property rescue plan:</strong> If you downsize and free up ${formatRand(downsizeRelease)}, your retirement gap becomes <strong>${formatRand(retirementGapWithProperty)}</strong>.
+        </div>`;
+        
+        if (retirementGapWithProperty <= 0) {
+          retirementHTML += `<div class="insight-box success">
+            ✅ With downsizing, you'll exceed your retirement goal by ${formatRand(Math.abs(retirementGapWithProperty))}. Your property is your retirement plan!
+          </div>`;
+        }
+      } else if (retirementGap > 100000) {
         retirementHTML += `<div class="insight-box danger">
           ⚠️ <strong>You're on track to fall short by ${formatRand(retirementGap)} at retirement.</strong><br>
           To close this gap, you need to increase your monthly contributions by <strong>${formatRand(monthlyGapFill)}/month</strong>.

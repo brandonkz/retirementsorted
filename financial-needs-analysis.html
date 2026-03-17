@@ -718,32 +718,41 @@
 
       // Asset Growth Projections
       const yearsToRetirement = retirementAge - age;
-      const propertyGrowthRate = 0.07; // 7% annual property appreciation
-      const investmentGrowthRate = 0.08; // 8% annual investment growth
+      const inflationRate = 0.06; // 6% annual inflation (SA average)
+      const propertyGrowthRate = 0.07; // 7% annual property appreciation (nominal)
+      const investmentGrowthRate = 0.08; // 8% annual investment growth (nominal)
       
-      // Future property value
-      const futurePropertyValue = propertyValue * Math.pow(1 + propertyGrowthRate, yearsToRetirement);
-      const propertyEquity = futurePropertyValue - homeLoan; // Assuming loan stays constant (simplified)
+      // Real (inflation-adjusted) growth rates
+      const realPropertyGrowth = (1 + propertyGrowthRate) / (1 + inflationRate) - 1; // ~0.94%
+      const realInvestmentGrowth = (1 + investmentGrowthRate) / (1 + inflationRate) - 1; // ~1.89%
+      
+      // Future property value (NOMINAL)
+      const futurePropertyValueNominal = propertyValue * Math.pow(1 + propertyGrowthRate, yearsToRetirement);
+      
+      // Future property value (REAL - today's purchasing power)
+      const futurePropertyValue = propertyValue * Math.pow(1 + realPropertyGrowth, yearsToRetirement);
+      const propertyEquity = futurePropertyValue - (homeLoan / Math.pow(1 + inflationRate, yearsToRetirement)); // Loan shrinks in real terms
       
       // Downsizing scenario - assume selling property and buying smaller at 40% of future value
       const downsizeRelease = propertyEquity * 0.6; // 60% of equity freed up
       
-      // Future investment portfolio
-      const futureInvestments = investments * Math.pow(1 + investmentGrowthRate, yearsToRetirement);
+      // Future investment portfolio (REAL)
+      const futureInvestments = investments * Math.pow(1 + realInvestmentGrowth, yearsToRetirement);
       
-      // Retirement Capital Needed
-      // Using 25x rule (4% withdrawal rate)
+      // Retirement Capital Needed (already in today's rands)
       const retirementCapitalNeed = retirementIncome * 12 * 25;
-      const futureRetirementSavings = retirementSavings * Math.pow(1.08, yearsToRetirement);
-      const futureContributions = retirementContribution * 12 * ((Math.pow(1.08, yearsToRetirement) - 1) / 0.08);
       
-      // Total projected wealth at retirement
+      // Future retirement savings (REAL)
+      const futureRetirementSavings = retirementSavings * Math.pow(1 + realInvestmentGrowth, yearsToRetirement);
+      const futureContributions = retirementContribution * 12 * ((Math.pow(1 + realInvestmentGrowth, yearsToRetirement) - 1) / realInvestmentGrowth);
+      
+      // Total projected wealth at retirement (IN TODAY'S RANDS)
       const projectedRetirement = futureRetirementSavings + futureContributions + futureInvestments;
       const projectedRetirementWithProperty = projectedRetirement + downsizeRelease;
       
       const retirementGap = retirementCapitalNeed - projectedRetirement;
       const retirementGapWithProperty = retirementCapitalNeed - projectedRetirementWithProperty;
-      const monthlyGapFill = retirementGap > 0 ? (retirementGap / ((Math.pow(1.08, yearsToRetirement) - 1) / 0.08)) / 12 : 0;
+      const monthlyGapFill = retirementGap > 0 ? (retirementGap / ((Math.pow(1 + realInvestmentGrowth, yearsToRetirement) - 1) / realInvestmentGrowth)) / 12 : 0;
       
       // Adjusted Life Insurance Need (accounting for growing assets)
       // Your family could liquidate property equity if needed
@@ -763,8 +772,13 @@
       </div>`;
       
       wealthHTML += `<div class="gap-item">
-        <span class="gap-label">Property value at ${retirementAge} (7%/year growth)</span>
+        <span class="gap-label">Property value at ${retirementAge} (in today's rands)</span>
         <span class="gap-amount">${formatRand(futurePropertyValue)}</span>
+      </div>`;
+      
+      wealthHTML += `<div class="gap-item">
+        <span class="gap-label" style="font-size: 0.85rem; color: var(--text-muted)">Nominal value (not inflation-adjusted)</span>
+        <span class="gap-amount" style="font-size: 0.85rem; color: var(--text-muted)">${formatRand(futurePropertyValueNominal)}</span>
       </div>`;
       
       wealthHTML += `<div class="gap-item">
@@ -791,7 +805,7 @@
       </div>`;
       
       wealthHTML += `<div class="gap-item">
-        <span class="gap-label">Projected value at ${retirementAge} (8%/year growth)</span>
+        <span class="gap-label">Projected value at ${retirementAge} (in today's rands)</span>
         <span class="gap-amount">${formatRand(futureInvestments)}</span>
       </div>`;
 

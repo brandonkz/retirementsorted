@@ -855,27 +855,41 @@
       </div>`;
       
       planHTML += `<div class="gap-item">
-        <span class="gap-label">Projected wealth at ${retirementAge}</span>
+        <span class="gap-label">Projected investments at ${retirementAge}</span>
         <span class="gap-amount">${formatRand(projectedRetirement)}</span>
       </div>`;
+      
+      const totalAssets = propertyEquity + futureInvestments + projectedRetirement;
+      
+      planHTML += `<div class="gap-item">
+        <span class="gap-label">+ Property equity</span>
+        <span class="gap-amount">${formatRand(propertyEquity)}</span>
+      </div>`;
+      
+      planHTML += `<div class="gap-item">
+        <span class="gap-label"><strong>Total projected wealth</strong></span>
+        <span class="gap-amount" style="font-size: 1.2rem; color: var(--success)">${formatRand(totalAssets)}</span>
+      </div>`;
 
-      if (retirementGap > 0) {
+      const totalGap = retirementCapitalNeed - totalAssets;
+
+      if (totalGap > 0) {
         planHTML += `<div class="gap-item">
           <span class="gap-label"><strong>Shortfall</strong></span>
-          <span class="gap-amount negative">${formatRand(retirementGap)}</span>
+          <span class="gap-amount negative">${formatRand(totalGap)}</span>
         </div>`;
         
         planHTML += `<div class="insight-box danger">
-          ⚠️ At your current savings rate, you'll fall short by ${formatRand(retirementGap)}. <strong>Increase your monthly investment by ${formatRand(monthlyGapFill)}</strong> to hit your goal.
+          ⚠️ Including property, you'll still be short by ${formatRand(totalGap)}. <strong>Increase your monthly investment by ${formatRand(monthlyGapFill)}</strong> to hit your goal.
         </div>`;
       } else {
         planHTML += `<div class="gap-item">
           <span class="gap-label"><strong>Surplus</strong></span>
-          <span class="gap-amount">${formatRand(Math.abs(retirementGap))}</span>
+          <span class="gap-amount">${formatRand(Math.abs(totalGap))}</span>
         </div>`;
         
         planHTML += `<div class="insight-box success">
-          ✅ You're on track to exceed your goal by ${formatRand(Math.abs(retirementGap))}. Keep it up!
+          ✅ You're on track to exceed your goal by ${formatRand(Math.abs(totalGap))}! Your property equity is a huge contributor.
         </div>`;
       }
 

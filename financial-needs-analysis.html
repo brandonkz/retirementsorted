@@ -838,8 +838,10 @@
           document.getElementById('investmentSubtext').textContent = `Almost there! Your property equity covers most of the gap. Keep investing ${formatRand(currentMonthlyInvestment)}/month.`;
         }
       } else {
-        document.getElementById('monthlyNeed').textContent = '✅ On Track!';
-        document.getElementById('investmentSubtext').textContent = `Your current ${formatRand(currentMonthlyInvestment)}/month + property growth will exceed your ${formatRand(retirementIncome)}/month goal.`;
+        // Calculate max affordable income with current trajectory
+        const maxMonthlyIncome = (totalProjectedAssets / 25) / 12;
+        document.getElementById('monthlyNeed').textContent = formatRand(maxMonthlyIncome) + '/month';
+        document.getElementById('investmentSubtext').textContent = `That's how much you can afford! Your ${formatRand(currentMonthlyInvestment)}/month investment + property = ${formatRand(maxMonthlyIncome)}/month retirement income (${formatRand(maxMonthlyIncome - adjustedRetirementIncome)} above your ${formatRand(adjustedRetirementIncome)} goal).`;
       }
       
       // Retirement Plan
@@ -908,13 +910,23 @@
           </div>`;
         }
       } else {
+        // Calculate maximum monthly income they could afford
+        const maxMonthlyIncome = (totalProjectedAssets / 25) / 12; // 4% withdrawal rule
+        
         planHTML += `<div class="gap-item">
           <span class="gap-label"><strong>Surplus (today's rands)</strong></span>
           <span class="gap-amount">${formatRand(Math.abs(totalRetirementGap))}</span>
         </div>`;
         
+        planHTML += `<hr style="margin: 20px 0">`;
+        
+        planHTML += `<div class="gap-item">
+          <span class="gap-label">💰 Maximum monthly income you could afford</span>
+          <span class="gap-amount" style="font-size: 1.2rem; color: var(--success)">${formatRand(maxMonthlyIncome)}/month</span>
+        </div>`;
+        
         planHTML += `<div class="insight-box success">
-          ✅ You're on track to exceed your goal by ${formatRand(Math.abs(totalRetirementGap))}! Your property equity is a huge contributor.
+          ✅ You're on track for ${formatRand(maxMonthlyIncome)}/month! That's ${formatRand(maxMonthlyIncome - adjustedRetirementIncome)}/month MORE than your ${formatRand(adjustedRetirementIncome)} target. You could retire earlier, live better, or leave more to your family.
         </div>`;
       }
 

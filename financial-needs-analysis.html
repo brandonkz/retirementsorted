@@ -774,15 +774,18 @@
       const futureInvestments = investments * Math.pow(1 + realInvestmentGrowth, yearsToRetirement);
       
       // Retirement Capital Needed (already in today's rands)
-      // Adjust retirement income need if bond will be paid off
+      // Only adjust if bond will be paid off DURING retirement (not before)
       let adjustedRetirementIncome = retirementIncome;
       let bondSavings = 0;
+      const bondTerm = 20;
       
-      if (yearsToRetirement >= 20 && homeLoan > 0) {
+      // If you retire BEFORE bond is paid (e.g., retire in 15 yrs, 20yr bond), you'll save the bond payment in retirement
+      if (yearsToRetirement < bondTerm && homeLoan > 0) {
         // Estimate monthly bond payment (simplified: total loan / 240 months)
         bondSavings = homeLoan / 240; // Rough monthly payment estimate
         adjustedRetirementIncome = Math.max(10000, retirementIncome - bondSavings); // Don't go below R10k
       }
+      // If you retire AFTER bond is paid (e.g., retire in 27 yrs, 20yr bond), you're already living without it - no adjustment needed
       
       const retirementCapitalNeed = adjustedRetirementIncome * 12 * 25;
       
@@ -825,14 +828,12 @@
       </div>`;
       
       if (bondSavings > 0) {
-        planHTML += `<div class="gap-item">
-          <span class="gap-label">Less: Bond payment (will be paid off)</span>
-          <span class="gap-amount" style="color: var(--success)">-${formatRand(bondSavings)}/month</span>
+        planHTML += `<div class="insight-box success">
+          💡 Since your bond will be paid off during retirement, you won't need the full ${formatRand(retirementIncome)}/month. Adjusted need: ${formatRand(adjustedRetirementIncome)}/month.
         </div>`;
-        
-        planHTML += `<div class="gap-item">
-          <span class="gap-label"><strong>Adjusted retirement income needed</strong></span>
-          <span class="gap-amount">${formatRand(adjustedRetirementIncome)}/month</span>
+      } else if (yearsToRetirement >= bondTerm && homeLoan > 0) {
+        planHTML += `<div class="insight-box">
+          💡 Your bond will be fully paid ${bondTerm - yearsToRetirement} years before retirement. Your ${formatRand(retirementIncome)}/month target already accounts for living without a bond payment.
         </div>`;
       }
       

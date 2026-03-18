@@ -206,8 +206,8 @@
         
         // Calculate how early they could retire
         // Work backwards: how many years of investing needed to reach the capital target?
-        const yearsNeeded = Math.log(1 + (retirementCapitalNeed - currentRetirement - futureInvestments - propertyEquity) / (currentMonthlyInvestment * 12) * realInvestmentGrowth) / Math.log(1 + realInvestmentGrowth);
-        const earlyRetireAge = Math.round(age + yearsNeeded);
+        const yearsNeeded = Math.log(1 + (retirementCapitalNeed - futureRetirementSavings - futureInvestments - propertyEquity) / (currentMonthlyInvestment * 12) * realInvestmentGrowth) / Math.log(1 + realInvestmentGrowth);
+        const earlyRetireAge = isFinite(yearsNeeded) && yearsNeeded > 0 ? Math.round(age + yearsNeeded) : 0;
         const yearsEarlier = retirementAge - earlyRetireAge;
         
         // Change the label when showing surplus

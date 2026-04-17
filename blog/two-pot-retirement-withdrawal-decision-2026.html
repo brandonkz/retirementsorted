@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Two-pot retirement calculator and withdrawal decision guide for 2026/27. How much is in your savings pot, what tax will SARS take, and whether you should withdraw this year.">
+  <link rel="canonical" href="https://retirementsorted.co.za/blog/two-pot-retirement-withdrawal-decision-2026.html">
+  <title>Two-Pot Retirement Withdrawal Calculator: Should You Withdraw in 2026/27? | RetirementSorted</title>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXX');
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Two-Pot Retirement Withdrawal Calculator: Should You Withdraw in 2026/27?",
+    "description": "Two-pot retirement calculator and withdrawal decision guide for 2026/27. How much is in your savings pot, what tax will SARS take, and whether you should withdraw this year.",
+    "datePublished": "2026-04-17",
+    "dateModified": "2026-04-17",
+    "author": { "@type": "Organization", "name": "RetirementSorted" },
+    "publisher": { "@type": "Organization", "name": "RetirementSorted" }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How do I calculate how much is in my two-pot savings pot?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Your savings pot receives 1/3 of all retirement fund contributions made from 1 September 2024 onwards, plus any investment growth on those contributions. If your employer contributes 10% of your R30,000 monthly salary, that's R3,000/month total — R1,000 goes to the savings pot each month. After 19 months (to April 2026), you'd have approximately R19,000 plus investment returns, less any previous withdrawals. Your fund administrator's online portal will show the exact current balance."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "When does the two-pot withdrawal allowance reset?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Your annual savings pot withdrawal allowance resets each tax year on 1 March. So from 1 March 2026, you have a fresh withdrawal allowance for the 2026/27 tax year — even if you withdrew in the 2025/26 year (which ended 28 February 2026). You can only make one withdrawal per tax year, subject to having at least R2,000 in your savings pot."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How much tax will SARS take on a two-pot withdrawal in 2026?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Two-pot savings pot withdrawals are taxed as ordinary income at your marginal rate for the 2026/27 tax year. The 2026/27 rates range from 18% (income up to R237,100) to 45% (income above R1,817,000). SARS issues a tax directive to your fund before payment — tax is deducted at source. A R20,000 withdrawal at a 31% marginal rate nets you approximately R13,800."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is it better to use a personal loan or withdraw from my two-pot?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "For many mid-to-high earners, a personal loan is cheaper than a two-pot withdrawal. A R20,000 personal loan at 18% interest over 24 months costs roughly R4,400 in total interest. A R20,000 savings pot withdrawal at a 31% marginal rate costs R6,200 in tax immediately — plus the lost compound growth on those funds over your remaining working years. The calculation changes for those in the 18% bracket, where the tax cost (R3,600) may be less than personal loan interest."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I withdraw from my two-pot savings pot every year?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, you can make one withdrawal per tax year from the savings pot, provided you have at least R2,000 available and your fund permits it. The tax year runs March to February. However, making a withdrawal every year significantly erodes your retirement outcome — each withdrawal not only depletes savings but also removes capital that would have compounded over decades."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    body {
+      margin: 0; padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+    .blog-nav { background: white; border-bottom: 1px solid #e5e7eb; padding: 1rem 0; }
+    .blog-nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; display: flex; justify-content: space-between; align-items: center; }
+    .blog-logo { display: flex; align-items: center; gap: 0.5rem; text-decoration: none !important; color: #111; font-size: 1.1rem; font-weight: 600; }
+    .blog-logo:hover { color: #059669; }
+    .blog-check { color: #059669; font-size: 1.3rem; }
+    .blog-nav-links { display: flex; gap: 2rem; align-items: center; }
+    .blog-nav-links a { text-decoration: none !important; color: #666; font-size: 1rem; }
+    .blog-nav-links a:hover, .blog-nav-links a.active { color: #059669; }
+    .blog-post { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+    .blog-post h1 { font-size: 2.5rem; font-weight: 900; line-height: 1.2; margin-bottom: 24px; color: #111; }
+    .blog-meta { color: #6b7280; margin-bottom: 32px; font-size: 0.95rem; }
+    .blog-post h2 { font-size: 1.8rem; font-weight: 700; margin-top: 48px; margin-bottom: 16px; color: #1e3a5f; }
+    .blog-post h3 { font-size: 1.3rem; font-weight: 600; margin-top: 32px; margin-bottom: 12px; color: #1e3a5f; }
+    .blog-post p { margin-bottom: 16px; line-height: 1.8; color: #374151; }
+    .blog-post a { color: #059669; text-decoration: underline; }
+    .blog-post ul, .blog-post ol { margin-bottom: 16px; padding-left: 24px; color: #374151; line-height: 1.8; }
+    .comparison-table { width: 100%; border-collapse: collapse; margin: 24px 0; overflow-x: auto; display: block; }
+    .comparison-table th { background: #065f46; color: white; padding: 14px 16px; text-align: left; white-space: nowrap; }
+    .comparison-table td { padding: 12px 16px; border-bottom: 1px solid #e5e7eb; }
+    .comparison-table tr:hover { background: #f0fdf4; }
+    .tip-box { background: #f0fdf4; border-left: 4px solid #059669; padding: 16px 20px; margin: 24px 0; border-radius: 0 8px 8px 0; }
+    .warning-box { background: #fff7ed; border-left: 4px solid #ea580c; padding: 16px 20px; margin: 24px 0; border-radius: 0 8px 8px 0; }
+    .breadcrumb { font-size: 0.85rem; color: #6b7280; margin-bottom: 16px; }
+    .breadcrumb a { color: #059669; text-decoration: none; }
+    .toc { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px 24px; margin: 24px 0; }
+    .toc h3 { margin-top: 0; font-size: 1.1rem; color: #1e3a5f; }
+    .toc ul { list-style: none; padding-left: 0; margin-bottom: 0; }
+    .toc li { margin-bottom: 8px; }
+    .toc a { color: #059669; text-decoration: none; font-size: 0.95rem; }
+    .toc a:hover { text-decoration: underline; }
+    .decision-box { border: 2px solid #e2e8f0; border-radius: 12px; padding: 24px; margin: 24px 0; }
+    .decision-box.withdraw { border-color: #059669; background: #f0fdf4; }
+    .decision-box.dont-withdraw { border-color: #ea580c; background: #fff7ed; }
+    .decision-box h4 { margin: 0 0 12px; font-size: 1.15rem; }
+    .calc-widget { background: #1e3a5f; color: white; border-radius: 12px; padding: 24px; margin: 32px 0; }
+    .calc-widget h3 { color: white; margin-top: 0; }
+    .calc-widget p { color: #d1fae5; }
+    .calc-widget a { color: #6ee7b7; }
+  </style>
+</head>
+<body>
+
+  <nav class="blog-nav">
+    <div class="blog-nav-inner">
+      <a href="../../" class="blog-logo">
+        <span class="blog-check">✓</span>
+        <span>RetirementSorted</span>
+      </a>
+      <div class="blog-nav-links">
+        <a href="../../">Calculator</a>
+        <a href="./" class="active">Blog</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="blog-post">
+    <div class="breadcrumb"><a href="/">Home</a> → <a href="/blog/">Blog</a> → Two-Pot Withdrawal Decision 2026/27</div>
+
+    <h1>Two-Pot Retirement Withdrawal Calculator: Should You Withdraw in 2026/27?</h1>
+    <div class="blog-meta">Published 17 April 2026 · 10 min read</div>
+
+    <p>The 2026/27 tax year started on 1 March 2026 — and with it, every South African with a pension or provident fund has a fresh annual withdrawal allowance from their two-pot savings pot. If you withdrew in 2025/26, you can access the pot again. If you haven't touched it since September 2024, your savings pot has been quietly building for 19 months.</p>
+
+    <p>This guide does two things: calculates how much is likely in your savings pot right now, and walks you through the decision framework for whether withdrawing in 2026/27 makes financial sense. The honest answer is: for most people, it doesn't. But there are situations where it does — and this guide helps you figure out which camp you're in.</p>
+
+    <div class="toc">
+      <h3>📋 What's in This Guide</h3>
+      <ul>
+        <li><a href="#how-much-in-pot">How Much Is In Your Savings Pot?</a></li>
+        <li><a href="#pot-by-salary">Savings Pot Calculator by Salary Level</a></li>
+        <li><a href="#tax-cost">What SARS Will Take: 2026/27 Tax Tables</a></li>
+        <li><a href="#after-tax">What You'll Actually Receive After Tax</a></li>
+        <li><a href="#decision-framework">The Withdrawal Decision Framework</a></li>
+        <li><a href="#when-withdraw">When Withdrawing Makes Sense</a></li>
+        <li><a href="#when-dont">When You Definitely Shouldn't Withdraw</a></li>
+        <li><a href="#alternatives">Alternatives to Two-Pot Withdrawal</a></li>
+        <li><a href="#process">How to Apply for a Withdrawal</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </div>
+
+    <h2 id="how-much-in-pot">How Much Is In Your Savings Pot?</h2>
+
+    <p>The two-pot system launched on 1 September 2024. Since then, 1/3 of all new retirement fund contributions have flowed into your savings pot. Here's how to estimate your balance:</p>
+
+    <p><strong>Basic formula:</strong></p>
+    <ol>
+      <li>Calculate your monthly employer + employee retirement fund contribution (e.g., 10% of salary)</li>
+      <li>Divide by 3 — this is your monthly savings pot contribution</li>
+      <li>Multiply by the number of months since September 2024 (approximately 19 months to April 2026)</li>
+      <li>Add approximately 8–10% investment growth on the accumulated balance (annualised)</li>
+      <li>Subtract any previous withdrawals</li>
+    </ol>
+
+    <p>Additionally, on launch day (1 September 2024), 10% of your vested pot balance (capped at R30,000) was "seeded" into your savings pot. This seed capital is already included in most people's current balances.</p>
+
+    <div class="tip-box">
+      <strong>💡 Check your actual balance:</strong> Log in to your fund administrator's online portal or app. Alexander Forbes, Old Mutual, Sanlam, Momentum, Liberty, and most large funds show savings pot balances in real time. Your balance is the authoritative number — the formula above is an estimate.
+    </div>
+
+    <h2 id="pot-by-salary">Savings Pot Calculator by Salary Level</h2>
+
+    <p>Here are estimated savings pot balances in April 2026, for people who have not previously withdrawn:</p>
+
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th>Monthly Salary</th>
+          <th>Total Contribution Rate</th>
+          <th>Monthly Pot Contribution</th>
+          <th>19-Month Accumulation</th>
+          <th>Est. Balance (with growth)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>R10,000/month</td>
+          <td>10%</td>
+          <td>R333</td>
+          <td>R6,327</td>
+          <td>~R7,000</td>
+        </tr>
+        <tr>
+          <td>R15,000/month</td>
+          <td>10%</td>
+          <td>R500</td>
+          <td>R9,500</td>
+          <td>~R10,500</td>
+        </tr>
+        <tr>
+          <td>R20,000/month</td>
+          <td>10%</td>
+          <td>R667</td>
+          <td>R12,673</td>
+          <td>~R14,000</td>
+        </tr>
+        <tr>
+          <td>R25,000/month</td>
+          <td>10%</td>
+          <td>R833</td>
+          <td>R15,827</td>
+          <td>~R17,500</td>
+        </tr>
+        <tr>
+          <td>R30,000/month</td>
+          <td>10%</td>
+          <td>R1,000</td>
+          <td>R19,000</td>
+          <td>~R21,000</td>
+        </tr>
+        <tr>
+          <td>R40,000/month</td>
+          <td>15%</td>
+          <td>R2,000</td>
+          <td>R38,000</td>
+          <td>~R42,000</td>
+        </tr>
+        <tr>
+          <td>R60,000/month</td>
+          <td>15%</td>
+          <td>R3,000</td>
+          <td>R57,000</td>
+          <td>~R63,000</td>
+        </tr>
+        <tr>
+          <td>R80,000/month</td>
+          <td>15%</td>
+          <td>R4,000</td>
+          <td>R76,000</td>
+          <td>~R84,000</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><em>Balances include approximately R4,000–30,000 seed capital depending on vested pot size. Growth estimated at 9% annualised. Actual figures will differ based on your specific fund, contribution history, and previous withdrawals.</em></p>
+
+    <p>If you withdrew during 2024/25 (September 2024 – February 2026), your current balance reflects only what has accumulated since that withdrawal, plus any remaining balance you chose not to withdraw.</p>
+
+    <h2 id="tax-cost">What SARS Will Take: 2026/27 Tax Tables</h2>
+
+    <p>This is the part most people skip — and then regret. Two-pot savings pot withdrawals are not taxed like retirement lump sums. They are added to your income for the tax year and taxed at your <strong>marginal income tax rate</strong>. SARS issues a directive to your fund before payment; tax is deducted before you receive anything.</p>
+
+    <p>The 2026/27 SARS marginal tax brackets (1 March 2026 – 28 February 2027):</p>
+
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th>Annual Taxable Income</th>
+          <th>Marginal Rate</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>R0 – R237,100</td>
+          <td>18%</td>
+        </tr>
+        <tr>
+          <td>R237,101 – R370,500</td>
+          <td>26%</td>
+        </tr>
+        <tr>
+          <td>R370,501 – R512,800</td>
+          <td>31%</td>
+        </tr>
+        <tr>
+          <td>R512,801 – R673,000</td>
+          <td>36%</td>
+        </tr>
+        <tr>
+          <td>R673,001 – R857,900</td>
+          <td>39%</td>
+        </tr>
+        <tr>
+          <td>R857,901 – R1,817,000</td>
+          <td>41%</td>
+        </tr>
+        <tr>
+          <td>R1,817,001+</td>
+          <td>45%</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>To find your marginal rate: take your annual salary, subtract your retirement fund contributions (since those are deductible), and find the bracket your income sits in. The withdrawal amount is taxed at that bracket's rate — not a blended rate.</p>
+
+    <div class="warning-box">
+      <strong>⚠️ The exemption that doesn't apply:</strong> There is NO R25,000 tax-free exemption for savings pot withdrawals. That exemption applies to retirement lump sums on resignation or retrenchment — not to two-pot savings pot withdrawals. What you withdraw is 100% taxable income.
+    </div>
+
+    <h2 id="after-tax">What You'll Actually Receive After Tax</h2>
+
+    <p>Here's what different withdrawal amounts produce after SARS takes their share, at various salary levels:</p>
+
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th>Annual Salary</th>
+          <th>Marginal Rate</th>
+          <th>Withdrawal</th>
+          <th>Tax Deducted</th>
+          <th>You Receive</th>
+          <th>Effective Cost</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>R120,000/yr</td>
+          <td>18%</td>
+          <td>R7,000</td>
+          <td>R1,260</td>
+          <td>R5,740</td>
+          <td>18% lost</td>
+        </tr>
+        <tr>
+          <td>R180,000/yr</td>
+          <td>18%</td>
+          <td>R10,000</td>
+          <td>R1,800</td>
+          <td>R8,200</td>
+          <td>18% lost</td>
+        </tr>
+        <tr>
+          <td>R300,000/yr</td>
+          <td>26%</td>
+          <td>R17,000</td>
+          <td>R4,420</td>
+          <td>R12,580</td>
+          <td>26% lost</td>
+        </tr>
+        <tr>
+          <td>R420,000/yr</td>
+          <td>31%</td>
+          <td>R21,000</td>
+          <td>R6,510</td>
+          <td>R14,490</td>
+          <td>31% lost</td>
+        </tr>
+        <tr>
+          <td>R550,000/yr</td>
+          <td>36%</td>
+          <td>R30,000</td>
+          <td>R10,800</td>
+          <td>R19,200</td>
+          <td>36% lost</td>
+        </tr>
+        <tr>
+          <td>R720,000/yr</td>
+          <td>39%</td>
+          <td>R40,000</td>
+          <td>R15,600</td>
+          <td>R24,400</td>
+          <td>39% lost</td>
+        </tr>
+        <tr>
+          <td>R1,000,000/yr</td>
+          <td>41%</td>
+          <td>R60,000</td>
+          <td>R24,600</td>
+          <td>R35,400</td>
+          <td>41% lost</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>The effective cost goes beyond just the tax. The money withdrawn also loses its compound growth potential. R21,000 withdrawn at age 40 from a pot earning 10% annually would have grown to roughly R145,000 by age 65. That's the true cost of a "quick" R14,490 net withdrawal today.</p>
+
+    <h2 id="decision-framework">The Withdrawal Decision Framework</h2>
+
+    <p>Use this framework to think through whether withdrawing makes sense for you in 2026/27:</p>
+
+    <h3>Step 1: Establish Your Genuine Need</h3>
+    <p>Is this for:</p>
+    <ul>
+      <li>A genuine financial emergency (medical, imminent debt default, food security)?</li>
+      <li>A high-interest debt that's costing more than the tax rate (e.g., micro-lenders, credit card debt at 20%+)?</li>
+      <li>A planned large expense (home repairs, school fees) with no alternative funding?</li>
+      <li>Or: discretionary spending, holidays, an upgrade you don't strictly need?</li>
+    </ul>
+    <p>If it's the last category, the answer is almost always: don't withdraw.</p>
+
+    <h3>Step 2: Compare Alternatives</h3>
+    <p>Before applying for a withdrawal, price out alternatives:</p>
+    <ul>
+      <li><strong>Personal loan:</strong> A R20,000 personal loan at prime + 3% (currently ~14.25%) over 24 months costs roughly R3,200–4,000 in total interest. Compare that to your tax cost on the same withdrawal.</li>
+      <li><strong>Salary advance:</strong> Many employers offer interest-free or low-interest salary advances. This is almost always cheaper than a two-pot withdrawal.</li>
+      <li><strong>TFSA withdrawal:</strong> If you have a tax-free savings account, withdrawals are tax-free. The TFSA lifetime contribution limit doesn't get restored, but there's no SARS tax directive and no tax deducted.</li>
+      <li><strong>Debt consolidation:</strong> If the need is high-interest debt, consolidation at a lower rate may reduce the monthly burden without touching retirement savings.</li>
+    </ul>
+
+    <h3>Step 3: Calculate Your After-Tax Amount</h3>
+    <p>Use the table above or the <a href="../../">RetirementSorted calculator</a> to determine exactly what you'll receive. If your savings pot has R14,000 and you're in the 26% tax bracket, you'll receive approximately R10,360. Is that amount sufficient for your need? If not, does it make sense to liquidate retirement savings for a partial fix?</p>
+
+    <h3>Step 4: Model the Long-Term Cost</h3>
+    <p>Take your withdrawal amount and apply this rough rule: multiply by 10 to estimate the retirement value you're giving up (assumes 25+ years of compounding at 10%). A R15,000 withdrawal at 40 has a retirement cost of approximately R150,000. Is what you're spending it on worth R150,000 in retirement purchasing power?</p>
+
+    <h2 id="when-withdraw">When Withdrawing from Your Savings Pot Makes Sense</h2>
+
+    <div class="decision-box withdraw">
+      <h4>✅ Consider withdrawing if:</h4>
+      <ul>
+        <li><strong>Medical emergency with no cover:</strong> An uninsured medical bill that would otherwise go to a debt collector. Health emergencies are genuine.</li>
+        <li><strong>Micro-lender or high-interest debt trap:</strong> If you're paying 30%+ interest on a small loan, paying 26% tax to exit that trap is worthwhile — the interest is compounding against you faster than your retirement savings are compounding for you.</li>
+        <li><strong>You're in the 18% bracket:</strong> At the lowest tax rate, you lose relatively little to SARS. A lower-income earner with a genuine need is the scenario two-pot was designed for.</li>
+        <li><strong>Avoiding a credit bureau listing:</strong> A judgment or adverse listing affects your ability to access credit, housing, and employment for years. If a withdrawal prevents this, the trade-off may be worthwhile.</li>
+        <li><strong>Retrenchment survival:</strong> If you've been retrenched and the savings pot covers 1–3 months of expenses while you job hunt, this is a legitimate emergency use.</li>
+      </ul>
+    </div>
+
+    <h2 id="when-dont">When You Definitely Shouldn't Withdraw</h2>
+
+    <div class="decision-box dont-withdraw">
+      <h4>❌ Don't withdraw if:</h4>
+      <ul>
+        <li><strong>You're in the 31%+ tax bracket:</strong> You're losing at least a third of your savings pot to SARS. The after-tax amount is significantly less than the face value. Explore alternatives first.</li>
+        <li><strong>The money is for discretionary spending:</strong> Holidays, gadgets, clothing, or "something nice" are not emergency uses of retirement savings.</li>
+        <li><strong>You withdrew in 2024/25:</strong> Withdrawing twice in two years (or annually) turns the savings pot into a short-term bank account — which is exactly what it's not designed for. Serial withdrawals compound into a retirement disaster.</li>
+        <li><strong>You're within 10 years of retirement:</strong> The compound cost is still significant, but the recovery period is short. You need every rand in that pot. An alternative funding source — even a more expensive one — is usually the right call at this stage.</li>
+        <li><strong>You haven't compared alternatives:</strong> If you haven't priced a personal loan or salary advance, you don't actually know whether the two-pot withdrawal is your cheapest option.</li>
+        <li><strong>You have TFSA savings you could use instead:</strong> A TFSA withdrawal is tax-free. Always exhaust TFSA before touching retirement funds.</li>
+      </ul>
+    </div>
+
+    <h2 id="alternatives">Alternatives to Two-Pot Withdrawal</h2>
+
+    <h3>1. Personal Loan from Your Bank</h3>
+    <p>Most major SA banks (Standard Bank, FNB, Absa, Nedbank, Capitec) offer unsecured personal loans. At prime-linked rates (currently ~14.25–18%), the interest cost over 12–24 months is often less than the immediate tax deducted from a two-pot withdrawal — especially for middle-income earners in the 31%+ bracket.</p>
+
+    <h3>2. Tax-Free Savings Account</h3>
+    <p>TFSA withdrawals carry no tax. The downside: the lifetime contribution limit (currently R500,000) isn't restored — whatever you withdraw, you can never re-contribute. But the absence of a tax directive and immediate tax deduction makes this a much more efficient source of emergency cash if you have it.</p>
+
+    <h3>3. Short-Term Insurance Claim</h3>
+    <p>Before assuming you need to fund something yourself, check whether your short-term insurance covers it. Home damage, vehicle repairs, and some medical expenses may be claimable. Many South Africans are underinsured and don't realise it.</p>
+
+    <h3>4. Negotiating Payment Plans</h3>
+    <p>Medical providers, schools, and many service providers will negotiate payment arrangements. A R15,000 medical bill paid over 12 months at 0% interest is better than a R15,000 two-pot withdrawal that yields R10,350 after tax.</p>
+
+    <h3>5. Employer Assistance</h3>
+    <p>Many larger employers offer employee assistance programmes (EAPs) or payroll loans at subsidised rates. Ask your HR department what's available before going to the market.</p>
+
+    <h2 id="process">How to Apply for a Two-Pot Withdrawal</h2>
+
+    <p>If you've worked through the decision and a withdrawal is the right call, here's the process:</p>
+
+    <ol>
+      <li><strong>Log in to your fund's portal:</strong> Alexander Forbes, Old Mutual, Sanlam, Momentum, Liberty, and most large administrators have online withdrawal request facilities. Smaller employer funds may require a paper form from HR.</li>
+      <li><strong>Request a quote first:</strong> Most portals will show you the estimated after-tax amount before you commit. Use this to confirm you'll receive enough for your actual need.</li>
+      <li><strong>Submit your withdrawal request:</strong> You'll need your ID number, banking details, and (for some funds) supporting documentation for the purpose of withdrawal.</li>
+      <li><strong>SARS issues the directive:</strong> Your fund applies to SARS for a tax directive. This typically takes 1–5 working days.</li>
+      <li><strong>Payment is processed:</strong> Once the directive is received, the net amount is paid to your bank account. Total time from application to payment: 7–21 working days depending on the fund.</li>
+    </ol>
+
+    <div class="tip-box">
+      <strong>💡 Important timing note:</strong> You can only make one savings pot withdrawal per tax year (March to February). If you withdraw now in April 2026, your next allowance is from March 2027 at the earliest. Plan accordingly — don't use the full pot if you might need it again in 10 months.
+    </div>
+
+    <h2>The 2026/27 Context: Why Timing Matters This Year</h2>
+
+    <p>The 2026/27 tax year has some specific dynamics worth knowing before you decide:</p>
+
+    <h3>Fresh Annual Allowance from March 2026</h3>
+    <p>If you withdrew in 2025/26 (September 2024 – February 2026), you now have a fresh annual allowance. The new tax year means SARS will calculate your directive based on your 2026/27 income — which may differ from your previous year if your salary has changed.</p>
+
+    <h3>VAT at 16% from 1 April 2026</h3>
+    <p>The VAT increase to 16% (effective 1 April 2026) means the purchasing power of your withdrawal is slightly reduced compared to last year. The tax environment hasn't changed dramatically for retirement savers, but the cost of living context has shifted.</p>
+
+    <h3>New R430,000 Contribution Deduction Cap</h3>
+    <p>The SARS cap on retirement contribution deductions increased to R430,000 for 2026/27 (from R350,000). This means high earners who want to use RAs to reduce taxable income before withdrawing from the savings pot have more room to do so — potentially dropping to a lower tax bracket before the directive is calculated.</p>
+
+    <div class="calc-widget">
+      <h3>🧮 Run Your Numbers</h3>
+      <p>The <a href="../../">RetirementSorted calculator</a> can help you model your retirement trajectory — including how a two-pot withdrawal affects your long-term outcome. See what R15,000 or R30,000 less in your pot today does to your retirement income at 65.</p>
+    </div>
+
+    <h2 id="faq">Frequently Asked Questions</h2>
+
+    <h3>How do I calculate how much is in my two-pot savings pot?</h3>
+    <p>Your savings pot receives 1/3 of all retirement fund contributions from 1 September 2024 onwards, plus investment growth. The most accurate way is to check your fund administrator's portal. As a rough estimate: monthly salary × total contribution rate ÷ 3 × number of months since September 2024, plus approximately 9% annualised growth on the accumulated balance.</p>
+
+    <h3>When does the two-pot withdrawal allowance reset?</h3>
+    <p>Your annual savings pot withdrawal allowance resets on 1 March each year. From 1 March 2026, you have a fresh withdrawal allowance for the 2026/27 tax year — even if you withdrew in 2024/25 or 2025/26.</p>
+
+    <h3>How much tax will SARS take on a two-pot withdrawal in 2026?</h3>
+    <p>Two-pot savings pot withdrawals are taxed at your marginal rate for 2026/27, ranging from 18% to 45%. Tax is deducted at source via a SARS directive before you receive the money. A R20,000 withdrawal at a 31% marginal rate nets approximately R13,800.</p>
+
+    <h3>Is it better to use a personal loan or withdraw from my two-pot?</h3>
+    <p>For most mid-to-high earners (31%+ bracket), a personal loan is often cheaper on a total cost basis. A R20,000 personal loan at 18% over 24 months costs ~R4,400 in interest. The same two-pot withdrawal at 31% loses R6,200 immediately in tax — plus long-term compound growth. Do the maths for your specific situation.</p>
+
+    <h3>Can I withdraw from my two-pot savings pot every year?</h3>
+    <p>Yes — one withdrawal per tax year (March to February) is permitted, provided you have at least R2,000 available. But withdrawing annually compounds the retirement damage significantly. The savings pot is not designed as a recurring income supplement.</p>
+
+    <h2>The Bottom Line</h2>
+
+    <p>The 2026/27 tax year gives you a fresh allowance. That doesn't mean you should use it. The two-pot system was designed as a safety valve for genuine emergencies — not a savings account to be tapped whenever money is tight. If you do have a genuine need, compare alternatives first, calculate your after-tax amount honestly, and understand the long-term compound cost before you apply.</p>
+
+    <p>For most South Africans in the 26–39% tax bracket, the alternative will often be cheaper. For those in genuine emergencies or the 18% bracket, the savings pot does what it was designed to do.</p>
+
+    <p>Use the <a href="../../">RetirementSorted calculator</a> to model your retirement outcome with and without the withdrawal — so you go into the decision with your eyes open.</p>
+
+    <p>Related reading: <a href="./two-pot-retirement-tax-changes-april-2026.html">Two-pot tax changes April 2026</a> · <a href="./should-you-withdraw-two-pot-retirement.html">Should you withdraw from your two-pot?</a> · <a href="./retirement-savings-benchmarks-south-africa-2026.html">Retirement savings benchmarks: are you on track?</a></p>
+  </div>
+</body>
+</html>

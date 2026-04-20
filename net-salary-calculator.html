@@ -521,12 +521,12 @@
       
       <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--color-border);">
         <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem;">What is the take-home pay on a R30,000 salary in South Africa?</h3>
-        <p style="color: var(--color-text-light); line-height: 1.7;">On a gross monthly salary of R30,000 (R360,000/year), you'll pay approximately R4,480 in PAYE and R177 in UIF, giving you a net take-home of about R25,343 per month. With medical aid for one person, it's about R25,707. Use the calculator above for your exact figures.</p>
+        <p style="color: var(--color-text-light); line-height: 1.7;">On a gross monthly salary of R30,000 (R360,000/year), you'll pay approximately R4,783 in PAYE and R177 in UIF, giving you a net take-home of about R25,040 per month. With medical aid for one person, it's about R25,404. Use the calculator above for your exact figures.</p>
       </div>
       
       <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--color-border);">
         <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem;">What is the take-home pay on a R50,000 salary?</h3>
-        <p style="color: var(--color-text-light); line-height: 1.7;">On a gross monthly salary of R50,000 (R600,000/year), you'll pay approximately R10,032 in PAYE and R177 in UIF, giving you a net take-home of about R39,791 per month. Contributing R5,000/month to a retirement annuity would reduce your tax and increase your net pay.</p>
+        <p style="color: var(--color-text-light); line-height: 1.7;">On a gross monthly salary of R50,000 (R600,000/year), you'll pay approximately R11,303 in PAYE and R177 in UIF, giving you a net take-home of about R38,520 per month. Contributing R5,000/month to a retirement annuity would reduce your tax and increase your net pay.</p>
       </div>
       
       <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--color-border);">
@@ -626,48 +626,52 @@
       const maxPensionDeduction = Math.min(pensionAnnual, grossAnnual * 0.275, 350000);
       const taxableIncome = grossAnnual - maxPensionDeduction;
       
-      // Calculate PAYE (2026 tax brackets)
-      let paye = 0;
+      // Calculate PAYE (2025/2026 SARS tax brackets)
+      let annualTaxBeforeRebate = 0;
       const annualRebate = 17235; // Primary rebate
       
       if (taxableIncome > 1817000) {
-        paye = 458003 + (taxableIncome - 1817000) * 0.45;
+        annualTaxBeforeRebate = 644489 + (taxableIncome - 1817000) * 0.45;
       } else if (taxableIncome > 857900) {
-        paye = 161972 + (taxableIncome - 857900) * 0.41;
+        annualTaxBeforeRebate = 251258 + (taxableIncome - 857900) * 0.41;
       } else if (taxableIncome > 673000) {
-        paye = 112062 + (taxableIncome - 673000) * 0.39;
+        annualTaxBeforeRebate = 179147 + (taxableIncome - 673000) * 0.39;
       } else if (taxableIncome > 512800) {
-        paye = 54393 + (taxableIncome - 512800) * 0.36;
+        annualTaxBeforeRebate = 121475 + (taxableIncome - 512800) * 0.36;
       } else if (taxableIncome > 370500) {
-        paye = 42678 + (taxableIncome - 370500) * 0.31;
+        annualTaxBeforeRebate = 77362 + (taxableIncome - 370500) * 0.31;
       } else if (taxableIncome > 237100) {
-        paye = 7026 + (taxableIncome - 237100) * 0.26;
+        annualTaxBeforeRebate = 42678 + (taxableIncome - 237100) * 0.26;
       } else if (taxableIncome > 0) {
-        paye = taxableIncome * 0.18;
+        annualTaxBeforeRebate = taxableIncome * 0.18;
       }
       
-      paye = Math.max(0, paye - annualRebate);
-      const payeMonthly = paye / 12;
+      const annualTaxAfterRebate = Math.max(0, annualTaxBeforeRebate - annualRebate);
       
       // UIF
       const uifMonthly = hasUif ? Math.min(grossMonthly * 0.01, 177.12) : 0;
       
-      // Medical aid tax credit
-      let medicalCredit = 0;
+      // Medical aid tax credit (monthly, capped so PAYE never goes below zero)
+      let medicalCreditMonthly = 0;
       if (hasMedicalAid) {
-        medicalCredit = 364; // Main member
+        medicalCreditMonthly = 364; // Main member
         if (medicalDependants > 1) {
-          medicalCredit += 364; // First dependant
+          medicalCreditMonthly += 364; // First dependant
           if (medicalDependants > 2) {
-            medicalCredit += (medicalDependants - 2) * 246; // Additional dependants
+            medicalCreditMonthly += (medicalDependants - 2) * 246; // Additional dependants
           }
         }
       }
       
+      const appliedMedicalCreditAnnual = Math.min(annualTaxAfterRebate, medicalCreditMonthly * 12);
+      const appliedMedicalCreditMonthly = appliedMedicalCreditAnnual / 12;
+      const paye = Math.max(0, annualTaxAfterRebate - appliedMedicalCreditAnnual);
+      const payeMonthly = paye / 12;
+      
       // Net calculation
-      const netMonthly = grossMonthly - payeMonthly - uifMonthly - pensionMonthly + medicalCredit;
+      const netMonthly = grossMonthly - payeMonthly - uifMonthly - pensionMonthly;
       const netAnnual = netMonthly * 12;
-      const effectiveRate = taxableIncome > 0 ? ((paye / taxableIncome) * 100).toFixed(1) : '0.0';
+      const effectiveRate = grossAnnual > 0 ? ((paye / grossAnnual) * 100).toFixed(1) : '0.0';
       
       // Display results
       document.getElementById('resultGross').textContent = 'R' + grossMonthly.toLocaleString('en-ZA', {minimumFractionDigits: 2, maximumFractionDigits: 2});
@@ -676,8 +680,8 @@
       
       document.getElementById('resultUifRow').style.display = hasUif ? 'flex' : 'none';
       
-      if (hasMedicalAid) {
-        document.getElementById('resultMedical').textContent = '+R' + medicalCredit.toLocaleString('en-ZA', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+      if (hasMedicalAid && appliedMedicalCreditMonthly > 0) {
+        document.getElementById('resultMedical').textContent = '+R' + appliedMedicalCreditMonthly.toLocaleString('en-ZA', {minimumFractionDigits: 2, maximumFractionDigits: 2});
         document.getElementById('resultMedicalRow').style.display = 'flex';
       } else {
         document.getElementById('resultMedicalRow').style.display = 'none';
